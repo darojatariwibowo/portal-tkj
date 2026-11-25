@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portal KBM TKJ - Pak Darojat Ariwibowo</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { display: flex; min-height: 100vh; background-color: #f1f5f9; color: #1e293b; }
+    
+    /* Sidebar ala Admin TKA/ANBK */
+    .sidebar { width: 260px; background: #0f172a; color: #f8fafc; display: flex; flex-direction: column; }
+    .brand { padding: 20px; background: #1e293b; border-bottom: 1px solid #334155; }
+    .brand h2 { font-size: 18px; color: #38bdf8; }
+    .brand p { font-size: 12px; color: #94a3b8; margin-top: 4px; }
+    
+    .menu { list-style: none; padding: 15px 0; flex: 1; }
+    .menu li { padding: 12px 20px; cursor: pointer; border-left: 4px solid transparent; transition: 0.2s; font-size: 14px; }
+    .menu li:hover, .menu li.active { background: #1e293b; border-left-color: #38bdf8; color: #38bdf8; font-weight: 600; }
+    
+    /* Area Konten Utama */
+    .main { flex: 1; display: flex; flex-direction: column; }
+    .topbar { background: #ffffff; padding: 15px 25px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+    .badge-status { background: #dcfce7; color: #166534; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+    
+    .content { padding: 25px; }
+    .filter-bar { background: #ffffff; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; gap: 15px; flex-wrap: wrap; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    select, input { padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; }
+    
+    .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+    .card { background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-top: 4px solid #0284c7; }
+    .card h3 { font-size: 13px; color: #64748b; text-transform: uppercase; }
+    .card .num { font-size: 26px; font-weight: bold; margin-top: 8px; color: #0f172a; }
+    
+    .panel { background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: none; }
+    .panel.active { display: block; }
+    .panel h3 { margin-bottom: 12px; color: #0f172a; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; }
+    
+    pre { background: #0f172a; color: #38bdf8; padding: 15px; border-radius: 6px; overflow-x: auto; margin-top: 10px; font-size: 13px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 14px; }
+    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+    th { background: #f8fafc; color: #475569; }
+    .status-ok { background: #dcfce7; color: #166534; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+    .status-wait { background: #fee2e2; color: #991b1b; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar Navigasi -->
+  <div class="sidebar">
+    <div class="brand">
+      <h2>ADMIN PORTAL TKJ</h2>
+      <p>Pak Darojat Ariwibowo</p>
+    </div>
+    <ul class="menu">
+      <li class="active" onclick="bukaTab('dashboard', this)">📊 Dashboard & Monitoring</li>
+      <li onclick="bukaTab('materi', this)">📚 Materi 2 Semester</li>
+      <li onclick="bukaTab('jobsheet', this)">💻 Jobsheet & CLI MikroTik</li>
+      <li onclick="bukaTab('pjbl', this)">🛠️ Panduan Proyek PjBL</li>
+      <li onclick="bukaTab('absensi', this)">✅ Input Absensi Siswa</li>
+    </ul>
+  </div>
+
+  <!-- Area Utama -->
+  <div class="main">
+    <div class="topbar">
+      <div><strong>Sistem Pembelajaran & Monitoring Kelas TKJ</strong></div>
+      <div class="badge-status">● SERVER PORTAL AKTIF</div>
+    </div>
+
+    <div class="content">
+      <!-- Filter Semester & Kelas -->
+      <div class="filter-bar">
+        <select id="pilihSemester">
+          <option value="S1">Semester 1 (Ganjil)</option>
+          <option value="S2">Semester 2 (Genap)</option>
+        </select>
+        <select id="pilihKelas">
+          <option value="XI-TKJ-1">Kelas XI TKJ 1</option>
+          <option value="XI-TKJ-2">Kelas XI TKJ 2</option>
+          <option value="XII-TKJ-1">Kelas XII TKJ 1</option>
+        </select>
+        <input type="text" value="TOKEN HARI INI: TKJ2026" readonly style="font-weight:bold; color:#0284c7; background:#f0f9ff;">
+      </div>
+
+      <!-- Kartu Statistik -->
+      <div class="grid-cards">
+        <div class="card"><h3>Total Siswa Kelas</h3><div class="num">36</div></div>
+        <div class="card" style="border-top-color:#16a34a;"><h3>Siswa Login / Hadir</h3><div class="num">34</div></div>
+        <div class="card" style="border-top-color:#dc2626;"><h3>Belum Masuk</h3><div class="num">2</div></div>
+        <div class="card" style="border-top-color:#eab308;"><h3>Pertemuan Aktif</h3><div class="num">Minggu 4</div></div>
+      </div>
+
+      <!-- Tab 1: Dashboard & Monitoring Live -->
+      <div id="dashboard" class="panel active">
+        <h3>Monitoring Kehadiran & Status Login Siswa (Simulasi)</h3>
+        <table>
+          <thead>
+            <tr><th>No</th><th>Nama Siswa</th><th>Kelas</th><th>Waktu Login</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>Ahmad Fauzi</td><td>XI TKJ 1</td><td>07:15 WIB</td><td><span class="status-ok">AKTIF / HADIR</span></td></tr>
+            <tr><td>2</td><td>Budi Santoso</td><td>XI TKJ 1</td><td>07:18 WIB</td><td><span class="status-ok">AKTIF / HADIR</span></td></tr>
+            <tr><td>3</td><td>Citra Lestari</td><td>XI TKJ 1</td><td>-</td><td><span class="status-wait">BELUM LOGIN</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Tab 2: Materi -->
+      <div id="materi" class="panel">
+        <h3>Modul Pembelajaran: Konfigurasi VLAN & Trunking (Semester 1)</h3>
+        <p style="line-height:1.6; margin-top:10px;">
+          <strong>Tujuan Pembelajaran:</strong> Peserta didik mampu merancang segmentasi jaringan lokal menggunakan Virtual LAN (VLAN) pada perangkat router/switch manageable serta menguji konektivitas antar-VLAN.
+        </p>
+      </div>
+
+      <!-- Tab 3: Jobsheet -->
+      <div id="jobsheet" class="panel">
+        <h3>Jobsheet Praktik: Dasar Konfigurasi VLAN di MikroTik</h3>
+        <p style="margin-top:8px;">Salin perintah CLI berikut ke terminal Winbox / RouterOS:</p>
+        <pre>/interface vlan add name=VLAN10-GURU vlan-id=10 interface=ether2
+/interface vlan add name=VLAN20-SISWA vlan-id=20 interface=ether2
+/ip address add address=192.168.10.1/24 interface=VLAN10-GURU
+/ip address add address=192.168.20.1/24 interface=VLAN20-SISWA</pre>
+      </div>
+
+      <!-- Tab 4: PjBL -->
+      <div id="pjbl" class="panel">
+        <h3>Project Based Learning (PjBL): Infrastruktur Jaringan Lab Sekolah</h3>
+        <p style="margin-top:8px; line-height:1.6;">
+          <strong>Studi Kasus:</strong> Sekolah membangun gedung lab baru yang membutuhkan pemisahan jaringan antara ruang Guru, Lab Komputer 1, dan Hotspot Siswa dalam satu jalur kabel utama.<br>
+          <strong>Output Proyek:</strong> Topologi jaringan, file konfigurasi router (<code>.rsc</code>), dan video dokumentasi pengujian ping & bandwidth.
+        </p>
+      </div>
+
+      <!-- Tab 5: Absensi -->
+      <div id="absensi" class="panel">
+        <h3>Form Presensi & Token Kelas</h3>
+        <p style="color:#64748b; margin-top:8px;">(Tahap berikutnya: Form ini akan kita hubungkan langsung ke Google Sheets akun belajar.id Bapak agar otomatis merekap kehadiran 1 tahun ajaran).</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function bukaTab(idTab, elemenMenu) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.menu li').forEach(m => m.classList.remove('active'));
+      document.getElementById(idTab).classList.add('active');
+      elemenMenu.classList.add('active');
+    }
+  </script>
+</body>
+</html>
