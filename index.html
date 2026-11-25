@@ -6,31 +6,53 @@
   <title>Portal KBM TKJ - Pak Darojat Ariwibowo</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    body { display: flex; min-height: 100vh; background-color: #f1f5f9; color: #1e293b; }
+    body { min-height: 100vh; background-color: #0f172a; color: #1e293b; }
+
+    /* GERBANG 2 PINTU LOGIN */
+    #login-screen { display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); }
+    .login-box { background: #ffffff; width: 100%; max-width: 420px; border-radius: 12px; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.4); }
+    .login-header { background: #0284c7; color: #ffffff; padding: 25px 20px; text-align: center; }
+    .login-header h2 { font-size: 20px; margin-bottom: 5px; }
+    .login-header p { font-size: 13px; opacity: 0.9; }
     
-    /* Sidebar ala Admin TKA/ANBK */
+    .login-tabs { display: flex; border-bottom: 1px solid #e2e8f0; background: #f8fafc; }
+    .login-tab { flex: 1; padding: 12px; text-align: center; cursor: pointer; font-weight: 600; font-size: 14px; color: #64748b; border-bottom: 3px solid transparent; }
+    .login-tab.active { color: #0284c7; border-bottom-color: #0284c7; background: #ffffff; }
+    
+    .login-body { padding: 25px; }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #334155; }
+    .form-group input { width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; }
+    .btn-primary { width: 100%; padding: 12px; background: #0284c7; color: #ffffff; border: none; border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+    .btn-primary:hover { background: #0369a1; }
+    .btn-primary:disabled { background: #94a3b8; cursor: not-allowed; }
+    .alert-msg { margin-top: 12px; font-size: 13px; text-align: center; font-weight: 600; color: #dc2626; }
+
+    /* DASHBOARD UTAMA (TERSEMBUNYI SEBELUM LOGIN) */
+    #app-screen { display: none; min-height: 100vh; background-color: #f1f5f9; }
+    .layout { display: flex; min-height: 100vh; }
     .sidebar { width: 260px; background: #0f172a; color: #f8fafc; display: flex; flex-direction: column; }
     .brand { padding: 20px; background: #1e293b; border-bottom: 1px solid #334155; }
-    .brand h2 { font-size: 18px; color: #38bdf8; }
+    .brand h2 { font-size: 17px; color: #38bdf8; }
     .brand p { font-size: 12px; color: #94a3b8; margin-top: 4px; }
     
     .menu { list-style: none; padding: 15px 0; flex: 1; }
     .menu li { padding: 12px 20px; cursor: pointer; border-left: 4px solid transparent; transition: 0.2s; font-size: 14px; }
     .menu li:hover, .menu li.active { background: #1e293b; border-left-color: #38bdf8; color: #38bdf8; font-weight: 600; }
-    
-    /* Area Konten Utama */
+    .btn-logout { margin: 15px; padding: 10px; background: #dc2626; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+
     .main { flex: 1; display: flex; flex-direction: column; }
     .topbar { background: #ffffff; padding: 15px 25px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
     .badge-status { background: #dcfce7; color: #166534; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
     
     .content { padding: 25px; }
-    .filter-bar { background: #ffffff; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; gap: 15px; flex-wrap: wrap; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-    select, input { padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; }
+    .filter-bar { background: #ffffff; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; gap: 15px; flex-wrap: wrap; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    select, .filter-bar input { padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; }
     
     .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
     .card { background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-top: 4px solid #0284c7; }
     .card h3 { font-size: 13px; color: #64748b; text-transform: uppercase; }
-    .card .num { font-size: 26px; font-weight: bold; margin-top: 8px; color: #0f172a; }
+    .card .num { font-size: 24px; font-weight: bold; margin-top: 8px; color: #0f172a; }
     
     .panel { background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: none; }
     .panel.active { display: block; }
@@ -41,112 +63,259 @@
     th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #e2e8f0; }
     th { background: #f8fafc; color: #475569; }
     .status-ok { background: #dcfce7; color: #166534; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
-    .status-wait { background: #fee2e2; color: #991b1b; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+    .btn-refresh { background: #0284c7; color: white; border: none; padding: 6px 14px; border-radius: 5px; cursor: pointer; font-size: 13px; }
   </style>
 </head>
 <body>
 
-  <!-- Sidebar Navigasi -->
-  <div class="sidebar">
-    <div class="brand">
-      <h2>ADMIN PORTAL TKJ</h2>
-      <p>Pak Darojat Ariwibowo</p>
+  <!-- ================= GERBANG 2 PINTU LOGIN ================= -->
+  <div id="login-screen">
+    <div class="login-box">
+      <div class="login-header">
+        <h2>PORTAL KBM TKJ</h2>
+        <p>Pak Darojat Ariwibowo | Sistem Pembelajaran & Presensi</p>
+      </div>
+      
+      <div class="login-tabs">
+        <div class="login-tab active" id="tab-siswa" onclick="pilihPintu('siswa')">Pintu Siswa</div>
+        <div class="login-tab" id="tab-admin" onclick="pilihPintu('admin')">Pintu Guru / Admin</div>
+      </div>
+
+      <!-- Form Pintu Siswa -->
+      <div class="login-body" id="form-siswa">
+        <div class="form-group">
+          <label>Nomor Induk Siswa (NISN)</label>
+          <input type="text" id="input-nisn" placeholder="Masukkan NISN terdaftar..." />
+        </div>
+        <div class="form-group">
+          <label>Token Harian Kelas</label>
+          <input type="text" id="input-token" placeholder="Masukkan token dari guru..." />
+        </div>
+        <button class="btn-primary" id="btn-login-siswa" onclick="prosesLoginSiswa()">MASUK & CATAT KEHADIRAN</button>
+        <div class="alert-msg" id="msg-siswa"></div>
+      </div>
+
+      <!-- Form Pintu Admin -->
+      <div class="login-body" id="form-admin" style="display:none;">
+        <div class="form-group">
+          <label>PIN / Password Admin Guru</label>
+          <input type="password" id="input-pin" placeholder="Masukkan PIN rahasia admin..." />
+        </div>
+        <button class="btn-primary" id="btn-login-admin" onclick="prosesLoginAdmin()">MASUK SEBAGAI ADMINISTRATOR</button>
+        <div class="alert-msg" id="msg-admin"></div>
+      </div>
     </div>
-    <ul class="menu">
-      <li class="active" onclick="bukaTab('dashboard', this)">📊 Dashboard & Monitoring</li>
-      <li onclick="bukaTab('materi', this)">📚 Materi 2 Semester</li>
-      <li onclick="bukaTab('jobsheet', this)">💻 Jobsheet & CLI MikroTik</li>
-      <li onclick="bukaTab('pjbl', this)">🛠️ Panduan Proyek PjBL</li>
-      <li onclick="bukaTab('absensi', this)">✅ Input Absensi Siswa</li>
-    </ul>
   </div>
 
-  <!-- Area Utama -->
-  <div class="main">
-    <div class="topbar">
-      <div><strong>Sistem Pembelajaran & Monitoring Kelas TKJ</strong></div>
-      <div class="badge-status">● SERVER PORTAL AKTIF</div>
-    </div>
-
-    <div class="content">
-      <!-- Filter Semester & Kelas -->
-      <div class="filter-bar">
-        <select id="pilihSemester">
-          <option value="S1">Semester 1 (Ganjil)</option>
-          <option value="S2">Semester 2 (Genap)</option>
-        </select>
-        <select id="pilihKelas">
-          <option value="XI-TKJ-1">Kelas XI TKJ 1</option>
-          <option value="XI-TKJ-2">Kelas XI TKJ 2</option>
-          <option value="XII-TKJ-1">Kelas XII TKJ 1</option>
-        </select>
-        <input type="text" value="TOKEN HARI INI: TKJ2026" readonly style="font-weight:bold; color:#0284c7; background:#f0f9ff;">
+  <!-- ================= DASHBOARD UTAMA ================= -->
+  <div id="app-screen">
+    <div class="layout">
+      <div class="sidebar">
+        <div class="brand">
+          <h2>ADMIN PORTAL TKJ</h2>
+          <p id="user-greeting">Pak Darojat Ariwibowo</p>
+        </div>
+        <ul class="menu">
+          <li id="menu-dashboard" class="active" onclick="bukaTab('dashboard', this)">📊 Monitoring Live Siswa</li>
+          <li id="menu-materi" onclick="bukaTab('materi', this)">📚 Materi 2 Semester</li>
+          <li id="menu-jobsheet" onclick="bukaTab('jobsheet', this)">💻 Jobsheet & CLI MikroTik</li>
+          <li id="menu-pjbl" onclick="bukaTab('pjbl', this)">🛠️ Panduan Proyek PjBL</li>
+        </ul>
+        <button class="btn-logout" onclick="logout()">Keluar / Kunci Portal</button>
       </div>
 
-      <!-- Kartu Statistik -->
-      <div class="grid-cards">
-        <div class="card"><h3>Total Siswa Kelas</h3><div class="num">36</div></div>
-        <div class="card" style="border-top-color:#16a34a;"><h3>Siswa Login / Hadir</h3><div class="num">34</div></div>
-        <div class="card" style="border-top-color:#dc2626;"><h3>Belum Masuk</h3><div class="num">2</div></div>
-        <div class="card" style="border-top-color:#eab308;"><h3>Pertemuan Aktif</h3><div class="num">Minggu 4</div></div>
-      </div>
+      <div class="main">
+        <div class="topbar">
+          <div><strong>Sistem Pembelajaran & Monitoring Kelas TKJ</strong></div>
+          <div class="badge-status" id="role-badge">● TERHUBUNG KE DATABASE</div>
+        </div>
 
-      <!-- Tab 1: Dashboard & Monitoring Live -->
-      <div id="dashboard" class="panel active">
-        <h3>Monitoring Kehadiran & Status Login Siswa (Simulasi)</h3>
-        <table>
-          <thead>
-            <tr><th>No</th><th>Nama Siswa</th><th>Kelas</th><th>Waktu Login</th><th>Status</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>1</td><td>Ahmad Fauzi</td><td>XI TKJ 1</td><td>07:15 WIB</td><td><span class="status-ok">AKTIF / HADIR</span></td></tr>
-            <tr><td>2</td><td>Budi Santoso</td><td>XI TKJ 1</td><td>07:18 WIB</td><td><span class="status-ok">AKTIF / HADIR</span></td></tr>
-            <tr><td>3</td><td>Citra Lestari</td><td>XI TKJ 1</td><td>-</td><td><span class="status-wait">BELUM LOGIN</span></td></tr>
-          </tbody>
-        </table>
-      </div>
+        <div class="content">
+          <div class="filter-bar">
+            <select id="pilihSemester">
+              <option value="S1">Semester 1 (Ganjil)</option>
+              <option value="S2">Semester 2 (Genap)</option>
+            </select>
+            <select id="pilihKelas">
+              <option value="XI-TKJ-1">Kelas XI TKJ 1</option>
+              <option value="XI-TKJ-2">Kelas XI TKJ 2</option>
+              <option value="XII-TKJ-1">Kelas XII TKJ 1</option>
+            </select>
+            <input type="text" id="display-token" value="Memuat Token..." readonly style="font-weight:bold; color:#0284c7; background:#f0f9ff;">
+          </div>
 
-      <!-- Tab 2: Materi -->
-      <div id="materi" class="panel">
-        <h3>Modul Pembelajaran: Konfigurasi VLAN & Trunking (Semester 1)</h3>
-        <p style="line-height:1.6; margin-top:10px;">
-          <strong>Tujuan Pembelajaran:</strong> Peserta didik mampu merancang segmentasi jaringan lokal menggunakan Virtual LAN (VLAN) pada perangkat router/switch manageable serta menguji konektivitas antar-VLAN.
-        </p>
-      </div>
+          <div class="grid-cards" id="admin-cards">
+            <div class="card" style="border-top-color:#16a34a;"><h3>Total Siswa Hadir Hari Ini</h3><div class="num" id="stat-hadir">0</div></div>
+            <div class="card" style="border-top-color:#0284c7;"><h3>Status Database</h3><div class="num" style="font-size:18px; margin-top:12px;">Google Sheets Sync</div></div>
+            <div class="card" style="border-top-color:#eab308;"><h3>Pertemuan Aktif</h3><div class="num">Minggu 4</div></div>
+          </div>
 
-      <!-- Tab 3: Jobsheet -->
-      <div id="jobsheet" class="panel">
-        <h3>Jobsheet Praktik: Dasar Konfigurasi VLAN di MikroTik</h3>
-        <p style="margin-top:8px;">Salin perintah CLI berikut ke terminal Winbox / RouterOS:</p>
-        <pre>/interface vlan add name=VLAN10-GURU vlan-id=10 interface=ether2
+          <!-- Panel 1: Monitoring Live (Khusus Admin) -->
+          <div id="dashboard" class="panel active">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #e2e8f0; padding-bottom:10px;">
+              <h3 style="border:none; margin:0; padding:0;">Log Kehadiran Siswa Real-Time (Dari Google Sheets)</h3>
+              <button class="btn-refresh" onclick="muatDataMonitoring()">🔄 Refresh Data</button>
+            </div>
+            <table>
+              <thead>
+                <tr><th>No</th><th>Waktu Masuk</th><th>NISN</th><th>Nama Siswa</th><th>Kelas</th><th>Status</th></tr>
+              </thead>
+              <tbody id="tabel-monitoring">
+                <tr><td colspan="6" style="text-align:center;">Memuat data dari server...</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Panel 2: Materi -->
+          <div id="materi" class="panel">
+            <h3>Modul Pembelajaran: Konfigurasi VLAN & Trunking (Semester 1)</h3>
+            <p style="line-height:1.6; margin-top:10px;">
+              <strong>Tujuan Pembelajaran:</strong> Peserta didik mampu merancang segmentasi jaringan lokal menggunakan Virtual LAN (VLAN) pada perangkat router/switch manageable serta menguji konektivitas antar-VLAN.
+            </p>
+          </div>
+
+          <!-- Panel 3: Jobsheet -->
+          <div id="jobsheet" class="panel">
+            <h3>Jobsheet Praktik: Dasar Konfigurasi VLAN di MikroTik</h3>
+            <p style="margin-top:8px;">Salin perintah CLI berikut ke terminal Winbox / RouterOS:</p>
+            <pre>/interface vlan add name=VLAN10-GURU vlan-id=10 interface=ether2
 /interface vlan add name=VLAN20-SISWA vlan-id=20 interface=ether2
 /ip address add address=192.168.10.1/24 interface=VLAN10-GURU
 /ip address add address=192.168.20.1/24 interface=VLAN20-SISWA</pre>
-      </div>
+          </div>
 
-      <!-- Tab 4: PjBL -->
-      <div id="pjbl" class="panel">
-        <h3>Project Based Learning (PjBL): Infrastruktur Jaringan Lab Sekolah</h3>
-        <p style="margin-top:8px; line-height:1.6;">
-          <strong>Studi Kasus:</strong> Sekolah membangun gedung lab baru yang membutuhkan pemisahan jaringan antara ruang Guru, Lab Komputer 1, dan Hotspot Siswa dalam satu jalur kabel utama.<br>
-          <strong>Output Proyek:</strong> Topologi jaringan, file konfigurasi router (<code>.rsc</code>), dan video dokumentasi pengujian ping & bandwidth.
-        </p>
-      </div>
+          <!-- Panel 4: PjBL -->
+          <div id="pjbl" class="panel">
+            <h3>Project Based Learning (PjBL): Infrastruktur Jaringan Lab Sekolah</h3>
+            <p style="margin-top:8px; line-height:1.6;">
+              <strong>Studi Kasus:</strong> Sekolah membangun gedung lab baru yang membutuhkan pemisahan jaringan antara ruang Guru, Lab Komputer 1, dan Hotspot Siswa dalam satu jalur kabel utama.<br>
+              <strong>Output Proyek:</strong> Topologi jaringan, file konfigurasi router (<code>.rsc</code>), dan video dokumentasi pengujian ping & bandwidth.
+            </p>
+          </div>
 
-      <!-- Tab 5: Absensi -->
-      <div id="absensi" class="panel">
-        <h3>Form Presensi & Token Kelas</h3>
-        <p style="color:#64748b; margin-top:8px;">(Tahap berikutnya: Form ini akan kita hubungkan langsung ke Google Sheets akun belajar.id Bapak agar otomatis merekap kehadiran 1 tahun ajaran).</p>
+        </div>
       </div>
     </div>
   </div>
 
   <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycby_6GeW4Fd1ewr5Per8KaODSQSKzEwXgw6DERD5lD_AgFQrukrkEUX26JXx0sBCLmYs/exec";
+
+    function pilihPintu(role) {
+      document.getElementById('tab-siswa').classList.toggle('active', role === 'siswa');
+      document.getElementById('tab-admin').classList.toggle('active', role === 'admin');
+      document.getElementById('form-siswa').style.display = role === 'siswa' ? 'block' : 'none';
+      document.getElementById('form-admin').style.display = role === 'admin' ? 'block' : 'none';
+    }
+
+    async function prosesLoginAdmin() {
+      const pin = document.getElementById('input-pin').value.trim();
+      const btn = document.getElementById('btn-login-admin');
+      const msg = document.getElementById('msg-admin');
+      if (!pin) { msg.innerText = "Masukkan PIN Admin terlebih dahulu!"; return; }
+
+      btn.disabled = true; btn.innerText = "Memverifikasi ke Server..."; msg.innerText = "";
+
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          body: JSON.stringify({ action: "loginAdmin", pin: pin })
+        });
+        const hasil = await res.json();
+        if (hasil.status === "success") {
+          masukDashboard("admin", { nama: "Pak Darojat Ariwibowo (Admin)" });
+        } else {
+          msg.innerText = hasil.message || "PIN salah!";
+        }
+      } catch (err) {
+        msg.innerText = "Gagal terhubung ke server Google. Coba lagi.";
+      }
+      btn.disabled = false; btn.innerText = "MASUK SEBAGAI ADMINISTRATOR";
+    }
+
+    async function prosesLoginSiswa() {
+      const nisn = document.getElementById('input-nisn').value.trim();
+      const token = document.getElementById('input-token').value.trim();
+      const btn = document.getElementById('btn-login-siswa');
+      const msg = document.getElementById('msg-siswa');
+      if (!nisn || !token) { msg.innerText = "NISN dan Token Harian wajib diisi!"; return; }
+
+      btn.disabled = true; btn.innerText = "Mencatat Kehadiran..."; msg.innerText = "";
+
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          body: JSON.stringify({ action: "loginSiswa", nisn: nisn, token: token })
+        });
+        const hasil = await res.json();
+        if (hasil.status === "success") {
+          masukDashboard("siswa", hasil.siswa);
+        } else {
+          msg.innerText = hasil.message || "Login ditolak!";
+        }
+      } catch (err) {
+        msg.innerText = "Gagal terhubung ke server. Periksa koneksi internet.";
+      }
+      btn.disabled = false; btn.innerText = "MASUK & CATAT KEHADIRAN";
+    }
+
+    function masukDashboard(role, user) {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('app-screen').style.display = 'block';
+
+      if (role === "admin") {
+        document.getElementById('user-greeting').innerText = user.nama;
+        document.getElementById('role-badge').innerText = "● MODE ADMINISTRATOR";
+        muatDataMonitoring();
+      } else {
+        document.getElementById('user-greeting').innerText = `${user.nama} (${user.kelas})`;
+        document.getElementById('role-badge').innerText = "● ABSENSI BERHASIL TERCATAT";
+        document.getElementById('display-token').style.display = 'none';
+        document.getElementById('admin-cards').style.display = 'none';
+        document.getElementById('menu-dashboard').style.display = 'none';
+        bukaTab('materi', document.getElementById('menu-materi'));
+      }
+    }
+
+    async function muatDataMonitoring() {
+      const tbody = document.getElementById('tabel-monitoring');
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Mengambil data terbaru...</td></tr>';
+      try {
+        const res = await fetch(API_URL);
+        const data = await res.json();
+        document.getElementById('display-token').value = "TOKEN AKTIF: " + data.token;
+        document.getElementById('stat-hadir').innerText = data.logs.length;
+
+        if (data.logs.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Belum ada siswa yang masuk hari ini.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = "";
+        data.logs.slice().reverse().forEach((row, idx) => {
+          tbody.innerHTML += `<tr>
+            <td>${idx + 1}</td>
+            <td>${row[0]}</td>
+            <td>${row[1]}</td>
+            <td><strong>${row[2]}</strong></td>
+            <td>${row[3]}</td>
+            <td><span class="status-ok">${row[4]}</span></td>
+          </tr>`;
+        });
+      } catch (e) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:red;">Gagal memuat log absensi.</td></tr>';
+      }
+    }
+
     function bukaTab(idTab, elemenMenu) {
       document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.menu li').forEach(m => m.classList.remove('active'));
       document.getElementById(idTab).classList.add('active');
       elemenMenu.classList.add('active');
+    }
+
+    function logout() {
+      location.reload();
     }
   </script>
 </body>
