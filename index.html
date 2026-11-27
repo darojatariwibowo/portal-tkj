@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Portal KBM & Akademik TKJ - Pak Darojat Ariwibowo</title>
+  <title>Portal KBM & Akademik TKJ - SMKN 1 Muntok</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <style>
@@ -17,10 +17,13 @@
 
     /* GERBANG 2 PINTU LOGIN */
     #login-screen { display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; background: radial-gradient(circle at top right, #1e293b, #0f172a); }
-    .login-box { background: #ffffff; width: 100%; max-width: 420px; border-radius: 14px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
-    .login-header { background: linear-gradient(135deg, #0284c7, #0369a1); color: #ffffff; padding: 28px 20px; text-align: center; }
-    .login-header h2 { font-size: 21px; margin-bottom: 5px; letter-spacing: 0.5px; }
-    .login-header p { font-size: 13px; opacity: 0.9; }
+    .login-box { background: #ffffff; width: 100%; max-width: 430px; border-radius: 14px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
+    .login-header { background: linear-gradient(135deg, #0284c7, #0369a1); color: #ffffff; padding: 24px 20px; text-align: center; }
+    .logo-row { display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 12px; }
+    .logo-circle { width: 64px; height: 64px; border-radius: 14px; background: #ffffff; padding: 4px; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255,255,255,0.4); box-shadow: 0 4px 12px rgba(0,0,0,0.25); overflow: hidden; }
+    .logo-circle img { width: 100%; height: 100%; object-fit: contain; }
+    .login-header h2 { font-size: 19px; margin-bottom: 4px; letter-spacing: 0.4px; }
+    .login-header p { font-size: 12.5px; opacity: 0.92; }
     
     .login-tabs { display: flex; border-bottom: 1px solid #e2e8f0; background: #f8fafc; }
     .login-tab { flex: 1; padding: 13px; text-align: center; cursor: pointer; font-weight: 600; font-size: 14px; color: #64748b; border-bottom: 3px solid transparent; transition: 0.2s; }
@@ -43,23 +46,31 @@
 
     /* AREA APLIKASI UTAMA */
     #app-screen { display: none; min-height: 100vh; background-color: #f1f5f9; }
-    .topbar { background: #ffffff; padding: 14px 25px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+    .topbar { background: #ffffff; padding: 10px 24px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
     .topbar-left { display: flex; align-items: center; gap: 12px; }
-    .clock-badge { background: #f1f5f9; color: #334155; padding: 5px 12px; border-radius: 6px; font-size: 13px; font-weight: 600; border: 1px solid #cbd5e1; }
+    .brand-logos { display: flex; align-items: center; gap: 8px; }
+    .brand-logo-box { width: 42px; height: 42px; border-radius: 9px; background: #ffffff; padding: 2px; display: flex; align-items: center; justify-content: center; border: 1px solid #cbd5e1; overflow: hidden; }
+    .brand-logo-box img { width: 100%; height: 100%; object-fit: contain; }
+    .brand-title { line-height: 1.2; }
+    .brand-title strong { font-size: 14px; color: #0f172a; display: block; }
+    .brand-title span { font-size: 11px; color: #64748b; font-weight: 600; }
+    .clock-badge { background: #f1f5f9; color: #334155; padding: 5px 11px; border-radius: 6px; font-size: 12px; font-weight: 600; border: 1px solid #cbd5e1; }
     .badge-status { background: #dcfce7; color: #166534; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
 
     /* BERANDA PILIH MAPEL */
-    #home-mapel-view { max-width: 1140px; margin: 30px auto; padding: 0 20px; }
-    .welcome-banner { background: linear-gradient(135deg, #0f172a, #1e293b); color: white; padding: 25px 30px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    #home-mapel-view { max-width: 1140px; margin: 28px auto; padding: 0 20px; }
+    .welcome-banner { background: linear-gradient(135deg, #0f172a, #1e293b); color: white; padding: 24px 28px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
     .token-box { background: rgba(255,255,255,0.1); padding: 12px 16px; border-radius: 8px; display: flex; gap: 8px; align-items: center; }
     .token-box input { width: 120px; padding: 7px 10px; border-radius: 6px; border: none; font-weight: bold; text-transform: uppercase; text-align: center; color: #0f172a; }
-    .btn-sm { padding: 8px 14px; border: none; border-radius: 6px; font-weight: 600; font-size: 13px; cursor: pointer; transition: 0.2s; }
+    .btn-sm { padding: 7px 13px; border: none; border-radius: 6px; font-weight: 600; font-size: 12.5px; cursor: pointer; transition: 0.2s; }
     .btn-sky { background: #38bdf8; color: #0f172a; }
     .btn-sky:hover { background: #7dd3fc; }
     .btn-emerald { background: #10b981; color: white; }
     .btn-emerald:hover { background: #059669; }
     .btn-indigo { background: #4f46e5; color: white; }
     .btn-indigo:hover { background: #4338ca; }
+    .btn-amber { background: #f59e0b; color: #0f172a; }
+    .btn-amber:hover { background: #fbbf24; }
     .btn-danger { background: #ef4444; color: white; }
     .btn-archive { background: #e2e8f0; color: #475569; }
     .btn-archive:hover { background: #cbd5e1; }
@@ -83,9 +94,9 @@
     .modal-content { background: #fff; padding: 25px; border-radius: 12px; width: 90%; max-width: 420px; }
 
     /* WORKSPACE MAPEL */
-    #workspace-view { display: none; min-height: calc(100vh - 57px); }
-    .workspace-layout { display: flex; min-height: calc(100vh - 57px); }
-    .sidebar { width: 270px; background: #0f172a; color: #f8fafc; display: flex; flex-direction: column; }
+    #workspace-view { display: none; min-height: calc(100vh - 64px); }
+    .workspace-layout { display: flex; min-height: calc(100vh - 64px); }
+    .sidebar { width: 265px; background: #0f172a; color: #f8fafc; display: flex; flex-direction: column; flex-shrink: 0; }
     .sidebar-header { padding: 18px 20px; background: #1e293b; border-bottom: 1px solid #334155; }
     .sidebar-header span { font-size: 11px; color: #38bdf8; font-weight: bold; text-transform: uppercase; }
     .sidebar-header h3 { font-size: 15px; margin-top: 4px; line-height: 1.4; }
@@ -97,8 +108,8 @@
     .btn-back-mapel { margin: 15px; padding: 10px; background: #334155; color: #f8fafc; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 13px; }
     .btn-back-mapel:hover { background: #475569; }
 
-    .workspace-main { flex: 1; padding: 25px; overflow-y: auto; }
-    .panel { background: #ffffff; padding: 24px; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); display: none; }
+    .workspace-main { flex: 1; padding: 22px; overflow-x: hidden; }
+    .panel { background: #ffffff; padding: 22px; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); display: none; }
     .panel.active { display: block; }
     .panel h2 { font-size: 19px; color: #0f172a; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; margin-bottom: 16px; }
     
@@ -107,7 +118,34 @@
     .sub-tab.active { background: #e0f2fe; color: #0284c7; border-color: #7dd3fc; }
     .doc-placeholder { background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 8px; padding: 30px; text-align: center; color: #64748b; }
 
-    /* MODUL PKL (GPS + KAMERA + STATISTIK ADMIN) */
+    /* KARTU KONTEN AKADEMIK */
+    .akad-card { background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #0284c7; border-radius: 8px; padding: 16px; margin-bottom: 14px; }
+    .akad-card h4 { font-size: 15px; color: #0f172a; margin-bottom: 6px; }
+    .akad-card p, .akad-card li { font-size: 13.5px; color: #334155; line-height: 1.55; }
+    .akad-card ul { margin-left: 18px; margin-top: 6px; }
+    .badge-sem { display: inline-block; background: #0284c7; color: #fff; font-size: 11px; font-weight: bold; padding: 3px 9px; border-radius: 4px; margin-bottom: 6px; }
+
+    /* TABEL NILAI DINAMIS */
+    .nilai-toolbar { display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; align-items: center; background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 14px; }
+    .nilai-btn-group { display: flex; flex-wrap: wrap; gap: 6px; }
+    .table-scroll { overflow-x: auto; border: 1px solid #cbd5e1; border-radius: 8px; }
+    .nilai-table { width: 100%; border-collapse: collapse; margin-top: 0; font-size: 12px; }
+    .nilai-table th, .nilai-table td { border: 1px solid #cbd5e1; padding: 6px 8px; text-align: center; white-space: nowrap; }
+    .nilai-table th { background: #1e293b; color: #f8fafc; font-weight: 700; }
+    .nilai-table th.grp-hadir { background: #0369a1; }
+    .nilai-table th.grp-tugas { background: #047857; }
+    .nilai-table th.grp-uh { background: #4338ca; }
+    .nilai-table th.grp-un { background: #b45309; }
+    .nilai-table th.grp-rapor { background: #0f172a; color: #38bdf8; }
+    .nilai-table td.nama-col { text-align: left; font-weight: 600; background: #fff; position: sticky; left: 0; z-index: 2; }
+    .nilai-input { width: 48px; padding: 4px; text-align: center; border: 1px solid #94a3b8; border-radius: 4px; font-size: 12px; font-weight: 600; }
+    .nilai-input:focus { outline: none; border-color: #0284c7; background: #e0f2fe; }
+    .nilai-calc { background: #f1f5f9; font-weight: 700; color: #334155; }
+    .nilai-final { background: #dcfce7; font-weight: 800; color: #166534; font-size: 13px; }
+    .nilai-remedi { background: #fee2e2; font-weight: 800; color: #991b1b; font-size: 13px; }
+    .btn-del-col { background: #ef4444; color: white; border: none; border-radius: 3px; padding: 1px 5px; font-size: 10px; cursor: pointer; margin-left: 3px; }
+
+    /* MODUL PKL */
     .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
     .gps-box { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
     #pkl-map { height: 260px; width: 100%; border-radius: 8px; margin: 12px 0; z-index: 1; border: 1px solid #93c5fd; }
@@ -126,9 +164,9 @@
     .btn-copy { position: absolute; right: 10px; top: 10px; background: #1e293b; color: #e2e8f0; border: 1px solid #475569; padding: 5px 10px; border-radius: 5px; font-size: 12px; cursor: pointer; }
     .btn-copy:hover { background: #0284c7; color: white; border-color: #0284c7; }
 
-    table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13px; }
-    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
-    th { background: #f8fafc; color: #475569; font-weight: 700; }
+    table.std-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13px; }
+    table.std-table th, table.std-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
+    table.std-table th { background: #f8fafc; color: #475569; font-weight: 700; }
     .status-ok { background: #dcfce7; color: #166534; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; display: inline-block; }
     .status-no { background: #fee2e2; color: #991b1b; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; display: inline-block; }
     .link-btn { display: inline-block; padding: 4px 9px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: 600; margin-right: 4px; }
@@ -138,6 +176,7 @@
     @media (max-width: 768px) {
       .workspace-layout { flex-direction: column; }
       .sidebar { width: 100%; }
+      .clock-badge { display: none; }
     }
   </style>
 </head>
@@ -149,8 +188,18 @@
   <div id="login-screen">
     <div class="login-box">
       <div class="login-header">
+        <div class="logo-row">
+          <!-- Logo Resmi SMK Negeri 1 Muntok -->
+          <div class="logo-circle" title="SMK Negeri 1 Muntok">
+            <img src="https://lh3.googleusercontent.com/d/180c1vhEeLRwu4tzw0_PyA0rKoeU9Ba2U" alt="Logo SMKN 1 Muntok" />
+          </div>
+          <!-- Logo Resmi Jurusan TKJ -->
+          <div class="logo-circle" title="Teknik Komputer dan Jaringan">
+            <img src="https://lh3.googleusercontent.com/d/1UXH9pMCE9Bn1MWveY7uIAYyBptUQoJLa" alt="Logo Jurusan TKJ" />
+          </div>
+        </div>
         <h2>PORTAL AKADEMIK & KBM TKJ</h2>
-        <p>SMK Negeri 1 Muntok | Pak Darojat Ariwibowo</p>
+        <p>SMK Negeri 1 Muntok • Bangka Barat</p>
       </div>
       
       <div class="login-tabs">
@@ -187,7 +236,18 @@
   <div id="app-screen">
     <div class="topbar">
       <div class="topbar-left">
-        <strong>PORTAL TKJ</strong>
+        <div class="brand-logos">
+          <div class="brand-logo-box" title="SMK Negeri 1 Muntok">
+            <img src="https://lh3.googleusercontent.com/d/180c1vhEeLRwu4tzw0_PyA0rKoeU9Ba2U" alt="Logo Sekolah" />
+          </div>
+          <div class="brand-logo-box" title="Jurusan TKJ">
+            <img src="https://lh3.googleusercontent.com/d/1UXH9pMCE9Bn1MWveY7uIAYyBptUQoJLa" alt="Logo TKJ" />
+          </div>
+        </div>
+        <div class="brand-title">
+          <strong>PORTAL KBM TKJ</strong>
+          <span>SMK Negeri 1 Muntok</span>
+        </div>
         <span class="clock-badge" id="live-clock">00:00:00 WIB</span>
       </div>
       <div style="display:flex; gap:10px; align-items:center;">
@@ -243,28 +303,168 @@
         <div class="workspace-main">
           <!-- 1. PANEL AKADEMIK -->
           <div id="panel-akademik" class="panel active">
-            <h2>📂 Administrasi Akademik Guru</h2>
+            <h2>📂 Administrasi Akademik Guru (TA 2026/2027)</h2>
             <div class="sub-tabs">
-              <div class="sub-tab active" onclick="pilihSubAkademik('Kalender Pendidikan', this)">1. Kalender Pendidikan</div>
-              <div class="sub-tab" onclick="pilihSubAkademik('Program Tahunan (PROTA)', this)">2. PROTA</div>
-              <div class="sub-tab" onclick="pilihSubAkademik('Program Semester (PROSEM)', this)">3. PROSEM</div>
-              <div class="sub-tab" onclick="pilihSubAkademik('Capaian Pembelajaran (CP) & ATP', this)">4. CP dan ATP</div>
-              <div class="sub-tab" onclick="pilihSubAkademik('RPP & Modul Ajar per Pertemuan', this)">5. RPP / Modul Ajar</div>
+              <div class="sub-tab active" onclick="pilihSubAkademik('sub-kaldik', this)">1. Kalender Pendidikan</div>
+              <div class="sub-tab" onclick="pilihSubAkademik('sub-cp', this)">2. Capaian Pembelajaran (CP Fase F)</div>
+              <div class="sub-tab" onclick="pilihSubAkademik('sub-atp', this)">3. ATP Kelas XI & XII (Terperinci)</div>
+              <div class="sub-tab" onclick="pilihSubAkademik('sub-prota', this)">4. PROTA & PROSEM</div>
+              <div class="sub-tab" onclick="pilihSubAkademik('sub-rpp', this)">5. RPP / Modul Ajar</div>
             </div>
-            <div class="doc-placeholder">
-              <h3 id="judul-sub-akademik" style="color:#0f172a; margin-bottom:8px;">Kalender Pendidikan</h3>
-              <p style="font-size:14px;">Rak dokumen siap menampung file CP, ATP, dan Kalender Pendidikan yang akan Bapak kirimkan.</p>
+
+            <!-- SUB 1: KALENDER PENDIDIKAN -->
+            <div id="sub-kaldik" class="akad-sub">
+              <div class="stat-grid">
+                <div class="stat-card"><span>Semester Ganjil 2026</span><h3 style="color:#0284c7;">113 Hari</h3><p style="font-size:11px; color:#64748b;">23 Pekan Efektif (Jul – Des 2026)</p></div>
+                <div class="stat-card"><span>Semester Genap 2027</span><h3 style="color:#059669;">100 Hari</h3><p style="font-size:11px; color:#64748b;">21 Pekan Efektif (Jan – Jun 2027)</p></div>
+                <div class="stat-card"><span>SAS Ganjil & Rapor</span><h3 style="font-size:16px; color:#4f46e5; margin-top:8px;">30 Nov – 11 Des</h3><p style="font-size:11px; color:#64748b;">Pembagian Rapor: 18 Des 2026</p></div>
+                <div class="stat-card"><span>PSAT Genap & Rapor</span><h3 style="font-size:16px; color:#d97706; margin-top:8px;">31 Mei – 11 Jun</h3><p style="font-size:11px; color:#64748b;">Pembagian Rapor: 18 Jun 2027</p></div>
+              </div>
+
+              <div class="akad-card">
+                <h4>📅 Agenda Akademik & Evaluasi SMK Provinsi Kep. Bangka Belitung (TA 2026/2027)</h4>
+                <table class="std-table">
+                  <thead><tr><th>Bulan</th><th>Hari Efektif</th><th>Agenda Penting & Hari Libur</th></tr></thead>
+                  <tbody>
+                    <tr><td><strong>Juli 2026</strong></td><td>15 Hari</td><td>Awal Tahun Ajaran Baru & Masa Pengenalan Lingkungan Sekolah (MPLS).</td></tr>
+                    <tr><td><strong>Agustus 2026</strong></td><td>19 Hari</td><td>17 Ags: Hari Kemerdekaan RI • 25 Ags: Maulid Nabi Muhammad SAW.</td></tr>
+                    <tr><td><strong>September 2026</strong></td><td>22 Hari</td><td>KBM Efektif Penuh (4 Pekan) + Kegiatan Ekstrakurikuler Sabtu.</td></tr>
+                    <tr><td><strong>Oktober 2026</strong></td><td>22 Hari</td><td>26 – 30 Okt: Pelaksanaan Tes Kemampuan Akademik (TKA).</td></tr>
+                    <tr><td><strong>November 2026</strong></td><td>21 Hari</td><td>2 – 5 Nov: Lanjutan TKA • 30 Nov: Mulai Sumatif Akhir Semester (SAS).</td></tr>
+                    <tr><td><strong>Desember 2026</strong></td><td>14 Hari</td><td>1–11 Des: SAS Ganjil • 18 Des: Pembagian Rapor • 21–31 Des: Libur Semester 1.</td></tr>
+                    <tr><td><strong>Januari 2027</strong></td><td>19 Hari</td><td>1 Jan: Tahun Baru Masehi • 4 Jan: Awal Semester Genap • 5 Jan: Isra Miraj.</td></tr>
+                    <tr><td><strong>Februari 2027</strong></td><td>17 Hari</td><td>6 Feb: Tahun Baru Imlek • 8–10 Feb: Kegiatan Permulaan Puasa (KPP).</td></tr>
+                    <tr><td><strong>Maret 2027</strong></td><td>11 Hari</td><td>8 Mar: Hari Raya Nyepi • 10–11 Mar: Idul Fitri 1448 H • Libur Sekitar Hari Raya (LHR).</td></tr>
+                    <tr><td><strong>April 2027</strong></td><td>22 Hari</td><td>Pelaksanaan Penilaian Sumatif Akhir Jenjang (PSAJ) Kelas XII SMK.</td></tr>
+                    <tr><td><strong>Mei 2027</strong></td><td>18 Hari</td><td>1 Mei: Hari Buruh • 6 Mei: Kenaikan Isa Almasih • 17 Mei: Idul Adha • 20 Mei: Waisak • 31 Mei: Mulai PSAT.</td></tr>
+                    <tr><td><strong>Juni 2027</strong></td><td>13 Hari</td><td>1–11 Jun: PSAT Genap • 18 Jun: Pembagian Rapor • 21 Jun: Mulai Libur Semester 2.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- SUB 2: CAPAIAN PEMBELAJARAN (CP FASE F) -->
+            <div id="sub-cp" class="akad-sub" style="display:none;">
+              <div class="akad-card">
+                <span class="badge-sem">ELEMEN 1</span>
+                <h4>Perencanaan dan Pengalamatan Jaringan</h4>
+                <p>Pada akhir fase F, peserta didik mampu merencanakan topologi dan arsitektur jaringan sesuai kebutuhan, mengumpulkan kebutuhan teknis pengguna yang menggunakan jaringan, mengumpulkan data peralatan jaringan dengan teknologi yang sesuai, melakukan pengalamatan jaringan, memahami CIDR dan VLSM, dan menghitung subnetting.</p>
+              </div>
+              <div class="akad-card">
+                <span class="badge-sem">ELEMEN 2</span>
+                <h4>Teknologi Jaringan Kabel dan Nirkabel</h4>
+                <p>Pada akhir fase F, peserta didik mampu menginstalasi jaringan kabel dan nirkabel, melakukan perawatan dan perbaikan jaringan kabel dan nirkabel, memahami standar jaringan nirkabel, memilih teknologi jaringan nirkabel indoor dan outdoor sesuai kebutuhan, melakukan instalasi perangkat jaringan nirkabel, menguji instalasi perangkat jaringan nirkabel, menjelaskan konsep layanan Voice over IP (VoIP), mengkonfigurasi layanan Voice over IP (VoIP), memahami jaringan fiber optic, memahami jenis-jenis kabel fiber optic, memilih kabel fiber optic, menerapkan fungsi alat kerja fiber optic, menggunakan alat kerja fiber optic, melakukan sambungan fiber optic, dan melakukan perbaikan jaringan fiber optic.</p>
+              </div>
+              <div class="akad-card">
+                <span class="badge-sem">ELEMEN 3</span>
+                <h4>Keamanan Jaringan</h4>
+                <p>Pada akhir fase F, peserta didik mampu memahami kebijakan penggunaan jaringan, memahami kemungkinan ancaman dan serangan terhadap keamanan jaringan, menentukan sistem keamanan jaringan yang dibutuhkan, memahami firewall pada host dan server, memahami kebutuhan persyaratan alat-alat untuk membangun server firewall, menganalisis konsep dan implementasi firewall di host dan server, memahami fungsi dan cara kerja server autentifikasi, memahami kebutuhan persyaratan alat-alat untuk membangun server autentifikasi, menganalisis cara kerja sistem pendeteksi dan penahan ancaman/serangan yang masuk ke jaringan, menganalisis fungsi dan tata cara pengamanan server-server layanan pada jaringan, dan memahami tata cara pengamanan komunikasi data menggunakan teknik kriptografi.</p>
+              </div>
+              <div class="akad-card">
+                <span class="badge-sem">ELEMEN 4</span>
+                <h4>Pemasangan dan Konfigurasi Perangkat Jaringan</h4>
+                <p>Pada akhir fase F, peserta didik mampu memasang perangkat jaringan ke dalam sistem jaringan, mengganti perangkat jaringan sesuai dengan kebutuhan, menjelaskan konsep VLAN, mengkonfigurasi dan menguji VLAN, memahami proses routing dan jenis-jenis routing, mengkonfigurasi, menganalisis permasalahan dan memperbaiki konfigurasi routing statis dan routing dinamis, mengkonfigurasi NAT, menganalisis permasalahan internet gateway dan memperbaiki konfigurasi NAT, mengkonfigurasi, menganalisis permasalahan dan memperbaiki konfigurasi proxy server, manajemen bandwidth dan load balancing.</p>
+              </div>
+              <div class="akad-card">
+                <span class="badge-sem">ELEMEN 5</span>
+                <h4>Administrasi Sistem Jaringan</h4>
+                <p>Pada akhir fase F, peserta didik mampu menginstalasi sistem operasi jaringan, menjelaskan konsep, menginstalasi services, mengkonfigurasi dan menguji konfigurasi remote server, DHCP server, DNS server, FTP server, file server, web server, mail server, database server, Control Panel Hosting, Share Hosting Server, Dedicated Hosting Server, Virtual Private Server, VPN server, sistem kontrol dan monitoring.</p>
+              </div>
+            </div>
+
+            <!-- SUB 3: ATP TERPERINCI KELAS XI & XII -->
+            <div id="sub-atp" class="akad-sub" style="display:none;">
+              <div class="akad-card" style="border-left-color:#059669;">
+                <h4>🗺️ Pemetaan Alur Tujuan Pembelajaran (ATP) Fase F — Pola 3 Semester KBM + 1 Semester PKL</h4>
+                <p>Dirancang sesuai struktur Kurikulum Merdeka SMK agar seluruh materi instalasi fisik & manajemen jaringan tuntas di Kelas XI sebelum siswa terjun ke DUDIKA maupun menghadapi Uji Kompetensi Keahlian (UKK).</p>
+              </div>
+
+              <table class="std-table">
+                <thead>
+                  <tr>
+                    <th style="width:17%;">Jenjang / Waktu</th>
+                    <th style="width:28%;">Kelompok Materi & Kode TP</th>
+                    <th>Rincian Materi Praktikum Terperinci (Standar DUDI)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Kelas XI</strong><br><span class="status-ok">Semester 1 (Ganjil)</span></td>
+                    <td>
+                      <strong>1. Perencanaan Jaringan</strong> (1.1–1.3)<br>
+                      <strong>2. Pemasangan Perangkat</strong> (4.1–4.2)<br>
+                      <strong>3. Jaringan Nirkabel</strong> (2.2–2.3)<br>
+                      <strong>4. Manajemen Jaringan (Dasar)</strong> (4.3–4.7)
+                    </td>
+                    <td>
+                      • Analisis kebutuhan teknis & desain topologi perkantoran/sekolah.<br>
+                      • Pengalamatan IPv4, CIDR, VLSM, dan perhitungan Subnetting.<br>
+                      • Instalasi & perawatan jaringan kabel UTP serta Wireless Indoor/Outdoor (Point-to-Point & Point-to-Multipoint).<br>
+                      • <strong>Manajemen Jaringan Dasar:</strong> Konfigurasi Switch Manageable & VLAN (Access/Trunk IEEE 802.1Q), <em>Inter-VLAN Routing</em>, <em>Static Routing</em>, <em>Default Route</em>, serta Internet Gateway (<em>Source NAT Masquerade</em> & <em>Destination NAT Port Forwarding</em>).
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Kelas XI</strong><br><span class="status-ok">Semester 2 (Genap)</span></td>
+                    <td>
+                      <strong>5. Instalasi Fiber Optic</strong> (2.4–2.5)<br>
+                      <strong>6. Administrasi Server</strong> (5.1)<br>
+                      <strong>7. Manajemen Jaringan (Lanjutan)</strong> (4.8–4.11)
+                    </td>
+                    <td>
+                      • <strong>Fiber Optic (Bekal Utama ISP):</strong> Pengenalan kabel single/multi-mode, penggunaan Cleaver, Fusion Splicer, OPM, OTDR, dan troubleshooting redaman kabel FO.<br>
+                      • <strong>Administrasi Server Linux:</strong> Instalasi & pengujian Remote (SSH), DHCP, DNS (Bind9), FTP, File Server (Samba), Web Server (Apache/Nginx), dan Database Server.<br>
+                      • <strong>Manajemen Jaringan Lanjutan:</strong> <em>Dynamic Routing</em> (OSPF), <em>Transparent Web Proxy</em> & filtering konten, <em>Manajemen Bandwidth (QoS)</em> dengan Simple Queue, Queue Tree + Mangle, PCQ, serta <em>Load Balancing & Failover</em> 2 jalur ISP (PCC/Recursive Gateway).
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Kelas XII</strong><br><span class="status-ok">Semester 1 (Ganjil)</span></td>
+                    <td>
+                      <strong>8. Instalasi VoIP</strong> (2.1)<br>
+                      <strong>9. Server Hosting & VPN</strong> (5.2)<br>
+                      <strong>10. Keamanan Jaringan</strong> (3.1–3.6)
+                    </td>
+                    <td>
+                      • Konfigurasi server VoIP (Asterisk/Briker) dan ekstensi dial-plan.<br>
+                      • Layanan Server Skala Luas: Control Panel Hosting, Shared/Dedicated Hosting, VPS, VPN Server (PPTP/L2TP/WireGuard), dan Network Monitoring (Zabbix/The Dude).<br>
+                      • <strong>Keamanan Siber:</strong> Analisis serangan jaringan, Firewall Filter & Raw pada Router/Host, <em>Host Hardening</em>, pembangunan zona <em>DMZ</em>, Server Autentikasi (RADIUS), IDS/IPS (Snort), serta pengamanan komunikasi data dengan kriptografi (SSL/TLS).
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Kelas XII</strong><br><span class="status-ok" style="background:#e0f2fe; color:#0369a1;">Semester 2 (Genap)</span></td>
+                    <td><strong>Praktik Kerja Lapangan (PKL)</strong></td>
+                    <td>
+                      • Magang penuh di DUDIKA selama 1 semester (monitoring presensi GPS & jurnal harian melalui Portal TKJ) serta pemantapan akhir Uji Kompetensi Keahlian (UKK).
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- SUB 4: PROTA & PROSEM -->
+            <div id="sub-prota" class="akad-sub" style="display:none;">
+              <div class="doc-placeholder">
+                <h3>Program Tahunan (PROTA) & Program Semester (PROSEM)</h3>
+                <p style="margin-top:8px;">Alokasi waktu otomatis mengacu pada Kalender Pendidikan TA 2026/2027 (23 Pekan Efektif Ganjil & 21 Pekan Efektif Genap).</p>
+              </div>
+            </div>
+
+            <!-- SUB 5: RPP / MODUL AJAR -->
+            <div id="sub-rpp" class="akad-sub" style="display:none;">
+              <div class="doc-placeholder">
+                <h3>RPP & Modul Ajar per Pertemuan</h3>
+                <p style="margin-top:8px;">Siap diisi modul ajar praktik per topik ATP.</p>
+              </div>
             </div>
           </div>
 
-          <!-- 2. PANEL KELAS (OTOMATIS TERFILTER PER ROMBEL / BIMBINGAN PKL) -->
+          <!-- 2. PANEL KELAS -->
           <div id="panel-kelas" class="panel">
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; border-bottom:1px solid #e2e8f0; padding-bottom:12px; margin-bottom:14px;">
               <h2 style="border:none; padding:0; margin:0;" id="judul-panel-kelas">👥 Daftar Siswa Terdaftar</h2>
               <span class="status-ok" id="badge-jumlah-siswa">0 Siswa</span>
             </div>
             <div style="overflow-x:auto;">
-              <table>
+              <table class="std-table">
                 <thead>
                   <tr><th>No</th><th>NISN / ID</th><th>Nama Lengkap Siswa</th><th>Rombel / Kelas</th><th>Status KBM</th><th>Bimbingan PKL</th></tr>
                 </thead>
@@ -279,7 +479,6 @@
           <div id="panel-kbm" class="panel">
             <h2 id="judul-panel-kbm">💻 Kegiatan Belajar Mengajar (KBM)</h2>
             
-            <!-- MODE REGULER -->
             <div id="mode-kbm-reguler">
               <div class="sub-tabs">
                 <div class="sub-tab active" onclick="pilihSubKBM('kbm-absensi', this)">1. Monitoring Absensi Live</div>
@@ -293,21 +492,26 @@
                   <strong>Log Kehadiran Siswa Real-Time</strong>
                   <button class="btn-sm btn-sky" onclick="muatDataServer()">🔄 Refresh Data</button>
                 </div>
-                <table>
+                <table class="std-table">
                   <thead><tr><th>No</th><th>Waktu</th><th>NISN</th><th>Nama Siswa</th><th>Kelas</th><th>Status</th></tr></thead>
                   <tbody id="tabel-monitoring"><tr><td colspan="6" style="text-align:center;">Memuat data...</td></tr></tbody>
                 </table>
               </div>
 
               <div id="kbm-tujuan" class="kbm-sub" style="display:none;">
-                <div class="doc-placeholder">
-                  <h3>Tujuan Pembelajaran per Pertemuan</h3>
-                  <p style="margin-top:6px;">Akan terhubung dengan file CP dan ATP Bapak.</p>
+                <div class="akad-card">
+                  <h4>🎯 Tujuan Pembelajaran Aktif (Konsentrasi Keahlian TKJ)</h4>
+                  <ul>
+                    <li>Peserta didik mampu merancang pengalamatan IP (CIDR/VLSM) dan topologi jaringan sesuai kebutuhan pengguna.</li>
+                    <li>Peserta didik mampu mengkonfigurasi VLAN, Routing Statis/Dinamis, NAT, Manajemen Bandwidth, dan Load Balancing.</li>
+                    <li>Peserta didik mampu melakukan instalasi, penyambungan, dan pengujian jaringan Kabel UTP, Nirkabel, serta Fiber Optic.</li>
+                    <li>Peserta didik mampu membangun dan mengamankan layanan Server Jaringan & Hosting.</li>
+                  </ul>
                 </div>
               </div>
 
               <div id="kbm-jobsheet" class="kbm-sub" style="display:none;">
-                <p style="font-size:14px;">Contoh Jobsheet Praktik MikroTik:</p>
+                <p style="font-size:14px;">Jobsheet Praktik MikroTik — Manajemen Jaringan Dasar (VLAN & Trunking):</p>
                 <div class="code-wrapper">
                   <button class="btn-copy" onclick="salinKode(this)">📋 Salin Perintah</button>
                   <pre>/interface vlan add name=VLAN10-GURU vlan-id=10 interface=ether2
@@ -325,10 +529,8 @@
               </div>
             </div>
 
-            <!-- MODE KHUSUS PKL (GPS + FOTO + REKAP ADMIN + BELUM ABSEN) -->
+            <!-- MODE KHUSUS PKL -->
             <div id="mode-kbm-pkl" style="display:none;">
-              
-              <!-- FORM PRESENSI SISWA PKL -->
               <div id="pkl-student-form">
                 <p style="font-size:13px; color:#475569; margin-bottom:16px;">
                   Silakan lengkapi data instansi, kunci titik lokasi GPS Anda di tempat PKL, dan ambil foto bukti kehadiran.
@@ -414,7 +616,7 @@
                   </div>
 
                   <div style="overflow-x:auto;">
-                    <table>
+                    <table class="std-table">
                       <thead>
                         <tr>
                           <th>Waktu</th>
@@ -435,7 +637,7 @@
                   <p style="font-size:13px; color:#475569; margin-bottom:10px;">
                     Daftar siswa bimbingan PKL (kolom Bimbingan_PKL = YA) yang belum mengirim catatan presensi pada tanggal hari ini:
                   </p>
-                  <table>
+                  <table class="std-table">
                     <thead>
                       <tr><th>No</th><th>NISN / ID</th><th>Nama Lengkap Siswa</th><th>Kelas</th><th>Status Hari Ini</th></tr>
                     </thead>
@@ -445,22 +647,36 @@
                   </table>
                 </div>
               </div>
-
             </div>
           </div>
 
-          <!-- 4. PANEL NILAI -->
+          <!-- 4. PANEL NILAI DINAMIS (SESUAI RUMUS EXCEL PAK DAROJAT) -->
           <div id="panel-nilai" class="panel">
-            <h2>📊 Buku Nilai & Rekap Rapor</h2>
-            <p style="font-size:13px; color:#64748b; margin-bottom:12px;">Format rumus nilai rapor siap disesuaikan dengan file Excel yang Bapak kirimkan.</p>
-            <table>
-              <thead>
-                <tr><th>NISN</th><th>Nama Siswa</th><th>Hadir</th><th>Tugas/Praktik</th><th>UH</th><th>U. Praktik</th><th>UTS/UAS</th><th>Nilai Rapor</th></tr>
-              </thead>
-              <tbody>
-                <tr><td colspan="8" style="text-align:center; color:#64748b;">Menunggu format rumus Excel Bapak.</td></tr>
-              </tbody>
-            </table>
+            <h2>📊 Buku Nilai Dinamis & Rekap Rapor</h2>
+            <p style="font-size:12.5px; color:#475569; margin-bottom:12px;">
+              Rumus Otomatis: <strong>Kehadiran 40%</strong> (NK = 100 - Alpa×3) + <strong>Tugas & Catatan 30%</strong> (Rata-rata dinamis) + <strong>UH 20%</strong> (Teori 30% + Praktek 70%) + <strong>Ujian 10%</strong>.
+            </p>
+
+            <!-- TOOLBAR ADMIN UNTUK MENAMBAH KOLOM & SIMPAN -->
+            <div class="nilai-toolbar" id="nilai-admin-controls">
+              <div class="nilai-btn-group">
+                <button class="btn-sm btn-emerald" onclick="tambahKolomNilai('tugas')">+ Tugas</button>
+                <button class="btn-sm btn-emerald" onclick="tambahKolomNilai('catatan')">+ Catatan</button>
+                <button class="btn-sm btn-indigo" onclick="tambahKolomNilai('ut')">+ UH Teori</button>
+                <button class="btn-sm btn-indigo" onclick="tambahKolomNilai('up')">+ UH Praktek</button>
+              </div>
+              <div class="nilai-btn-group">
+                <button class="btn-sm btn-amber" onclick="exportNilaiCSV()">📥 Download Excel/CSV</button>
+                <button class="btn-sm btn-sky" id="btn-simpan-nilai" onclick="simpanNilaiKeServer()">💾 Simpan ke Google Sheets</button>
+              </div>
+            </div>
+
+            <div class="table-scroll">
+              <table class="nilai-table" id="tabel-nilai-dinamis">
+                <thead id="thead-nilai"></thead>
+                <tbody id="tbody-nilai"></tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -492,10 +708,22 @@
 
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycby_6GeW4Fd1ewr5Per8KaODSQSKzEwXgw6DERD5lD_AgFQrukrkEUX26JXx0sBCLmYs/exec";
+    const SESSION_KEY = "portal_tkj_session_v1";
+
     let currentRole = "siswa";
     let currentUser = {};
     let semuaDataPKL = [];
     let semuaDataSiswa = [];
+    let semuaDataNilai = [];
+
+    // Konfigurasi kolom dinamis untuk Buku Nilai
+    let nilaiConfig = {
+      tugas: 3,
+      catatan: 3,
+      ut: 2,
+      up: 2
+    };
+    let nilaiStateSiswa = {}; // Key: NISN -> { alpa, tugas:[], catatan:[], ut:[], up:[], ujian }
 
     let pklMap = null, pklMarker = null;
     let pklLat = -2.0673, pklLng = 105.1664;
@@ -524,6 +752,37 @@
       document.getElementById('form-siswa').style.display = role === 'siswa' ? 'block' : 'none';
       document.getElementById('form-admin').style.display = role === 'admin' ? 'block' : 'none';
     }
+
+    // ================= MANAJEMEN SESI LOGIN (AUTO-RESTORE SAAT F5) =================
+    function simpanSesi(extraState = {}) {
+      try {
+        const existing = JSON.parse(localStorage.getItem(SESSION_KEY) || "{}");
+        const updated = Object.assign({}, existing, {
+          isLoggedIn: true,
+          role: currentRole,
+          user: currentUser
+        }, extraState);
+        localStorage.setItem(SESSION_KEY, JSON.stringify(updated));
+      } catch (e) {}
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      try {
+        const saved = JSON.parse(localStorage.getItem(SESSION_KEY) || "null");
+        if (saved && saved.isLoggedIn && saved.user) {
+          masukAplikasi(saved.role, saved.user, true);
+          if (saved.activeMapel && saved.activeKelas) {
+            setTimeout(() => {
+              bukaWorkspace(saved.activeKelas, saved.activeMapel, true);
+              if (saved.activePanel && saved.activeNavId) {
+                const navEl = document.getElementById(saved.activeNavId);
+                if (navEl) bukaMenuWorkspace(saved.activePanel, navEl, true);
+              }
+            }, 350);
+          }
+        }
+      } catch (e) {}
+    });
 
     async function prosesLoginAdmin() {
       const pin = document.getElementById('input-pin').value.trim();
@@ -564,9 +823,13 @@
       btn.disabled = false; btn.innerText = "MASUK & CATAT KEHADIRAN";
     }
 
-    function masukAplikasi(role, user) {
+    function masukAplikasi(role, user, isRestore = false) {
       currentRole = role;
       currentUser = user;
+      if (!isRestore) {
+        simpanSesi({ activeMapel: "", activeKelas: "", activePanel: "", activeNavId: "" });
+      }
+
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('app-screen').style.display = 'block';
 
@@ -582,6 +845,7 @@
         document.getElementById('btn-buka-modal-mapel').style.display = 'none';
         document.getElementById('nav-akademik').style.display = 'none';
         document.getElementById('nav-kelas').style.display = 'none';
+        document.getElementById('nilai-admin-controls').style.display = 'none';
       }
       muatDataServer();
     }
@@ -593,9 +857,18 @@
         document.getElementById('input-token-baru').value = data.token;
         semuaDataSiswa = data.siswas || [];
         semuaDataPKL = data.pklLogs || [];
+        semuaDataNilai = data.nilais || [];
         renderKartuMapel(data.mapels);
         renderTabelAbsensi(data.logs);
         renderMonitorPKL(semuaDataPKL);
+
+        const wsKelas = document.getElementById('ws-kelas-badge').innerText;
+        const wsMapel = document.getElementById('ws-mapel-title').innerText;
+        if (wsMapel) {
+          const isPKL = wsMapel.toUpperCase().includes("PKL") || wsMapel.toUpperCase().includes("PRAKTEK KERJA");
+          renderDaftarSiswaPerMapel(wsKelas, isPKL);
+          muatStateNilaiMapel(wsKelas, wsMapel, isPKL);
+        }
       } catch (e) {
         showToast("Gagal sinkronisasi data server.");
       }
@@ -627,12 +900,9 @@
 
         if (currentRole === "siswa") {
           if (statusMapel !== "AKTIF") return;
-          
           if (isMapelPKL) {
-            // Khusus PKL: Hanya tampil jika Bimbingan_PKL === "YA"
             if ((currentUser.bimbinganPKL || "TIDAK").toUpperCase() !== "YA") return;
           } else {
-            // Mapel Reguler: Hanya tampil jika Status_KBM === "AKTIF" dan tingkat kelas cocok
             if ((currentUser.statusKBM || "AKTIF").toUpperCase() !== "AKTIF") return;
             if (!cekKecocokanKelas(m[1], currentUser.kelas)) return;
           }
@@ -671,26 +941,27 @@
       }
     }
 
+    function dapatkanSiswaMapelIni(kelasMapel, isPKL) {
+      if (isPKL) {
+        return semuaDataSiswa.filter(s => (s[4] || "").toString().trim().toUpperCase() === "YA");
+      }
+      return semuaDataSiswa.filter(s => {
+        const stKbm = (s[3] || "AKTIF").toString().trim().toUpperCase();
+        return stKbm === "AKTIF" && cekKecocokanKelas(kelasMapel, (s[2] || "").toString());
+      });
+    }
+
     function renderDaftarSiswaPerMapel(kelasMapel, isPKL) {
       const tbody = document.getElementById('tabel-daftar-siswa');
       const judul = document.getElementById('judul-panel-kelas');
       const badge = document.getElementById('badge-jumlah-siswa');
 
-      let daftarTerfilter = [];
-      if (isPKL) {
-        judul.innerText = "👥 Daftar Siswa Bimbingan PKL (Pak Darojat)";
-        daftarTerfilter = semuaDataSiswa.filter(s => (s[4] || "").toString().trim().toUpperCase() === "YA");
-      } else {
-        judul.innerText = `👥 Daftar Siswa (${kelasMapel})`;
-        daftarTerfilter = semuaDataSiswa.filter(s => {
-          const stKbm = (s[3] || "AKTIF").toString().trim().toUpperCase();
-          return stKbm === "AKTIF" && cekKecocokanKelas(kelasMapel, (s[2] || "").toString());
-        });
-      }
-
+      const daftarTerfilter = dapatkanSiswaMapelIni(kelasMapel, isPKL);
+      judul.innerText = isPKL ? "👥 Daftar Siswa Bimbingan PKL (Pak Darojat)" : `👥 Daftar Siswa (${kelasMapel})`;
       badge.innerText = `${daftarTerfilter.length} Siswa`;
+
       if (daftarTerfilter.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Tidak ada data siswa yang cocok pada kelompok ini.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Memuat atau belum ada siswa pada kelompok ini.</td></tr>';
         return;
       }
 
@@ -720,15 +991,311 @@
       });
     }
 
+    // ================= BUKU NILAI DINAMIS (SESUAI EXCEL PAK DAROJAT) =================
+    function muatStateNilaiMapel(kelasMapel, namaMapel, isPKL) {
+      nilaiConfig = { tugas: 3, catatan: 3, ut: 2, up: 2 };
+      nilaiStateSiswa = {};
+
+      const barisTersimpan = semuaDataNilai.filter(r => (r[0] || "").toString().trim() === namaMapel.trim());
+      barisTersimpan.forEach(r => {
+        const nisn = (r[2] || "").toString().trim();
+        try {
+          const det = JSON.parse(r[10] || "{}");
+          nilaiStateSiswa[nisn] = {
+            alpa: Number(det.alpa || 0),
+            tugas: det.tugas || [],
+            catatan: det.catatan || [],
+            ut: det.ut || [],
+            up: det.up || [],
+            ujian: det.ujian !== undefined ? det.ujian : ""
+          };
+          if (det.tugas && det.tugas.length > nilaiConfig.tugas) nilaiConfig.tugas = det.tugas.length;
+          if (det.catatan && det.catatan.length > nilaiConfig.catatan) nilaiConfig.catatan = det.catatan.length;
+          if (det.ut && det.ut.length > nilaiConfig.ut) nilaiConfig.ut = det.ut.length;
+          if (det.up && det.up.length > nilaiConfig.up) nilaiConfig.up = det.up.length;
+        } catch (e) {}
+      });
+
+      renderTabelNilaiDinamis();
+    }
+
+    function tambahKolomNilai(tipe) {
+      nilaiConfig[tipe]++;
+      renderTabelNilaiDinamis();
+      showToast(`Kolom ${tipe.toUpperCase()} ke-${nilaiConfig[tipe]} ditambahkan!`);
+    }
+
+    function hapusKolomNilai(tipe) {
+      if (nilaiConfig[tipe] <= 1) {
+        alert("Minimal harus ada 1 kolom penilaian pada kategori ini.");
+        return;
+      }
+      nilaiConfig[tipe]--;
+      renderTabelNilaiDinamis();
+    }
+
+    function rataRataDinamis(arr, jumlahKolom) {
+      let sum = 0;
+      let count = 0;
+      for (let i = 0; i < jumlahKolom; i++) {
+        const val = arr[i];
+        if (val !== "" && val !== null && val !== undefined && !isNaN(val)) {
+          sum += Number(val);
+          count++;
+        }
+      }
+      return count > 0 ? sum / count : 0;
+    }
+
+    function hitungNilaiBaris(st) {
+      const alpa = Number(st.alpa || 0);
+      const nk = Math.max(0, 100 - (alpa * 3));
+      const nHadir40 = nk * 0.40;
+
+      // Gabungan Tugas & Catatan (hanya membagi kolom yang terisi nilai)
+      let sumTC = 0, cntTC = 0;
+      for (let i = 0; i < nilaiConfig.tugas; i++) {
+        const v = st.tugas[i];
+        if (v !== "" && v !== null && v !== undefined && !isNaN(v)) { sumTC += Number(v); cntTC++; }
+      }
+      for (let i = 0; i < nilaiConfig.catatan; i++) {
+        const v = st.catatan[i];
+        if (v !== "" && v !== null && v !== undefined && !isNaN(v)) { sumTC += Number(v); cntTC++; }
+      }
+      const ntCT = cntTC > 0 ? sumTC / cntTC : 0;
+      const nTugas30 = ntCT * 0.30;
+
+      // Ulangan Harian: Teori (30%) + Praktek (70%) -> Total Bobot 20%
+      const avgUT = rataRataDinamis(st.ut, nilaiConfig.ut);
+      const ntt = avgUT * 0.30;
+      const avgUP = rataRataDinamis(st.up, nilaiConfig.up);
+      const ntp = avgUP * 0.70;
+      const ntu = ntt + ntp;
+      const nUH20 = ntu * 0.20;
+
+      // Ujian (10%)
+      const uVal = (st.ujian !== "" && st.ujian !== null && st.ujian !== undefined && !isNaN(st.ujian)) ? Number(st.ujian) : 0;
+      const nUjian10 = uVal * 0.10;
+
+      const nRapor = nHadir40 + nTugas30 + nUH20 + nUjian10;
+
+      return { nk, nHadir40, ntCT, nTugas30, avgUT, ntt, avgUP, ntp, ntu, nUH20, nUjian10, nRapor };
+    }
+
+    function updateSelNilai(nisn, field, idx, val) {
+      if (!nilaiStateSiswa[nisn]) {
+        nilaiStateSiswa[nisn] = { alpa: 0, tugas: [], catatan: [], ut: [], up: [], ujian: "" };
+      }
+      const cleanVal = val === "" ? "" : Number(val);
+      if (field === "alpa") nilaiStateSiswa[nisn].alpa = cleanVal === "" ? 0 : cleanVal;
+      else if (field === "ujian") nilaiStateSiswa[nisn].ujian = cleanVal;
+      else nilaiStateSiswa[nisn][field][idx] = cleanVal;
+
+      const h = hitungNilaiBaris(nilaiStateSiswa[nisn]);
+      document.getElementById(`nk-${nisn}`).innerText = h.nk.toFixed(0);
+      document.getElementById(`nh40-${nisn}`).innerText = h.nHadir40.toFixed(1);
+      document.getElementById(`ntct-${nisn}`).innerText = h.ntCT.toFixed(1);
+      document.getElementById(`nt30-${nisn}`).innerText = h.nTugas30.toFixed(1);
+      document.getElementById(`ntu-${nisn}`).innerText = h.ntu.toFixed(1);
+      document.getElementById(`nuh20-${nisn}`).innerText = h.nUH20.toFixed(1);
+      document.getElementById(`nun10-${nisn}`).innerText = h.nUjian10.toFixed(1);
+
+      const elRapor = document.getElementById(`rapor-${nisn}`);
+      elRapor.innerText = h.nRapor.toFixed(1);
+      elRapor.className = h.nRapor >= 75 ? "nilai-final" : "nilai-remedi";
+    }
+
+    function renderTabelNilaiDinamis() {
+      const kelasMapel = document.getElementById('ws-kelas-badge').innerText;
+      const namaMapel = document.getElementById('ws-mapel-title').innerText;
+      const isPKL = namaMapel.toUpperCase().includes("PKL") || namaMapel.toUpperCase().includes("PRAKTEK KERJA");
+      
+      let daftarSiswa = dapatkanSiswaMapelIni(kelasMapel, isPKL);
+      if (currentRole === "siswa") {
+        daftarSiswa = daftarSiswa.filter(s => (s[0] || "").toString().trim() === currentUser.nisn);
+      }
+
+      const thead = document.getElementById('thead-nilai');
+      const tbody = document.getElementById('tbody-nilai');
+      const isAdmin = currentRole === "admin";
+
+      const colSpanTugas = nilaiConfig.tugas + nilaiConfig.catatan + 2;
+      const colSpanUH = nilaiConfig.ut + nilaiConfig.up + 2;
+
+      let hRow1 = `<tr>
+        <th rowspan="2">No</th>
+        <th rowspan="2" style="min-width:170px;">Nama Siswa</th>
+        <th colspan="3" class="grp-hadir">Kehadiran (40%)</th>
+        <th colspan="${colSpanTugas}" class="grp-tugas">Tugas & Catatan (30%)</th>
+        <th colspan="${colSpanUH}" class="grp-uh">Ulangan Harian (20%: Teori 30% + Praktek 70%)</th>
+        <th colspan="2" class="grp-un">Ujian (10%)</th>
+        <th rowspan="2" class="grp-rapor">Nilai<br>Rapor</th>
+      </tr>`;
+
+      let hRow2 = `<tr>
+        <th class="grp-hadir">Alpa</th><th class="grp-hadir">NK</th><th class="grp-hadir">40%</th>`;
+
+      for (let i = 1; i <= nilaiConfig.tugas; i++) {
+        const delBtn = (isAdmin && i === nilaiConfig.tugas && i > 1) ? `<button class="btn-del-col" onclick="hapusKolomNilai('tugas')" title="Hapus kolom">×</button>` : "";
+        hRow2 += `<th class="grp-tugas">T${i}${delBtn}</th>`;
+      }
+      for (let i = 1; i <= nilaiConfig.catatan; i++) {
+        const delBtn = (isAdmin && i === nilaiConfig.catatan && i > 1) ? `<button class="btn-del-col" onclick="hapusKolomNilai('catatan')" title="Hapus kolom">×</button>` : "";
+        hRow2 += `<th class="grp-tugas">C${i}${delBtn}</th>`;
+      }
+      hRow2 += `<th class="grp-tugas">Rata</th><th class="grp-tugas">30%</th>`;
+
+      for (let i = 1; i <= nilaiConfig.ut; i++) {
+        const delBtn = (isAdmin && i === nilaiConfig.ut && i > 1) ? `<button class="btn-del-col" onclick="hapusKolomNilai('ut')" title="Hapus kolom">×</button>` : "";
+        hRow2 += `<th class="grp-uh">UT${i}${delBtn}</th>`;
+      }
+      for (let i = 1; i <= nilaiConfig.up; i++) {
+        const delBtn = (isAdmin && i === nilaiConfig.up && i > 1) ? `<button class="btn-del-col" onclick="hapusKolomNilai('up')" title="Hapus kolom">×</button>` : "";
+        hRow2 += `<th class="grp-uh">UP${i}${delBtn}</th>`;
+      }
+      hRow2 += `<th class="grp-uh">NTU</th><th class="grp-uh">20%</th>`;
+      hRow2 += `<th class="grp-un">Nilai</th><th class="grp-un">10%</th></tr>`;
+
+      thead.innerHTML = hRow1 + hRow2;
+
+      if (daftarSiswa.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="25" style="text-align:center; padding:16px;">Belum ada data siswa pada kelas ini.</td></tr>`;
+        return;
+      }
+
+      const disAttr = isAdmin ? "" : "disabled";
+      tbody.innerHTML = daftarSiswa.map((s, idx) => {
+        const nisn = (s[0] || "").toString().trim();
+        const nama = (s[1] || "").toString().trim();
+        if (!nilaiStateSiswa[nisn]) {
+          nilaiStateSiswa[nisn] = { alpa: 0, tugas: [], catatan: [], ut: [], up: [], ujian: "" };
+        }
+        const st = nilaiStateSiswa[nisn];
+        const h = hitungNilaiBaris(st);
+
+        let rowHtml = `<tr>
+          <td>${idx + 1}</td>
+          <td class="nama-col">${nama}</td>
+          <td><input type="number" min="0" max="33" class="nilai-input" ${disAttr} value="${st.alpa}" oninput="updateSelNilai('${nisn}','alpa',0,this.value)" /></td>
+          <td class="nilai-calc" id="nk-${nisn}">${h.nk.toFixed(0)}</td>
+          <td class="nilai-calc" id="nh40-${nisn}">${h.nHadir40.toFixed(1)}</td>`;
+
+        for (let i = 0; i < nilaiConfig.tugas; i++) {
+          const v = st.tugas[i] !== undefined ? st.tugas[i] : "";
+          rowHtml += `<td><input type="number" min="0" max="100" class="nilai-input" ${disAttr} value="${v}" oninput="updateSelNilai('${nisn}','tugas',${i},this.value)" /></td>`;
+        }
+        for (let i = 0; i < nilaiConfig.catatan; i++) {
+          const v = st.catatan[i] !== undefined ? st.catatan[i] : "";
+          rowHtml += `<td><input type="number" min="0" max="100" class="nilai-input" ${disAttr} value="${v}" oninput="updateSelNilai('${nisn}','catatan',${i},this.value)" /></td>`;
+        }
+        rowHtml += `<td class="nilai-calc" id="ntct-${nisn}">${h.ntCT.toFixed(1)}</td>
+                    <td class="nilai-calc" id="nt30-${nisn}">${h.nTugas30.toFixed(1)}</td>`;
+
+        for (let i = 0; i < nilaiConfig.ut; i++) {
+          const v = st.ut[i] !== undefined ? st.ut[i] : "";
+          rowHtml += `<td><input type="number" min="0" max="100" class="nilai-input" ${disAttr} value="${v}" oninput="updateSelNilai('${nisn}','ut',${i},this.value)" /></td>`;
+        }
+        for (let i = 0; i < nilaiConfig.up; i++) {
+          const v = st.up[i] !== undefined ? st.up[i] : "";
+          rowHtml += `<td><input type="number" min="0" max="100" class="nilai-input" ${disAttr} value="${v}" oninput="updateSelNilai('${nisn}','up',${i},this.value)" /></td>`;
+        }
+        rowHtml += `<td class="nilai-calc" id="ntu-${nisn}">${h.ntu.toFixed(1)}</td>
+                    <td class="nilai-calc" id="nuh20-${nisn}">${h.nUH20.toFixed(1)}</td>`;
+
+        const uVal = st.ujian !== undefined ? st.ujian : "";
+        const raporCls = h.nRapor >= 75 ? "nilai-final" : "nilai-remedi";
+        rowHtml += `<td><input type="number" min="0" max="100" class="nilai-input" ${disAttr} value="${uVal}" oninput="updateSelNilai('${nisn}','ujian',0,this.value)" /></td>
+                    <td class="nilai-calc" id="nun10-${nisn}">${h.nUjian10.toFixed(1)}</td>
+                    <td class="${raporCls}" id="rapor-${nisn}">${h.nRapor.toFixed(1)}</td></tr>`;
+
+        return rowHtml;
+      }).join('');
+    }
+
+    async function simpanNilaiKeServer() {
+      const kelasMapel = document.getElementById('ws-kelas-badge').innerText;
+      const namaMapel = document.getElementById('ws-mapel-title').innerText;
+      const isPKL = namaMapel.toUpperCase().includes("PKL") || namaMapel.toUpperCase().includes("PRAKTEK KERJA");
+      const daftarSiswa = dapatkanSiswaMapelIni(kelasMapel, isPKL);
+
+      const rowsPayload = daftarSiswa.map(s => {
+        const nisn = (s[0] || "").toString().trim();
+        const nama = (s[1] || "").toString().trim();
+        const kls = (s[2] || "").toString().trim();
+        const st = nilaiStateSiswa[nisn] || { alpa: 0, tugas: [], catatan: [], ut: [], up: [], ujian: "" };
+        const h = hitungNilaiBaris(st);
+
+        return {
+          nisn, nama, kelas: kls,
+          alpa: st.alpa || 0,
+          nHadir: Number(h.nHadir40.toFixed(2)),
+          nTugas: Number(h.nTugas30.toFixed(2)),
+          nUH: Number(h.nUH20.toFixed(2)),
+          nUjian: Number(h.nUjian10.toFixed(2)),
+          nRapor: Number(h.nRapor.toFixed(2)),
+          detail: st
+        };
+      });
+
+      const btn = document.getElementById('btn-simpan-nilai');
+      btn.disabled = true;
+      btn.innerText = "⏳ Menyimpan ke Sheets...";
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          body: JSON.stringify({ action: "simpanNilaiMapel", mapel: namaMapel, rows: rowsPayload })
+        });
+        const hasil = await res.json();
+        if (hasil.status === "success") {
+          showToast("✅ Rekap nilai berhasil disimpan ke Google Sheets!");
+          muatDataServer();
+        } else {
+          alert("Gagal menyimpan nilai: " + hasil.message);
+        }
+      } catch (e) {
+        alert("Gagal terhubung ke server.");
+      }
+      btn.disabled = false;
+      btn.innerText = "💾 Simpan ke Google Sheets";
+    }
+
+    function exportNilaiCSV() {
+      const kelasMapel = document.getElementById('ws-kelas-badge').innerText;
+      const namaMapel = document.getElementById('ws-mapel-title').innerText;
+      const isPKL = namaMapel.toUpperCase().includes("PKL") || namaMapel.toUpperCase().includes("PRAKTEK KERJA");
+      const daftarSiswa = dapatkanSiswaMapelIni(kelasMapel, isPKL);
+
+      let csv = "No,NISN,Nama Siswa,Kelas,Alpa,Nilai Hadir (40%),Nilai Tugas & Catatan (30%),Nilai UH (20%),Nilai Ujian (10%),Nilai Rapor Akhir\n";
+      daftarSiswa.forEach((s, idx) => {
+        const nisn = (s[0] || "").toString().trim();
+        const nama = (s[1] || "").toString().trim();
+        const kls = (s[2] || "").toString().trim();
+        const st = nilaiStateSiswa[nisn] || { alpa: 0, tugas: [], catatan: [], ut: [], up: [], ujian: "" };
+        const h = hitungNilaiBaris(st);
+        csv += `${idx + 1},"${nisn}","${nama}","${kls}",${st.alpa || 0},${h.nHadir40.toFixed(2)},${h.nTugas30.toFixed(2)},${h.nUH20.toFixed(2)},${h.nUjian10.toFixed(2)},${h.nRapor.toFixed(2)}\n`;
+      });
+
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `Rekap_Nilai_${namaMapel.replace(/[^a-zA-Z0-9]/g, "_")}.csv`;
+      link.click();
+    }
+
     // ================= LOGIKA WORKSPACE & MODE PKL =================
-    function bukaWorkspace(kelas, namaMapel) {
+    function bukaWorkspace(kelas, namaMapel, isRestore = false) {
       document.getElementById('home-mapel-view').style.display = 'none';
       document.getElementById('workspace-view').style.display = 'block';
       document.getElementById('ws-kelas-badge').innerText = kelas;
       document.getElementById('ws-mapel-title').innerText = namaMapel;
 
+      if (!isRestore) {
+        simpanSesi({ activeKelas: kelas, activeMapel: namaMapel });
+      }
+
       const isPKL = namaMapel.toUpperCase().includes("PKL") || namaMapel.toUpperCase().includes("PRAKTEK KERJA");
       renderDaftarSiswaPerMapel(kelas, isPKL);
+      muatStateNilaiMapel(kelas, namaMapel, isPKL);
 
       if (isPKL) {
         document.getElementById('judul-panel-kbm').innerText = "🏢 Absensi & Monitoring Praktek Kerja Lapangan (PKL)";
@@ -740,24 +1307,28 @@
           document.getElementById('pkl-admin-monitor').style.display = 'none';
           document.getElementById('pkl-nama').value = currentUser.nama;
           document.getElementById('pkl-nisn-kelas').value = `${currentUser.nisn} - ${currentUser.kelas}`;
-          bukaMenuWorkspace('panel-kbm', document.getElementById('nav-kbm'));
+          bukaMenuWorkspace('panel-kbm', document.getElementById('nav-kbm'), isRestore);
           setTimeout(() => { initMapPKL(); }, 250);
         } else {
           document.getElementById('pkl-student-form').style.display = 'none';
           document.getElementById('pkl-admin-monitor').style.display = 'block';
-          bukaMenuWorkspace('panel-kbm', document.getElementById('nav-kbm'));
-          muatDataServer();
+          if (!isRestore) {
+            bukaMenuWorkspace('panel-kbm', document.getElementById('nav-kbm'));
+            muatDataServer();
+          }
         }
       } else {
         document.getElementById('judul-panel-kbm').innerText = "💻 Kegiatan Belajar Mengajar (KBM)";
         document.getElementById('mode-kbm-reguler').style.display = 'block';
         document.getElementById('mode-kbm-pkl').style.display = 'none';
 
-        if (currentRole === "siswa") {
-          bukaMenuWorkspace('panel-kbm', document.getElementById('nav-kbm'));
-          pilihSubKBM('kbm-jobsheet', document.querySelectorAll('#panel-kbm .sub-tab')[2]);
-        } else {
-          bukaMenuWorkspace('panel-akademik', document.getElementById('nav-akademik'));
+        if (!isRestore) {
+          if (currentRole === "siswa") {
+            bukaMenuWorkspace('panel-kbm', document.getElementById('nav-kbm'));
+            pilihSubKBM('kbm-jobsheet', document.querySelectorAll('#panel-kbm .sub-tab')[2]);
+          } else {
+            bukaMenuWorkspace('panel-akademik', document.getElementById('nav-akademik'));
+          }
         }
       }
     }
@@ -1010,19 +1581,24 @@
     function kembaliKePilihMapel() {
       document.getElementById('workspace-view').style.display = 'none';
       document.getElementById('home-mapel-view').style.display = 'block';
+      simpanSesi({ activeKelas: "", activeMapel: "", activePanel: "", activeNavId: "" });
     }
 
-    function bukaMenuWorkspace(idPanel, el) {
+    function bukaMenuWorkspace(idPanel, el, isRestore = false) {
       document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.menu li').forEach(m => m.classList.remove('active'));
       document.getElementById(idPanel).classList.add('active');
-      el.classList.add('active');
+      if (el) el.classList.add('active');
+      if (!isRestore && el) {
+        simpanSesi({ activePanel: idPanel, activeNavId: el.id });
+      }
     }
 
-    function pilihSubAkademik(judul, el) {
+    function pilihSubAkademik(idSub, el) {
       document.querySelectorAll('#panel-akademik .sub-tab').forEach(t => t.classList.remove('active'));
       el.classList.add('active');
-      document.getElementById('judul-sub-akademik').innerText = judul;
+      document.querySelectorAll('.akad-sub').forEach(s => s.style.display = 'none');
+      document.getElementById(idSub).style.display = 'block';
     }
 
     function pilihSubKBM(idSub, el) {
@@ -1040,7 +1616,10 @@
       setTimeout(() => { btn.innerText = "📋 Salin Perintah"; }, 2000);
     }
 
-    function logout() { location.reload(); }
+    function logout() {
+      localStorage.removeItem(SESSION_KEY);
+      location.reload();
+    }
   </script>
 </body>
 </html>
