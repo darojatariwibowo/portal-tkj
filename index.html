@@ -62,7 +62,7 @@
     .welcome-banner { background: linear-gradient(135deg, #0f172a, #1e293b); color: white; padding: 24px 28px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
     .token-box { background: rgba(255,255,255,0.1); padding: 12px 16px; border-radius: 8px; display: flex; gap: 8px; align-items: center; }
     .token-box input { width: 120px; padding: 7px 10px; border-radius: 6px; border: none; font-weight: bold; text-transform: uppercase; text-align: center; color: #0f172a; }
-    .btn-sm { padding: 7px 13px; border: none; border-radius: 6px; font-weight: 600; font-size: 12.5px; cursor: pointer; transition: 0.2s; }
+    .btn-sm { padding: 7px 13px; border: none; border-radius: 6px; font-weight: 600; font-size: 12.5px; cursor: pointer; transition: 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
     .btn-sky { background: #38bdf8; color: #0f172a; }
     .btn-sky:hover { background: #7dd3fc; }
     .btn-emerald { background: #10b981; color: white; }
@@ -90,8 +90,8 @@
     .mapel-actions { display: flex; gap: 8px; }
 
     /* MODAL */
-    .modal { display: none; position: fixed; z-index: 200; left: 0; top: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.6); justify-content: center; align-items: center; }
-    .modal-content { background: #fff; padding: 25px; border-radius: 12px; width: 90%; max-width: 420px; }
+    .modal { display: none; position: fixed; z-index: 300; left: 0; top: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.65); justify-content: center; align-items: center; padding: 15px; }
+    .modal-content { background: #fff; padding: 24px; border-radius: 12px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
 
     /* WORKSPACE MAPEL */
     #workspace-view { display: none; min-height: calc(100vh - 64px); }
@@ -116,7 +116,17 @@
     .sub-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; }
     .sub-tab { padding: 7px 14px; background: #f1f5f9; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; color: #475569; border: 1px solid transparent; }
     .sub-tab.active { background: #e0f2fe; color: #0284c7; border-color: #7dd3fc; }
-    .doc-placeholder { background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 8px; padding: 30px; text-align: center; color: #64748b; }
+
+    /* BAR UPLOAD & KARTU DOKUMEN ASLI */
+    .upload-strip { background: #eff6ff; border: 1px dashed #3b82f6; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    .upload-strip span { font-size: 13px; color: #1e40af; font-weight: 600; }
+    .doc-card { background: #ffffff; border: 1px solid #cbd5e1; border-left: 5px solid #0284c7; border-radius: 8px; padding: 16px; margin-bottom: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .doc-card-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; }
+    .doc-card-title { font-size: 15.5px; font-weight: 700; color: #0f172a; }
+    .doc-card-meta { font-size: 11.5px; color: #64748b; margin-top: 2px; }
+    .doc-card-desc { font-size: 13.5px; color: #334155; line-height: 1.55; margin-bottom: 12px; white-space: pre-line; }
+    .doc-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .video-frame { width: 100%; max-width: 640px; height: 340px; border-radius: 8px; border: 1px solid #cbd5e1; margin: 10px 0 14px; }
 
     /* KARTU KONTEN AKADEMIK */
     .akad-card { background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #0284c7; border-radius: 8px; padding: 16px; margin-bottom: 14px; }
@@ -159,7 +169,7 @@
     .stat-card span { font-size: 11px; font-weight: bold; color: #64748b; text-transform: uppercase; }
     .stat-card h3 { font-size: 24px; margin-top: 4px; color: #0f172a; }
 
-    .code-wrapper { position: relative; margin-top: 12px; }
+    .code-wrapper { position: relative; margin-top: 10px; margin-bottom: 12px; }
     pre { background: #0f172a; color: #38bdf8; padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 13px; line-height: 1.5; }
     .btn-copy { position: absolute; right: 10px; top: 10px; background: #1e293b; color: #e2e8f0; border: 1px solid #475569; padding: 5px 10px; border-radius: 5px; font-size: 12px; cursor: pointer; }
     .btn-copy:hover { background: #0284c7; color: white; border-color: #0284c7; }
@@ -177,6 +187,7 @@
       .workspace-layout { flex-direction: column; }
       .sidebar { width: 100%; }
       .clock-badge { display: none; }
+      .video-frame { height: 210px; }
     }
   </style>
 </head>
@@ -189,11 +200,9 @@
     <div class="login-box">
       <div class="login-header">
         <div class="logo-row">
-          <!-- Logo Resmi SMK Negeri 1 Muntok -->
           <div class="logo-circle" title="SMK Negeri 1 Muntok">
             <img src="https://lh3.googleusercontent.com/d/180c1vhEeLRwu4tzw0_PyA0rKoeU9Ba2U" alt="Logo SMKN 1 Muntok" />
           </div>
-          <!-- Logo Resmi Jurusan TKJ -->
           <div class="logo-circle" title="Teknik Komputer dan Jaringan">
             <img src="https://lh3.googleusercontent.com/d/1UXH9pMCE9Bn1MWveY7uIAYyBptUQoJLa" alt="Logo Jurusan TKJ" />
           </div>
@@ -291,7 +300,7 @@
 
           <div class="menu-group-title">Navigasi Utama</div>
           <ul class="menu">
-            <li id="nav-akademik" class="active" onclick="bukaMenuWorkspace('panel-akademik', this)">📂 Menu Akademik</li>
+            <li id="nav-akademik" class="active" onclick="bukaMenuWorkspace('panel-akademik', this)">📂 Kurikulum & Akademik</li>
             <li id="nav-kelas" onclick="bukaMenuWorkspace('panel-kelas', this)">👥 Menu Kelas & Siswa</li>
             <li id="nav-kbm" onclick="bukaMenuWorkspace('panel-kbm', this)">💻 Menu KBM / PKL</li>
             <li id="nav-nilai" onclick="bukaMenuWorkspace('panel-nilai', this)">📊 Menu Nilai & Rapor</li>
@@ -301,19 +310,25 @@
         </div>
 
         <div class="workspace-main">
-          <!-- 1. PANEL AKADEMIK -->
+          <!-- 1. PANEL AKADEMIK (KALDIK, CP, ATP UNTUK GURU & SISWA; PROTA/PROSEM/MODUL AJAR KHUSUS GURU) -->
           <div id="panel-akademik" class="panel active">
-            <h2>📂 Administrasi Akademik Guru (TA 2026/2027)</h2>
+            <h2>📂 Kurikulum & Administrasi Akademik (TA 2026/2027)</h2>
             <div class="sub-tabs">
               <div class="sub-tab active" onclick="pilihSubAkademik('sub-kaldik', this)">1. Kalender Pendidikan</div>
-              <div class="sub-tab" onclick="pilihSubAkademik('sub-cp', this)">2. Capaian Pembelajaran (CP Fase F)</div>
-              <div class="sub-tab" onclick="pilihSubAkademik('sub-atp', this)">3. ATP Kelas XI & XII (Terperinci)</div>
-              <div class="sub-tab" onclick="pilihSubAkademik('sub-prota', this)">4. PROTA & PROSEM</div>
-              <div class="sub-tab" onclick="pilihSubAkademik('sub-rpp', this)">5. RPP / Modul Ajar</div>
+              <div class="sub-tab" onclick="pilihSubAkademik('sub-cp', this)">2. Capaian Pembelajaran (CP)</div>
+              <div class="sub-tab" onclick="pilihSubAkademik('sub-atp', this)">3. ATP Terperinci</div>
+              <div class="sub-tab admin-only-tab" onclick="pilihSubAkademik('sub-prota', this)">4. PROTA & PROSEM (Guru)</div>
+              <div class="sub-tab admin-only-tab" onclick="pilihSubAkademik('sub-rpp', this)">5. Modul Ajar (Guru)</div>
             </div>
 
-            <!-- SUB 1: KALENDER PENDIDIKAN -->
+            <!-- SUB 1: KALENDER PENDIDIKAN (GURU & SISWA + BISA UPLOAD/DOWNLOAD FILE ASLI) -->
             <div id="sub-kaldik" class="akad-sub">
+              <div class="upload-strip admin-only-el">
+                <span>📎 File Asli Kalender Pendidikan (PDF/DOCX siap cetak & unduh siswa):</span>
+                <button class="btn-sm btn-sky" onclick="bukaModalUpload('KALDIK', 'Kalender Pendidikan Resmi')">+ Upload File Kaldik</button>
+              </div>
+              <div id="list-dok-KALDIK"></div>
+
               <div class="stat-grid">
                 <div class="stat-card"><span>Semester Ganjil 2026</span><h3 style="color:#0284c7;">113 Hari</h3><p style="font-size:11px; color:#64748b;">23 Pekan Efektif (Jul – Des 2026)</p></div>
                 <div class="stat-card"><span>Semester Genap 2027</span><h3 style="color:#059669;">100 Hari</h3><p style="font-size:11px; color:#64748b;">21 Pekan Efektif (Jan – Jun 2027)</p></div>
@@ -343,8 +358,14 @@
               </div>
             </div>
 
-            <!-- SUB 2: CAPAIAN PEMBELAJARAN (CP FASE F) -->
+            <!-- SUB 2: CAPAIAN PEMBELAJARAN (GURU & SISWA + BISA UPLOAD/DOWNLOAD FILE ASLI) -->
             <div id="sub-cp" class="akad-sub" style="display:none;">
+              <div class="upload-strip admin-only-el">
+                <span>📎 File Asli Capaian Pembelajaran (DOCX/PDF siap cetak & unduh siswa):</span>
+                <button class="btn-sm btn-sky" onclick="bukaModalUpload('CP', 'Dokumen Capaian Pembelajaran (CP)')">+ Upload File CP</button>
+              </div>
+              <div id="list-dok-CP"></div>
+
               <div class="akad-card">
                 <span class="badge-sem">ELEMEN 1</span>
                 <h4>Perencanaan dan Pengalamatan Jaringan</h4>
@@ -372,8 +393,14 @@
               </div>
             </div>
 
-            <!-- SUB 3: ATP TERPERINCI KELAS XI & XII -->
+            <!-- SUB 3: ATP TERPERINCI (GURU & SISWA + BISA UPLOAD/DOWNLOAD FILE ASLI) -->
             <div id="sub-atp" class="akad-sub" style="display:none;">
+              <div class="upload-strip admin-only-el">
+                <span>📎 File Asli Alur Tujuan Pembelajaran (DOCX/PDF siap cetak & unduh siswa):</span>
+                <button class="btn-sm btn-sky" onclick="bukaModalUpload('ATP', 'Dokumen Alur Tujuan Pembelajaran (ATP)')">+ Upload File ATP</button>
+              </div>
+              <div id="list-dok-ATP"></div>
+
               <div class="akad-card" style="border-left-color:#059669;">
                 <h4>🗺️ Pemetaan Alur Tujuan Pembelajaran (ATP) Fase F — Pola 3 Semester KBM + 1 Semester PKL</h4>
                 <p>Dirancang sesuai struktur Kurikulum Merdeka SMK agar seluruh materi instalasi fisik & manajemen jaringan tuntas di Kelas XI sebelum siswa terjun ke DUDIKA maupun menghadapi Uji Kompetensi Keahlian (UKK).</p>
@@ -440,20 +467,22 @@
               </table>
             </div>
 
-            <!-- SUB 4: PROTA & PROSEM -->
+            <!-- SUB 4: PROTA & PROSEM (KHUSUS GURU + BISA UPLOAD & DOWNLOAD FILE ASLI) -->
             <div id="sub-prota" class="akad-sub" style="display:none;">
-              <div class="doc-placeholder">
-                <h3>Program Tahunan (PROTA) & Program Semester (PROSEM)</h3>
-                <p style="margin-top:8px;">Alokasi waktu otomatis mengacu pada Kalender Pendidikan TA 2026/2027 (23 Pekan Efektif Ganjil & 21 Pekan Efektif Genap).</p>
+              <div class="upload-strip">
+                <span>🔒 Arsip Khusus Guru: Upload file PROTA & PROSEM asli (DOCX/XLSX/PDF) agar siap diunduh & dicetak kapan saja.</span>
+                <button class="btn-sm btn-emerald" onclick="bukaModalUpload('PROTA_PROSEM', 'Upload PROTA / PROSEM')">+ Upload PROTA / PROSEM</button>
               </div>
+              <div id="list-dok-PROTA_PROSEM"></div>
             </div>
 
-            <!-- SUB 5: RPP / MODUL AJAR -->
+            <!-- SUB 5: MODUL AJAR (KHUSUS GURU + BISA UPLOAD & DOWNLOAD FILE ASLI) -->
             <div id="sub-rpp" class="akad-sub" style="display:none;">
-              <div class="doc-placeholder">
-                <h3>RPP & Modul Ajar per Pertemuan</h3>
-                <p style="margin-top:8px;">Siap diisi modul ajar praktik per topik ATP.</p>
+              <div class="upload-strip">
+                <span>🔒 Arsip Khusus Guru: Upload Modul Ajar per Topik/Elemen (DOCX/PDF) agar identik dengan hardcopy laporan mengajar.</span>
+                <button class="btn-sm btn-emerald" onclick="bukaModalUpload('MODUL_AJAR', 'Upload Modul Ajar / RPP')">+ Upload Modul Ajar</button>
               </div>
+              <div id="list-dok-MODUL_AJAR"></div>
             </div>
           </div>
 
@@ -481,51 +510,77 @@
             
             <div id="mode-kbm-reguler">
               <div class="sub-tabs">
-                <div class="sub-tab active" onclick="pilihSubKBM('kbm-absensi', this)">1. Monitoring Absensi Live</div>
-                <div class="sub-tab" onclick="pilihSubKBM('kbm-tujuan', this)">2. Tujuan Pembelajaran</div>
-                <div class="sub-tab" onclick="pilihSubKBM('kbm-jobsheet', this)">3. Tutorial & Jobsheet CLI</div>
-                <div class="sub-tab" onclick="pilihSubKBM('kbm-tugas', this)">4. Kumpul Tugas Online</div>
+                <div class="sub-tab active" onclick="pilihSubKBM('kbm-materi', this)">1. Materi & Simulasi</div>
+                <div class="sub-tab" onclick="pilihSubKBM('kbm-video', this)">2. Video Tutorial</div>
+                <div class="sub-tab" onclick="pilihSubKBM('kbm-jobsheet', this)">3. Jobsheet & Perintah CLI</div>
+                <div class="sub-tab" onclick="pilihSubKBM('kbm-tugas', this)">4. LKPD & Kumpul Tugas</div>
+                <div class="sub-tab" onclick="pilihSubKBM('kbm-absensi', this)">5. Monitoring Kehadiran</div>
               </div>
 
-              <div id="kbm-absensi" class="kbm-sub">
+              <!-- TAB 1: MATERI & SIMULASI (GURU & SISWA + UPLOAD/DOWNLOAD ASLI) -->
+              <div id="kbm-materi" class="kbm-sub">
+                <div class="upload-strip admin-only-el">
+                  <span>📚 Publikasikan Bahan Ajar, Slide PPT, atau File Simulasi (.pkt / .pka):</span>
+                  <button class="btn-sm btn-emerald" onclick="bukaModalUpload('MATERI', 'Upload Materi / Simulasi')">+ Upload Materi / Simulasi</button>
+                </div>
+                <div id="list-dok-MATERI"></div>
+              </div>
+
+              <!-- TAB 2: VIDEO TUTORIAL (GURU & SISWA + EMBED YOUTUBE / DOWNLOAD) -->
+              <div id="kbm-video" class="kbm-sub" style="display:none;">
+                <div class="upload-strip admin-only-el">
+                  <span>🎬 Tambahkan Link Video Tutorial YouTube atau Upload Video Praktik:</span>
+                  <button class="btn-sm btn-indigo" onclick="bukaModalUpload('VIDEO', 'Tambah Video Tutorial')">+ Tambah Video Tutorial</button>
+                </div>
+                <div id="list-dok-VIDEO"></div>
+              </div>
+
+              <!-- TAB 3: JOBSHEET & PERINTAH CLI (GURU & SISWA + COPY CLI & DOWNLOAD JOBSHEET) -->
+              <div id="kbm-jobsheet" class="kbm-sub" style="display:none;">
+                <div class="upload-strip admin-only-el">
+                  <span>🛠️ Tambahkan Jobsheet Praktikum (DOCX/PDF) & Skrip CLI MikroTik/Linux:</span>
+                  <button class="btn-sm btn-sky" onclick="bukaModalUpload('JOBSHEET', 'Tambah Jobsheet & CLI')">+ Upload Jobsheet / CLI</button>
+                </div>
+                <div id="list-dok-JOBSHEET"></div>
+              </div>
+
+              <!-- TAB 4: LKPD & KUMPUL TUGAS (GURU BUAT LKPD & CEK FILE SISWA; SISWA DOWNLOAD LKPD & UPLOAD JAWABAN) -->
+              <div id="kbm-tugas" class="kbm-sub" style="display:none;">
+                <div class="upload-strip admin-only-el">
+                  <span>📝 Buat Topik LKPD / Penilaian per Materi (Siswa otomatis bisa download LKPD & upload jawaban):</span>
+                  <button class="btn-sm btn-amber" onclick="bukaModalUpload('LKPD', 'Buat LKPD / Tugas Baru')">+ Buat LKPD / Tugas</button>
+                </div>
+                <div id="list-dok-LKPD"></div>
+
+                <!-- REKAP JAWABAN TUGAS SISWA UNTUK GURU -->
+                <div id="rekap-tugas-admin" style="display:none; margin-top:24px; border-top:2px solid #e2e8f0; padding-top:16px;">
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <h3 style="font-size:16px; color:#0f172a;">📥 File Jawaban Tugas / LKPD Terkumpul (Otomatis di Drive)</h3>
+                    <button class="btn-sm btn-sky" onclick="muatDataServer()">🔄 Refresh</button>
+                  </div>
+                  <div style="overflow-x:auto;">
+                    <table class="std-table">
+                      <thead>
+                        <tr><th>Waktu</th><th>Siswa & Kelas</th><th>Judul LKPD</th><th>Catatan</th><th>File Jawaban</th></tr>
+                      </thead>
+                      <tbody id="tabel-tugas-masuk">
+                        <tr><td colspan="5" style="text-align:center;">Memuat tugas masuk...</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- TAB 5: MONITORING KEHADIRAN -->
+              <div id="kbm-absensi" class="kbm-sub" style="display:none;">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
-                  <strong>Log Kehadiran Siswa Real-Time</strong>
+                  <strong id="judul-log-absen">Log Kehadiran Siswa Real-Time</strong>
                   <button class="btn-sm btn-sky" onclick="muatDataServer()">🔄 Refresh Data</button>
                 </div>
                 <table class="std-table">
                   <thead><tr><th>No</th><th>Waktu</th><th>NISN</th><th>Nama Siswa</th><th>Kelas</th><th>Status</th></tr></thead>
                   <tbody id="tabel-monitoring"><tr><td colspan="6" style="text-align:center;">Memuat data...</td></tr></tbody>
                 </table>
-              </div>
-
-              <div id="kbm-tujuan" class="kbm-sub" style="display:none;">
-                <div class="akad-card">
-                  <h4>🎯 Tujuan Pembelajaran Aktif (Konsentrasi Keahlian TKJ)</h4>
-                  <ul>
-                    <li>Peserta didik mampu merancang pengalamatan IP (CIDR/VLSM) dan topologi jaringan sesuai kebutuhan pengguna.</li>
-                    <li>Peserta didik mampu mengkonfigurasi VLAN, Routing Statis/Dinamis, NAT, Manajemen Bandwidth, dan Load Balancing.</li>
-                    <li>Peserta didik mampu melakukan instalasi, penyambungan, dan pengujian jaringan Kabel UTP, Nirkabel, serta Fiber Optic.</li>
-                    <li>Peserta didik mampu membangun dan mengamankan layanan Server Jaringan & Hosting.</li>
-                  </ul>
-                </div>
-              </div>
-
-              <div id="kbm-jobsheet" class="kbm-sub" style="display:none;">
-                <p style="font-size:14px;">Jobsheet Praktik MikroTik — Manajemen Jaringan Dasar (VLAN & Trunking):</p>
-                <div class="code-wrapper">
-                  <button class="btn-copy" onclick="salinKode(this)">📋 Salin Perintah</button>
-                  <pre>/interface vlan add name=VLAN10-GURU vlan-id=10 interface=ether2
-/interface vlan add name=VLAN20-SISWA vlan-id=20 interface=ether2
-/ip address add address=192.168.10.1/24 interface=VLAN10-GURU
-/ip address add address=192.168.20.1/24 interface=VLAN20-SISWA</pre>
-                </div>
-              </div>
-
-              <div id="kbm-tugas" class="kbm-sub" style="display:none;">
-                <div class="doc-placeholder">
-                  <h3>📤 Rak Kumpul Tugas Online</h3>
-                  <p style="margin-top:6px;">Siap dihubungkan dengan folder Google Drive Bapak di tahap berikutnya.</p>
-                </div>
               </div>
             </div>
 
@@ -650,24 +705,23 @@
             </div>
           </div>
 
-          <!-- 4. PANEL NILAI DINAMIS (SESUAI RUMUS EXCEL PAK DAROJAT) -->
+          <!-- 4. PANEL NILAI DINAMIS -->
           <div id="panel-nilai" class="panel">
             <h2>📊 Buku Nilai Dinamis & Rekap Rapor</h2>
             <p style="font-size:12.5px; color:#475569; margin-bottom:12px;">
               Rumus Otomatis: <strong>Kehadiran 40%</strong> (NK = 100 - Alpa×3) + <strong>Tugas & Catatan 30%</strong> (Rata-rata dinamis) + <strong>UH 20%</strong> (Teori 30% + Praktek 70%) + <strong>Ujian 10%</strong>.
             </p>
 
-            <!-- TOOLBAR ADMIN UNTUK MENAMBAH KOLOM & SIMPAN -->
-            <div class="nilai-toolbar" id="nilai-admin-controls">
-              <div class="nilai-btn-group">
+            <div class="nilai-toolbar">
+              <div class="nilai-btn-group admin-only-el">
                 <button class="btn-sm btn-emerald" onclick="tambahKolomNilai('tugas')">+ Tugas</button>
                 <button class="btn-sm btn-emerald" onclick="tambahKolomNilai('catatan')">+ Catatan</button>
                 <button class="btn-sm btn-indigo" onclick="tambahKolomNilai('ut')">+ UH Teori</button>
                 <button class="btn-sm btn-indigo" onclick="tambahKolomNilai('up')">+ UH Praktek</button>
               </div>
               <div class="nilai-btn-group">
-                <button class="btn-sm btn-amber" onclick="exportNilaiCSV()">📥 Download Excel/CSV</button>
-                <button class="btn-sm btn-sky" id="btn-simpan-nilai" onclick="simpanNilaiKeServer()">💾 Simpan ke Google Sheets</button>
+                <button class="btn-sm btn-amber" onclick="exportNilaiCSV()">📥 Download Nilai (Excel/CSV)</button>
+                <button class="btn-sm btn-sky admin-only-el" id="btn-simpan-nilai" onclick="simpanNilaiKeServer()">💾 Simpan ke Google Sheets</button>
               </div>
             </div>
 
@@ -706,6 +760,56 @@
     </div>
   </div>
 
+  <!-- MODAL UPLOAD DOKUMEN GURU (100% FILE ASLI KE DRIVE & BISA DIDOWNLOAD) -->
+  <div id="modal-upload-dok" class="modal">
+    <div class="modal-content">
+      <h3 id="modal-upload-title" style="margin-bottom:6px;">Upload Dokumen</h3>
+      <p style="font-size:12px; color:#64748b; margin-bottom:14px;">File asli akan disimpan otomatis di folder Google Drive mapel ini agar bisa diunduh & dicetak kapan saja.</p>
+      <input type="hidden" id="up-dok-kategori" />
+      <div class="form-group">
+        <label>Judul Topik / Pertemuan / Dokumen *</label>
+        <input type="text" id="up-dok-judul" placeholder="Contoh: Pertemuan 2 - Konfigurasi VLAN & Trunking" />
+      </div>
+      <div class="form-group" id="grp-up-video" style="display:none;">
+        <label>Link Video YouTube (Opsional jika upload file)</label>
+        <input type="text" id="up-dok-video" placeholder="https://www.youtube.com/watch?v=..." />
+      </div>
+      <div class="form-group">
+        <label id="lbl-up-desc">Ringkasan Materi / Instruksi / Perintah CLI</label>
+        <textarea id="up-dok-desc" rows="4" placeholder="Tuliskan penjelasan singkat, langkah kerja, atau skrip perintah CLI..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Pilih File Asli (DOCX, XLSX, PDF, PPTX, PKT, RSC, MP4, JPG)</label>
+        <input type="file" id="up-dok-file" />
+      </div>
+      <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:16px;">
+        <button class="btn-sm btn-archive" onclick="tutupModalUpload()">Batal</button>
+        <button class="btn-sm btn-emerald" id="btn-submit-upload" onclick="prosesUploadDokumen()">🚀 Simpan & Publikasikan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL KUMPUL TUGAS SISWA -->
+  <div id="modal-kumpul-siswa" class="modal">
+    <div class="modal-content">
+      <h3 style="margin-bottom:6px;">📤 Kumpulkan Jawaban LKPD / Tugas</h3>
+      <p id="kumpul-judul-lkpd" style="font-size:13px; font-weight:bold; color:#0284c7; margin-bottom:14px;"></p>
+      <input type="hidden" id="kumpul-id-lkpd" />
+      <div class="form-group">
+        <label>Pilih File Jawaban (.pkt, .rsc, .pdf, .docx, .jpg) *</label>
+        <input type="file" id="kumpul-file-input" />
+      </div>
+      <div class="form-group">
+        <label>Catatan / Kendala Praktik (Opsional)</label>
+        <textarea id="kumpul-catatan" rows="2" placeholder="Tuliskan keterangan singkat hasil praktikum Anda..."></textarea>
+      </div>
+      <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:16px;">
+        <button class="btn-sm btn-archive" onclick="tutupModalKumpul()">Batal</button>
+        <button class="btn-sm btn-emerald" id="btn-submit-kumpul" onclick="prosesKumpulTugasSiswa()">🚀 Kirim File Tugas</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycby_6GeW4Fd1ewr5Per8KaODSQSKzEwXgw6DERD5lD_AgFQrukrkEUX26JXx0sBCLmYs/exec";
     const SESSION_KEY = "portal_tkj_session_v1";
@@ -715,15 +819,11 @@
     let semuaDataPKL = [];
     let semuaDataSiswa = [];
     let semuaDataNilai = [];
+    let semuaDataMateri = [];
+    let semuaDataTugas = [];
 
-    // Konfigurasi kolom dinamis untuk Buku Nilai
-    let nilaiConfig = {
-      tugas: 3,
-      catatan: 3,
-      ut: 2,
-      up: 2
-    };
-    let nilaiStateSiswa = {}; // Key: NISN -> { alpa, tugas:[], catatan:[], ut:[], up:[], ujian }
+    let nilaiConfig = { tugas: 3, catatan: 3, ut: 2, up: 2 };
+    let nilaiStateSiswa = {};
 
     let pklMap = null, pklMarker = null;
     let pklLat = -2.0673, pklLng = 105.1664;
@@ -836,6 +936,7 @@
       if (role === "admin") {
         document.getElementById('role-badge').innerText = "● ADMIN GURU";
         document.getElementById('greeting-text').innerText = "Selamat Mengajar, " + user.nama;
+        document.getElementById('rekap-tugas-admin').style.display = "block";
       } else {
         document.getElementById('role-badge').innerText = "● SISWA TERVERIFIKASI";
         document.getElementById('greeting-text').innerText = `Halo, ${user.nama} (${user.kelas})`;
@@ -843,9 +944,9 @@
         document.getElementById('judul-daftar-mapel').innerText = "📚 Mata Pelajaran Kelas Anda";
         document.getElementById('admin-token-control').style.display = 'none';
         document.getElementById('btn-buka-modal-mapel').style.display = 'none';
-        document.getElementById('nav-akademik').style.display = 'none';
         document.getElementById('nav-kelas').style.display = 'none';
-        document.getElementById('nilai-admin-controls').style.display = 'none';
+        document.getElementById('judul-log-absen').innerText = "Riwayat Kehadiran Pribadi Anda";
+        document.querySelectorAll('.admin-only-el, .admin-only-tab').forEach(el => el.style.display = 'none');
       }
       muatDataServer();
     }
@@ -858,6 +959,9 @@
         semuaDataSiswa = data.siswas || [];
         semuaDataPKL = data.pklLogs || [];
         semuaDataNilai = data.nilais || [];
+        semuaDataMateri = data.materis || [];
+        semuaDataTugas = data.tugasLogs || [];
+
         renderKartuMapel(data.mapels);
         renderTabelAbsensi(data.logs);
         renderMonitorPKL(semuaDataPKL);
@@ -868,6 +972,8 @@
           const isPKL = wsMapel.toUpperCase().includes("PKL") || wsMapel.toUpperCase().includes("PRAKTEK KERJA");
           renderDaftarSiswaPerMapel(wsKelas, isPKL);
           muatStateNilaiMapel(wsKelas, wsMapel, isPKL);
+          renderSemuaKategoriDokumen(wsMapel);
+          renderTabelTugasMasuk(wsMapel);
         }
       } catch (e) {
         showToast("Gagal sinkronisasi data server.");
@@ -923,8 +1029,7 @@
           <div class="${cardClass}">
             <div>
               <div class="card-top-meta">
-                <span class="mapel-tag">${m[1]}</span>
-                ${pillHtml}
+                <span class="mapel-tag">${m[1]}</span>${pillHtml}
               </div>
               <h3>${m[2]}</h3>
               <p>Alokasi: ${m[3]}</p>
@@ -957,8 +1062,7 @@
       const badge = document.getElementById('badge-jumlah-siswa');
 
       const daftarTerfilter = dapatkanSiswaMapelIni(kelasMapel, isPKL);
-      judul.innerText = isPKL ? "👥 Daftar Siswa Bimbingan PKL (Pak Darojat)" : `👥 Daftar Siswa (${kelasMapel})`;
-      badge.innerText = `${daftarTerfilter.length} Siswa`;
+      judul.innerText = isPKL ? "👥 Daftar Siswa Bimbingan PKL (Pak Darojat)" : `👥 Daftar Siswa (${kelasMapel})`; badge.innerText = `${daftarTerfilter.length} Siswa`;
 
       if (daftarTerfilter.length === 0) {
         tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Memuat atau belum ada siswa pada kelompok ini.</td></tr>';
@@ -971,8 +1075,8 @@
           <td>${s[0]}</td>
           <td><strong>${s[1]}</strong></td>
           <td>${s[2]}</td>
-          <td><span class="${(s[3]||'').toUpperCase()==='AKTIF' ? 'status-ok' : 'status-no'}">${s[3] || 'AKTIF'}</span></td>
-          <td><span class="${(s[4]||'').toUpperCase()==='YA' ? 'status-ok' : 'status-no'}">${s[4] || 'TIDAK'}</span></td>
+          <td><span class="${(s[3]\vert{}\vert{}'').toUpperCase()==='AKTIF' ? 'status-ok' : 'status-no'}">${s[3] || 'AKTIF'}</span></td>
+          <td><span class="${(s[4]\vert{}\vert{}'').toUpperCase()==='YA' ? 'status-ok' : 'status-no'}">${s[4] || 'TIDAK'}</span></td>
         </tr>
       `).join('');
     }
@@ -983,15 +1087,275 @@
         tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Belum ada catatan kehadiran.</td></tr>';
         return;
       }
+      let filtered = logs;
+      if (currentRole === "siswa") {
+        filtered = logs.filter(r => (r[1] || "").toString().trim() === currentUser.nisn);
+      }
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Belum ada catatan kehadiran Anda.</td></tr>';
+        return;
+      }
       tbody.innerHTML = "";
-      logs.slice().reverse().forEach((row, idx) => {
+      filtered.slice().reverse().forEach((row, idx) => {
         tbody.innerHTML += `<tr>
           <td>${idx + 1}</td><td>${row[0]}</td><td>${row[1]}</td><td><strong>${row[2]}</strong></td><td>${row[3]}</td><td><span class="status-ok">${row[4]}</span></td>
         </tr>`;
       });
     }
 
-    // ================= BUKU NILAI DINAMIS (SESUAI EXCEL PAK DAROJAT) =================
+    // ================= SISTEM UPLOAD & DOWNLOAD FILE ASLI PER KATEGORI =================
+    function bukaModalUpload(kategori, judulModal) {
+      document.getElementById('up-dok-kategori').value = kategori;
+      document.getElementById('modal-upload-title').innerText = judulModal;
+      document.getElementById('up-dok-judul').value = "";
+      document.getElementById('up-dok-desc').value = "";
+      document.getElementById('up-dok-video').value = "";
+      document.getElementById('up-dok-file').value = "";
+      document.getElementById('grp-up-video').style.display = kategori === "VIDEO" ? "block" : "none";
+      document.getElementById('lbl-up-desc').innerText = kategori === "JOBSHEET" ? "Perintah CLI / Langkah Praktik (Otomatis muncul tombol Salin)" : "Ringkasan Materi / Instruksi";
+      document.getElementById('modal-upload-dok').style.display = "flex";
+    }
+
+    function tutupModalUpload() {
+      document.getElementById('modal-upload-dok').style.display = "none";
+    }
+
+    function prosesUploadDokumen() {
+      const kategori = document.getElementById('up-dok-kategori').value;
+      const judul = document.getElementById('up-dok-judul').value.trim();
+      const deskripsi = document.getElementById('up-dok-desc').value.trim();
+      const videoUrl = document.getElementById('up-dok-video').value.trim();
+      const fileInput = document.getElementById('up-dok-file');
+      const namaMapel = document.getElementById('ws-mapel-title').innerText;
+
+      if (!judul) { alert("Judul dokumen / topik wajib diisi!"); return; }
+
+      const btn = document.getElementById('btn-submit-upload');
+      btn.disabled = true;
+      btn.innerText = "⏳ Mengunggah ke Google Drive...";
+
+      const kirimPayload = async (fileBase64, fileName, mimeType) => {
+        try {
+          const res = await fetch(API_URL, {
+            method: "POST",
+            body: JSON.stringify({
+              action: "uploadDokumenPortal",
+              mapel: namaMapel,
+              kategori: kategori,
+              judul: judul,
+              deskripsi: deskripsi,
+              videoUrl: videoUrl,
+              fileBase64: fileBase64,
+              fileName: fileName,
+              mimeType: mimeType
+            })
+          });
+          const hasil = await res.json();
+          if (hasil.status === "success") {
+            showToast("✅ File asli tersimpan di Drive & dipublikasikan!");
+            tutupModalUpload();
+            muatDataServer();
+          } else {
+            alert("Gagal upload: " + hasil.message);
+          }
+        } catch (e) {
+          alert("Gagal terhubung ke server.");
+        }
+        btn.disabled = false;
+        btn.innerText = "🚀 Simpan & Publikasikan";
+      };
+
+      if (fileInput.files && fileInput.files[0]) {
+        const f = fileInput.files[0];
+        const reader = new FileReader();
+        reader.onload = (ev) => kirimPayload(ev.target.result, f.name, f.type);
+        reader.readAsDataURL(f);
+      } else {
+        kirimPayload("", "", "");
+      }
+    }
+
+    async function hapusDokumen(idDok) {
+      if (!confirm("Hapus item ini dari tampilan portal? (File asli di Google Drive Anda tetap aman tersimpan)")) return;
+      showToast("Menghapus item...");
+      await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "hapusDokumenPortal", idDokumen: idDok }) });
+      muatDataServer();
+    }
+
+    function ubahKeEmbedYouTube(url) {
+      if (!url) return "";
+      const regExp = /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+      const match = url.match(regExp);
+      return match ? `https://www.youtube.com/embed/${match[1]}` : ""; }  function renderSemuaKategoriDokumen(namaMapel) { const kategoriList = ["KALDIK", "CP", "ATP", "PROTA_PROSEM", "MODUL_AJAR", "MATERI", "VIDEO", "JOBSHEET", "LKPD"]; kategoriList.forEach(kat => { const container = document.getElementById(`list-dok-${kat}`);
+        if (!container) return;
+
+        // Kaldik, CP, ATP berlaku lintas semua mapel atau khusus mapel ini
+        const items = semuaDataMateri.filter(m => {
+          const katItem = (m[3] || "").toString().trim();
+          const mapelItem = (m[2] || "").toString().trim();
+          if (["KALDIK", "CP", "ATP"].includes(kat)) return katItem === kat;
+          return katItem === kat && mapelItem === namaMapel.trim();
+        });
+
+        if (items.length === 0) {
+          if (["PROTA_PROSEM", "MODUL_AJAR", "MATERI", "VIDEO", "JOBSHEET", "LKPD"].includes(kat)) {
+            container.innerHTML = `<div style="background:#f8fafc; border:1px dashed #cbd5e1; border-radius:8px; padding:18px; text-align:center; color:#64748b; font-size:13px;">Belum ada file/konten pada bagian ini.</div>`;
+          } else {
+            container.innerHTML = "";
+          }
+          return;
+        }
+
+        container.innerHTML = items.slice().reverse().map(item => {
+          const idDok = item[0];
+          const waktu = item[1];
+          const judul = item[4];
+          const desc = item[5];
+          const namaFile = item[6];
+          const linkView = item[7];
+          const linkDownload = item[8];
+          const linkVideo = item[9];
+
+          let extraHtml = "";
+          if (kat === "VIDEO" && linkVideo) {
+            const embedUrl = ubahKeEmbedYouTube(linkVideo);
+            if (embedUrl) {
+              extraHtml += `<iframe class="video-frame" src="${embedUrl}" allowfullscreen></iframe>`;
+            }
+          }
+          if (kat === "JOBSHEET" && desc) {
+            extraHtml += `
+              <div class="code-wrapper">
+                <button class="btn-copy" onclick="salinKode(this)">📋 Salin Perintah</button>
+                <pre>${desc}</pre>
+              </div>`;
+          } else if (desc) {
+            extraHtml += `<div class="doc-card-desc">${desc}</div>`;
+          }
+
+          let actionBtns = "";
+          if (linkDownload) {
+            actionBtns += `<a href="${linkDownload}" target="_blank" class="btn-sm btn-emerald">📥 Download File Asli (${namaFile || "Dokumen"})</a>`;
+          }
+          if (linkView) {
+            actionBtns += `<a href="${linkView}" target="_blank" class="btn-sm btn-sky">👁️ Pratinjau Drive</a>`;
+          }
+          if (kat === "LKPD" && currentRole === "siswa") {
+            const sudahKumpul = semuaDataTugas.find(t => (t[2] || "").toString() === idDok && (t[4] || "").toString().trim() === currentUser.nisn);
+            if (sudahKumpul) {
+              actionBtns += `<span class="status-ok" style="padding:7px 12px; font-size:12.5px;">✅ Sudah Mengumpulkan (${sudahKumpul[0]})</span>`;
+            } else {
+              actionBtns += `<button class="btn-sm btn-indigo" onclick="bukaModalKumpul('${idDok}', '${judul.replace(/'/g, "\\'")}')">📤 Upload Jawaban Tugas</button>`;
+            }
+          }
+          if (currentRole === "admin") {
+            actionBtns += `<button class="btn-sm btn-danger" onclick="hapusDokumen('${idDok}')">🗑️ Hapus</button>`;
+          }
+
+          return `
+            <div class="doc-card">
+              <div class="doc-card-header">
+                <div>
+                  <div class="doc-card-title">${judul}</div>
+                  <div class="doc-card-meta">Dipublikasikan: ${waktu}</div>
+                </div>
+              </div>
+              ${extraHtml}
+              <div class="doc-actions">${actionBtns}</div>
+            </div>`;
+        }).join('');
+      });
+    }
+
+    // ================= PENGUMPULAN TUGAS SISWA & PANTAUAN GURU =================
+    function bukaModalKumpul(idLKPD, judulLKPD) {
+      document.getElementById('kumpul-id-lkpd').value = idLKPD;
+      document.getElementById('kumpul-judul-lkpd').innerText = "Tugas: " + judulLKPD;
+      document.getElementById('kumpul-file-input').value = "";
+      document.getElementById('kumpul-catatan').value = "";
+      document.getElementById('modal-kumpul-siswa').style.display = "flex";
+    }
+
+    function tutupModalKumpul() {
+      document.getElementById('modal-kumpul-siswa').style.display = "none";
+    }
+
+    function prosesKumpulTugasSiswa() {
+      const idLKPD = document.getElementById('kumpul-id-lkpd').value;
+      const judulLKPD = document.getElementById('kumpul-judul-lkpd').innerText.replace("Tugas: ", "");
+      const catatan = document.getElementById('kumpul-catatan').value.trim();
+      const fileInput = document.getElementById('kumpul-file-input');
+      const namaMapel = document.getElementById('ws-mapel-title').innerText;
+
+      if (!fileInput.files || !fileInput.files[0]) {
+        alert("Silakan pilih file jawaban praktik/laporan Anda terlebih dahulu!");
+        return;
+      }
+
+      const f = fileInput.files[0];
+      const btn = document.getElementById('btn-submit-kumpul');
+      btn.disabled = true;
+      btn.innerText = "⏳ Mengunggah ke Drive Guru...";
+
+      const reader = new FileReader();
+      reader.onload = async (ev) => {
+        try {
+          const res = await fetch(API_URL, {
+            method: "POST",
+            body: JSON.stringify({
+              action: "kumpulTugasSiswa",
+              mapel: namaMapel,
+              idLKPD: idLKPD,
+              judulLKPD: judulLKPD,
+              nisn: currentUser.nisn,
+              nama: currentUser.nama,
+              kelas: currentUser.kelas,
+              fileBase64: ev.target.result,
+              fileName: f.name,
+              mimeType: f.type,
+              catatan: catatan || "-"
+            })
+          });
+          const hasil = await res.json();
+          if (hasil.status === "success") {
+            showToast("✅ Tugas berhasil dikumpulkan ke Google Drive guru!");
+            tutupModalKumpul();
+            muatDataServer();
+          } else {
+            alert("Gagal mengumpulkan tugas: " + hasil.message);
+          }
+        } catch (e) {
+          alert("Gagal terhubung ke server.");
+        }
+        btn.disabled = false;
+        btn.innerText = "🚀 Kirim File Tugas";
+      };
+      reader.readAsDataURL(f);
+    }
+
+    function renderTabelTugasMasuk(namaMapel) {
+      const tbody = document.getElementById('tabel-tugas-masuk');
+      if (!tbody) return;
+      const rows = semuaDataTugas.filter(t => (t[1] || "").toString().trim() === namaMapel.trim());
+      if (rows.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Belum ada siswa mengumpulkan tugas pada mapel ini.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = rows.slice().reverse().map(r => `
+        <tr>
+          <td style="white-space:nowrap;">${r[0]}</td>
+          <td><strong>${r[5]}</strong><br><span style="font-size:11.5px; color:#64748b;">NISN: ${r[4]} •${r[6]}</span></td>
+          <td><strong>${r[3]}</strong></td>
+          <td style="font-size:12px;">${r[10] || "-"}</td>
+          <td style="white-space:nowrap;">
+            ${r[9] ? `<a href="${r[9]}" target="_blank" class="link-btn link-foto">📥 Download (${r[7]})</a>` : ""}
+            ${r[8] ? `<a href="${r[8]}" target="_blank" class="link-btn link-maps">👁️ Buka</a>` : ""}
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // ================= BUKU NILAI DINAMIS =================
     function muatStateNilaiMapel(kelasMapel, namaMapel, isPKL) {
       nilaiConfig = { tugas: 3, catatan: 3, ut: 2, up: 2 };
       nilaiStateSiswa = {};
@@ -1052,7 +1416,6 @@
       const nk = Math.max(0, 100 - (alpa * 3));
       const nHadir40 = nk * 0.40;
 
-      // Gabungan Tugas & Catatan (hanya membagi kolom yang terisi nilai)
       let sumTC = 0, cntTC = 0;
       for (let i = 0; i < nilaiConfig.tugas; i++) {
         const v = st.tugas[i];
@@ -1065,7 +1428,6 @@
       const ntCT = cntTC > 0 ? sumTC / cntTC : 0;
       const nTugas30 = ntCT * 0.30;
 
-      // Ulangan Harian: Teori (30%) + Praktek (70%) -> Total Bobot 20%
       const avgUT = rataRataDinamis(st.ut, nilaiConfig.ut);
       const ntt = avgUT * 0.30;
       const avgUP = rataRataDinamis(st.up, nilaiConfig.up);
@@ -1073,7 +1435,6 @@
       const ntu = ntt + ntp;
       const nUH20 = ntu * 0.20;
 
-      // Ujian (10%)
       const uVal = (st.ujian !== "" && st.ujian !== null && st.ujian !== undefined && !isNaN(st.ujian)) ? Number(st.ujian) : 0;
       const nUjian10 = uVal * 0.10;
 
@@ -1092,15 +1453,10 @@
       else nilaiStateSiswa[nisn][field][idx] = cleanVal;
 
       const h = hitungNilaiBaris(nilaiStateSiswa[nisn]);
-      document.getElementById(`nk-${nisn}`).innerText = h.nk.toFixed(0);
-      document.getElementById(`nh40-${nisn}`).innerText = h.nHadir40.toFixed(1);
-      document.getElementById(`ntct-${nisn}`).innerText = h.ntCT.toFixed(1);
-      document.getElementById(`nt30-${nisn}`).innerText = h.nTugas30.toFixed(1);
-      document.getElementById(`ntu-${nisn}`).innerText = h.ntu.toFixed(1);
-      document.getElementById(`nuh20-${nisn}`).innerText = h.nUH20.toFixed(1);
-      document.getElementById(`nun10-${nisn}`).innerText = h.nUjian10.toFixed(1);
-
-      const elRapor = document.getElementById(`rapor-${nisn}`);
+      document.getElementById(`nk-${nisn}`).innerText = h.nk.toFixed(0); document.getElementById(`nh40-${nisn}`).innerText = h.nHadir40.toFixed(1);
+      document.getElementById(`ntct-${nisn}`).innerText = h.ntCT.toFixed(1); document.getElementById(`nt30-${nisn}`).innerText = h.nTugas30.toFixed(1);
+      document.getElementById(`ntu-${nisn}`).innerText = h.ntu.toFixed(1); document.getElementById(`nuh20-${nisn}`).innerText = h.nUH20.toFixed(1);
+      document.getElementById(`nun10-${nisn}`).innerText = h.nUjian10.toFixed(1);  const elRapor = document.getElementById(`rapor-${nisn}`);
       elRapor.innerText = h.nRapor.toFixed(1);
       elRapor.className = h.nRapor >= 75 ? "nilai-final" : "nilai-remedi";
     }
@@ -1127,499 +1483,4 @@
         <th rowspan="2" style="min-width:170px;">Nama Siswa</th>
         <th colspan="3" class="grp-hadir">Kehadiran (40%)</th>
         <th colspan="${colSpanTugas}" class="grp-tugas">Tugas & Catatan (30%)</th>
-        <th colspan="${colSpanUH}" class="grp-uh">Ulangan Harian (20%: Teori 30% + Praktek 70%)</th>
-        <th colspan="2" class="grp-un">Ujian (10%)</th>
-        <th rowspan="2" class="grp-rapor">Nilai<br>Rapor</th>
-      </tr>`;
-
-      let hRow2 = `<tr>
-        <th class="grp-hadir">Alpa</th><th class="grp-hadir">NK</th><th class="grp-hadir">40%</th>`;
-
-      for (let i = 1; i <= nilaiConfig.tugas; i++) {
-        const delBtn = (isAdmin && i === nilaiConfig.tugas && i > 1) ? `<button class="btn-del-col" onclick="hapusKolomNilai('tugas')" title="Hapus kolom">×</button>` : "";
-        hRow2 += `<th class="grp-tugas">T${i}${delBtn}</th>`;
-      }
-      for (let i = 1; i <= nilaiConfig.catatan; i++) {
-        const delBtn = (isAdmin && i === nilaiConfig.catatan && i > 1) ? `<button class="btn-del-col" onclick="hapusKolomNilai('catatan')" title="Hapus kolom">×</button>` : "";
-        hRow2 += `<th class="grp-tugas">C${i}${delBtn}</th>`;
-      }
-      hRow2 += `<th class="grp-tugas">Rata</th><th class="grp-tugas">30%</th>`;
-
-      for (let i = 1; i <= nilaiConfig.ut; i++) {
-        const delBtn = (isAdmin && i === nilaiConfig.ut && i > 1) ? `<button class="btn-del-col" onclick="hapusKolomNilai('ut')" title="Hapus kolom">×</button>` : "";
-        hRow2 += `<th class="grp-uh">UT${i}${delBtn}</th>`;
-      }
-      for (let i = 1; i <= nilaiConfig.up; i++) {
-        const delBtn = (isAdmin && i === nilaiConfig.up && i > 1) ? `<button class="btn-del-col" onclick="hapusKolomNilai('up')" title="Hapus kolom">×</button>` : "";
-        hRow2 += `<th class="grp-uh">UP${i}${delBtn}</th>`;
-      }
-      hRow2 += `<th class="grp-uh">NTU</th><th class="grp-uh">20%</th>`;
-      hRow2 += `<th class="grp-un">Nilai</th><th class="grp-un">10%</th></tr>`;
-
-      thead.innerHTML = hRow1 + hRow2;
-
-      if (daftarSiswa.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="25" style="text-align:center; padding:16px;">Belum ada data siswa pada kelas ini.</td></tr>`;
-        return;
-      }
-
-      const disAttr = isAdmin ? "" : "disabled";
-      tbody.innerHTML = daftarSiswa.map((s, idx) => {
-        const nisn = (s[0] || "").toString().trim();
-        const nama = (s[1] || "").toString().trim();
-        if (!nilaiStateSiswa[nisn]) {
-          nilaiStateSiswa[nisn] = { alpa: 0, tugas: [], catatan: [], ut: [], up: [], ujian: "" };
-        }
-        const st = nilaiStateSiswa[nisn];
-        const h = hitungNilaiBaris(st);
-
-        let rowHtml = `<tr>
-          <td>${idx + 1}</td>
-          <td class="nama-col">${nama}</td>
-          <td><input type="number" min="0" max="33" class="nilai-input" ${disAttr} value="${st.alpa}" oninput="updateSelNilai('${nisn}','alpa',0,this.value)" /></td>
-          <td class="nilai-calc" id="nk-${nisn}">${h.nk.toFixed(0)}</td>
-          <td class="nilai-calc" id="nh40-${nisn}">${h.nHadir40.toFixed(1)}</td>`;
-
-        for (let i = 0; i < nilaiConfig.tugas; i++) {
-          const v = st.tugas[i] !== undefined ? st.tugas[i] : "";
-          rowHtml += `<td><input type="number" min="0" max="100" class="nilai-input" ${disAttr} value="${v}" oninput="updateSelNilai('${nisn}','tugas',${i},this.value)" /></td>`;
-        }
-        for (let i = 0; i < nilaiConfig.catatan; i++) {
-          const v = st.catatan[i] !== undefined ? st.catatan[i] : "";
-          rowHtml += `<td><input type="number" min="0" max="100" class="nilai-input" ${disAttr} value="${v}" oninput="updateSelNilai('${nisn}','catatan',${i},this.value)" /></td>`;
-        }
-        rowHtml += `<td class="nilai-calc" id="ntct-${nisn}">${h.ntCT.toFixed(1)}</td>
-                    <td class="nilai-calc" id="nt30-${nisn}">${h.nTugas30.toFixed(1)}</td>`;
-
-        for (let i = 0; i < nilaiConfig.ut; i++) {
-          const v = st.ut[i] !== undefined ? st.ut[i] : "";
-          rowHtml += `<td><input type="number" min="0" max="100" class="nilai-input" ${disAttr} value="${v}" oninput="updateSelNilai('${nisn}','ut',${i},this.value)" /></td>`;
-        }
-        for (let i = 0; i < nilaiConfig.up; i++) {
-          const v = st.up[i] !== undefined ? st.up[i] : "";
-          rowHtml += `<td><input type="number" min="0" max="100" class="nilai-input" ${disAttr} value="${v}" oninput="updateSelNilai('${nisn}','up',${i},this.value)" /></td>`;
-        }
-        rowHtml += `<td class="nilai-calc" id="ntu-${nisn}">${h.ntu.toFixed(1)}</td>
-                    <td class="nilai-calc" id="nuh20-${nisn}">${h.nUH20.toFixed(1)}</td>`;
-
-        const uVal = st.ujian !== undefined ? st.ujian : "";
-        const raporCls = h.nRapor >= 75 ? "nilai-final" : "nilai-remedi";
-        rowHtml += `<td><input type="number" min="0" max="100" class="nilai-input" ${disAttr} value="${uVal}" oninput="updateSelNilai('${nisn}','ujian',0,this.value)" /></td>
-                    <td class="nilai-calc" id="nun10-${nisn}">${h.nUjian10.toFixed(1)}</td>
-                    <td class="${raporCls}" id="rapor-${nisn}">${h.nRapor.toFixed(1)}</td></tr>`;
-
-        return rowHtml;
-      }).join('');
-    }
-
-    async function simpanNilaiKeServer() {
-      const kelasMapel = document.getElementById('ws-kelas-badge').innerText;
-      const namaMapel = document.getElementById('ws-mapel-title').innerText;
-      const isPKL = namaMapel.toUpperCase().includes("PKL") || namaMapel.toUpperCase().includes("PRAKTEK KERJA");
-      const daftarSiswa = dapatkanSiswaMapelIni(kelasMapel, isPKL);
-
-      const rowsPayload = daftarSiswa.map(s => {
-        const nisn = (s[0] || "").toString().trim();
-        const nama = (s[1] || "").toString().trim();
-        const kls = (s[2] || "").toString().trim();
-        const st = nilaiStateSiswa[nisn] || { alpa: 0, tugas: [], catatan: [], ut: [], up: [], ujian: "" };
-        const h = hitungNilaiBaris(st);
-
-        return {
-          nisn, nama, kelas: kls,
-          alpa: st.alpa || 0,
-          nHadir: Number(h.nHadir40.toFixed(2)),
-          nTugas: Number(h.nTugas30.toFixed(2)),
-          nUH: Number(h.nUH20.toFixed(2)),
-          nUjian: Number(h.nUjian10.toFixed(2)),
-          nRapor: Number(h.nRapor.toFixed(2)),
-          detail: st
-        };
-      });
-
-      const btn = document.getElementById('btn-simpan-nilai');
-      btn.disabled = true;
-      btn.innerText = "⏳ Menyimpan ke Sheets...";
-      try {
-        const res = await fetch(API_URL, {
-          method: "POST",
-          body: JSON.stringify({ action: "simpanNilaiMapel", mapel: namaMapel, rows: rowsPayload })
-        });
-        const hasil = await res.json();
-        if (hasil.status === "success") {
-          showToast("✅ Rekap nilai berhasil disimpan ke Google Sheets!");
-          muatDataServer();
-        } else {
-          alert("Gagal menyimpan nilai: " + hasil.message);
-        }
-      } catch (e) {
-        alert("Gagal terhubung ke server.");
-      }
-      btn.disabled = false;
-      btn.innerText = "💾 Simpan ke Google Sheets";
-    }
-
-    function exportNilaiCSV() {
-      const kelasMapel = document.getElementById('ws-kelas-badge').innerText;
-      const namaMapel = document.getElementById('ws-mapel-title').innerText;
-      const isPKL = namaMapel.toUpperCase().includes("PKL") || namaMapel.toUpperCase().includes("PRAKTEK KERJA");
-      const daftarSiswa = dapatkanSiswaMapelIni(kelasMapel, isPKL);
-
-      let csv = "No,NISN,Nama Siswa,Kelas,Alpa,Nilai Hadir (40%),Nilai Tugas & Catatan (30%),Nilai UH (20%),Nilai Ujian (10%),Nilai Rapor Akhir\n";
-      daftarSiswa.forEach((s, idx) => {
-        const nisn = (s[0] || "").toString().trim();
-        const nama = (s[1] || "").toString().trim();
-        const kls = (s[2] || "").toString().trim();
-        const st = nilaiStateSiswa[nisn] || { alpa: 0, tugas: [], catatan: [], ut: [], up: [], ujian: "" };
-        const h = hitungNilaiBaris(st);
-        csv += `${idx + 1},"${nisn}","${nama}","${kls}",${st.alpa || 0},${h.nHadir40.toFixed(2)},${h.nTugas30.toFixed(2)},${h.nUH20.toFixed(2)},${h.nUjian10.toFixed(2)},${h.nRapor.toFixed(2)}\n`;
-      });
-
-      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = `Rekap_Nilai_${namaMapel.replace(/[^a-zA-Z0-9]/g, "_")}.csv`;
-      link.click();
-    }
-
-    // ================= LOGIKA WORKSPACE & MODE PKL =================
-    function bukaWorkspace(kelas, namaMapel, isRestore = false) {
-      document.getElementById('home-mapel-view').style.display = 'none';
-      document.getElementById('workspace-view').style.display = 'block';
-      document.getElementById('ws-kelas-badge').innerText = kelas;
-      document.getElementById('ws-mapel-title').innerText = namaMapel;
-
-      if (!isRestore) {
-        simpanSesi({ activeKelas: kelas, activeMapel: namaMapel });
-      }
-
-      const isPKL = namaMapel.toUpperCase().includes("PKL") || namaMapel.toUpperCase().includes("PRAKTEK KERJA");
-      renderDaftarSiswaPerMapel(kelas, isPKL);
-      muatStateNilaiMapel(kelas, namaMapel, isPKL);
-
-      if (isPKL) {
-        document.getElementById('judul-panel-kbm').innerText = "🏢 Absensi & Monitoring Praktek Kerja Lapangan (PKL)";
-        document.getElementById('mode-kbm-reguler').style.display = 'none';
-        document.getElementById('mode-kbm-pkl').style.display = 'block';
-
-        if (currentRole === "siswa") {
-          document.getElementById('pkl-student-form').style.display = 'block';
-          document.getElementById('pkl-admin-monitor').style.display = 'none';
-          document.getElementById('pkl-nama').value = currentUser.nama;
-          document.getElementById('pkl-nisn-kelas').value = `${currentUser.nisn} - ${currentUser.kelas}`;
-          bukaMenuWorkspace('panel-kbm', document.getElementById('nav-kbm'), isRestore);
-          setTimeout(() => { initMapPKL(); }, 250);
-        } else {
-          document.getElementById('pkl-student-form').style.display = 'none';
-          document.getElementById('pkl-admin-monitor').style.display = 'block';
-          if (!isRestore) {
-            bukaMenuWorkspace('panel-kbm', document.getElementById('nav-kbm'));
-            muatDataServer();
-          }
-        }
-      } else {
-        document.getElementById('judul-panel-kbm').innerText = "💻 Kegiatan Belajar Mengajar (KBM)";
-        document.getElementById('mode-kbm-reguler').style.display = 'block';
-        document.getElementById('mode-kbm-pkl').style.display = 'none';
-
-        if (!isRestore) {
-          if (currentRole === "siswa") {
-            bukaMenuWorkspace('panel-kbm', document.getElementById('nav-kbm'));
-            pilihSubKBM('kbm-jobsheet', document.querySelectorAll('#panel-kbm .sub-tab')[2]);
-          } else {
-            bukaMenuWorkspace('panel-akademik', document.getElementById('nav-akademik'));
-          }
-        }
-      }
-    }
-
-    function pilihTabAdminPKL(idTab, el) {
-      document.querySelectorAll('#pkl-admin-monitor .sub-tab').forEach(t => t.classList.remove('active'));
-      el.classList.add('active');
-      document.getElementById('tab-pkl-sudah').style.display = idTab === 'tab-pkl-sudah' ? 'block' : 'none';
-      document.getElementById('tab-pkl-belum').style.display = idTab === 'tab-pkl-belum' ? 'block' : 'none';
-    }
-
-    function initMapPKL() {
-      if (!pklMap) {
-        pklMap = L.map('pkl-map').setView([pklLat, pklLng], 15);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' }).addTo(pklMap);
-        pklMarker = L.marker([pklLat, pklLng], { draggable: true }).addTo(pklMap);
-
-        pklMarker.on('dragend', () => {
-          const pos = pklMarker.getLatLng();
-          pklLat = pos.lat; pklLng = pos.lng;
-          pklLokasiTerkunci = false;
-          document.getElementById('pkl-info-terkunci').style.display = 'none';
-          document.getElementById('pkl-gps-status').innerHTML = `📌 Pin disesuaikan: <b>${pklLat.toFixed(6)}, ${pklLng.toFixed(6)}</b>. Klik tombol hijau untuk mengunci.`;
-        });
-      } else {
-        pklMap.invalidateSize();
-      }
-      deteksiGPSPKL();
-    }
-
-    function deteksiGPSPKL() {
-      const st = document.getElementById('pkl-gps-status');
-      st.className = "status-banner banner-warn";
-      st.innerHTML = "🛰️ Mengunci sinyal satelit GPS HP Anda...";
-
-      if (!navigator.geolocation) {
-        st.className = "status-banner banner-err";
-        st.innerHTML = "❌ Browser tidak mendukung GPS. Geser pin merah langsung pada peta.";
-        return;
-      }
-
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          pklLat = pos.coords.latitude;
-          pklLng = pos.coords.longitude;
-          const akurasi = Math.round(pos.coords.accuracy);
-          pklMap.flyTo([pklLat, pklLng], 18);
-          pklMarker.setLatLng([pklLat, pklLng]);
-          st.className = "status-banner banner-ok";
-          st.innerHTML = `✅ <b>GPS Ditemukan!</b> Akurasi ±${akurasi}m (${pklLat.toFixed(6)}, ${pklLng.toFixed(6)}). Klik tombol di bawah untuk mengunci.`;
-        },
-        () => {
-          st.className = "status-banner banner-err";
-          st.innerHTML = "⚠️ Izin lokasi belum aktif. Pastikan GPS menyala atau geser pin merah pada peta.";
-        },
-        { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
-      );
-    }
-
-    function kunciPosisiPKL() {
-      pklLokasiTerkunci = true;
-      const info = document.getElementById('pkl-info-terkunci');
-      info.style.display = 'block';
-      info.innerHTML = `🔒 <b>Koordinat Terkunci:</b> ${pklLat.toFixed(6)}, ${pklLng.toFixed(6)}`;
-      showToast("Titik lokasi GPS berhasil dikunci!");
-    }
-
-    function prosesFotoPKL(file, sumber) {
-      if (!file) return;
-      document.getElementById('pkl-nama-foto').innerText = `✅ Sumber: ${sumber} (${file.name})`;
-      const reader = new FileReader();
-      reader.onload = function(ev) {
-        const img = new Image();
-        img.onload = function() {
-          const canvas = document.createElement('canvas');
-          const maxW = 800;
-          const scale = maxW / img.width;
-          canvas.width = maxW;
-          canvas.height = img.height * scale;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          pklFotoBase64 = canvas.toDataURL('image/jpeg', 0.7);
-          const prev = document.getElementById('pkl-foto-preview');
-          prev.src = pklFotoBase64;
-          prev.style.display = 'block';
-        };
-        img.src = ev.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-
-    async function kirimAbsensiPKL() {
-      const instansi = document.getElementById('pkl-instansi').value.trim();
-      const kategori = document.getElementById('pkl-kategori').value;
-      const keterangan = document.getElementById('pkl-keterangan').value.trim();
-
-      if (!instansi) { alert("Nama Instansi / Tempat PKL wajib diisi!"); return; }
-      if (!pklLokasiTerkunci) { alert("Silakan klik tombol 'Posisi Sesuai (Kunci Koordinat GPS)' terlebih dahulu!"); return; }
-      if (!pklFotoBase64) { alert("Silakan ambil foto selfie atau unggah foto bukti terlebih dahulu!"); return; }
-
-      const btn = document.getElementById('btn-kirim-pkl');
-      btn.disabled = true;
-      btn.innerText = "⏳ Mengunggah Foto & Data GPS...";
-
-      try {
-        const res = await fetch(API_URL, {
-          method: "POST",
-          body: JSON.stringify({
-            action: "simpanAbsensiPKL",
-            name: currentUser.nama,
-            nisn: currentUser.nisn,
-            jurusan: currentUser.kelas,
-            instansi: instansi,
-            type: kategori,
-            location: `${pklLat.toFixed(6)}, ${pklLng.toFixed(6)}`,
-            photo: pklFotoBase64,
-            keterangan: keterangan || "-"
-          })
-        });
-        const hasil = await res.json();
-        if (hasil.status === "success") {
-          showToast("✅ Absensi PKL berhasil direkam ke server!");
-          document.getElementById('pkl-keterangan').value = "";
-          document.getElementById('pkl-foto-preview').style.display = 'none';
-          document.getElementById('pkl-nama-foto').innerText = "Belum ada foto dipilih";
-          document.getElementById('pkl-info-terkunci').style.display = 'none';
-          pklLokasiTerkunci = false;
-          pklFotoBase64 = "";
-        } else {
-          alert("Gagal mengirim: " + (hasil.message || "Kesalahan server"));
-        }
-      } catch (e) {
-        alert("Gagal terhubung ke server.");
-      }
-      btn.disabled = false;
-      btn.innerText = "🚀 KIRIM ABSENSI PKL SEKARANG";
-    }
-
-    function renderMonitorPKL(rows) {
-      document.getElementById('stat-pkl-total').innerText = rows.length;
-      document.getElementById('stat-pkl-pagi').innerText = rows.filter(r => (r[5] || "").includes("Masuk")).length;
-      document.getElementById('stat-pkl-pulang').innerText = rows.filter(r => (r[5] || "").includes("Pulang")).length;
-      tampilkanBarisPKL(rows);
-      hitungBelumAbsenPKL(rows);
-    }
-
-    function hitungBelumAbsenPKL(rows) {
-      const siswaPKLBimbingan = semuaDataSiswa.filter(s => (s[4] || "").toString().trim().toUpperCase() === "YA");
-      const now = new Date();
-      const dd = String(now.getDate()).padStart(2, '0');
-      const mm = String(now.getMonth() + 1).padStart(2, '0');
-      const yyyy = now.getFullYear();
-      const tglHariIni = `${dd}/${mm}/${yyyy}`;
-
-      const nisnSudahHariIni = new Set(
-        rows
-          .filter(r => (r[0] || "").toString().startsWith(tglHariIni))
-          .map(r => (r[2] || "").toString().trim())
-      );
-
-      const belumAbsen = siswaPKLBimbingan.filter(s => !nisnSudahHariIni.has((s[0] || "").toString().trim()));
-      document.getElementById('stat-pkl-belum').innerText = belumAbsen.length;
-
-      const tbodyBelum = document.getElementById('tabel-belum-absen-pkl');
-      if (belumAbsen.length === 0) {
-        tbodyBelum.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#166534; font-weight:bold;">🎉 Seluruh siswa bimbingan PKL sudah mengirim presensi hari ini!</td></tr>';
-        return;
-      }
-
-      tbodyBelum.innerHTML = belumAbsen.map((s, idx) => `
-        <tr>
-          <td>${idx + 1}</td>
-          <td>${s[0]}</td>
-          <td><strong>${s[1]}</strong></td>
-          <td>${s[2]}</td>
-          <td><span class="status-no">BELUM ABSEN (${tglHariIni})</span></td>
-        </tr>
-      `).join('');
-    }
-
-    function filterTabelPKL() {
-      const q = document.getElementById('cari-pkl-admin').value.toLowerCase();
-      const filtered = semuaDataPKL.filter(r => 
-        (r[1] || "").toString().toLowerCase().includes(q) ||
-        (r[2] || "").toString().toLowerCase().includes(q) ||
-        (r[4] || "").toString().toLowerCase().includes(q)
-      );
-      tampilkanBarisPKL(filtered);
-    }
-
-    function tampilkanBarisPKL(rows) {
-      const tbody = document.getElementById('tabel-monitoring-pkl');
-      if (!rows || rows.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Belum ada catatan presensi PKL.</td></tr>';
-        return;
-      }
-      tbody.innerHTML = "";
-      rows.slice().reverse().forEach(r => {
-        const koord = (r[6] || "").toString().replace(/\s+/g, "");
-        const mapsUrl = koord ? `https://www.google.com/maps?q=${koord}` : "";
-        const fotoUrl = r[7] || "";
-
-        tbody.innerHTML += `<tr>
-          <td style="white-space:nowrap;">${r[0]}</td>
-          <td><strong>${r[1]}</strong><br><span style="color:#64748b; font-size:12px;">NISN: ${r[2]} • ${r[3]}</span></td>
-          <td><strong>${r[4]}</strong></td>
-          <td><span class="status-ok">${r[5]}</span><br><span style="font-size:12px; color:#475569; font-style:italic;">${r[8] || "-"}</span></td>
-          <td style="white-space:nowrap;">
-            ${mapsUrl ? `<a href="${mapsUrl}" target="_blank" class="link-btn link-maps">📍 Maps</a>` : ""}
-            ${fotoUrl ? `<a href="${fotoUrl}" target="_blank" class="link-btn link-foto">🖼️ Foto</a>` : ""}
-          </td>
-        </tr>`;
-      });
-    }
-
-    // ================= FUNGSI ADMIN & NAVIGASI LAINNYA =================
-    async function simpanTokenBaru() {
-      const tokenBaru = document.getElementById('input-token-baru').value.trim();
-      if (!tokenBaru) return;
-      showToast("Menyimpan token baru...");
-      await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "updateToken", tokenBaru: tokenBaru }) });
-      showToast("Token berhasil diubah ke: " + tokenBaru.toUpperCase());
-    }
-
-    async function toggleStatusMapel(idMapel) {
-      showToast("Mengubah status mapel...");
-      const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "toggleStatusMapel", idMapel }) });
-      const data = await res.json();
-      showToast("Status mapel diubah menjadi: " + data.statusBaru);
-      muatDataServer();
-    }
-
-    function bukaModalMapel() { document.getElementById('modal-mapel').style.display = 'flex'; }
-    function tutupModalMapel() { document.getElementById('modal-mapel').style.display = 'none'; }
-
-    async function simpanMapelBaru() {
-      const kelas = document.getElementById('new-mapel-kelas').value.trim();
-      const namaMapel = document.getElementById('new-mapel-nama').value.trim();
-      const semester = document.getElementById('new-mapel-sem').value.trim();
-      if (!kelas || !namaMapel) { alert("Kelas dan Nama Mapel wajib diisi!"); return; }
-
-      document.getElementById('btn-simpan-mapel').innerText = "Menyimpan...";
-      await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "tambahMapel", kelas, namaMapel, semester }) });
-      document.getElementById('btn-simpan-mapel').innerText = "Simpan Mapel";
-      tutupModalMapel();
-      showToast("Mata pelajaran berhasil ditambahkan!");
-      muatDataServer();
-    }
-
-    function kembaliKePilihMapel() {
-      document.getElementById('workspace-view').style.display = 'none';
-      document.getElementById('home-mapel-view').style.display = 'block';
-      simpanSesi({ activeKelas: "", activeMapel: "", activePanel: "", activeNavId: "" });
-    }
-
-    function bukaMenuWorkspace(idPanel, el, isRestore = false) {
-      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.menu li').forEach(m => m.classList.remove('active'));
-      document.getElementById(idPanel).classList.add('active');
-      if (el) el.classList.add('active');
-      if (!isRestore && el) {
-        simpanSesi({ activePanel: idPanel, activeNavId: el.id });
-      }
-    }
-
-    function pilihSubAkademik(idSub, el) {
-      document.querySelectorAll('#panel-akademik .sub-tab').forEach(t => t.classList.remove('active'));
-      el.classList.add('active');
-      document.querySelectorAll('.akad-sub').forEach(s => s.style.display = 'none');
-      document.getElementById(idSub).style.display = 'block';
-    }
-
-    function pilihSubKBM(idSub, el) {
-      document.querySelectorAll('#panel-kbm .sub-tab').forEach(t => t.classList.remove('active'));
-      el.classList.add('active');
-      document.querySelectorAll('.kbm-sub').forEach(s => s.style.display = 'none');
-      document.getElementById(idSub).style.display = 'block';
-    }
-
-    function salinKode(btn) {
-      const kode = btn.nextElementSibling.innerText;
-      navigator.clipboard.writeText(kode);
-      btn.innerText = "✓ Tersalin!";
-      showToast("Perintah CLI disalin ke clipboard!");
-      setTimeout(() => { btn.innerText = "📋 Salin Perintah"; }, 2000);
-    }
-
-    function logout() {
-      localStorage.removeItem(SESSION_KEY);
-      location.reload();
-    }
-  </script>
-</body>
-</html>
+        <th colspan="${
