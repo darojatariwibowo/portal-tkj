@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Portal KBM & Akademik TKJ - Pak Darojat Ariwibowo</title>
+  <!-- Leaflet Map untuk GPS PKL -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     body { min-height: 100vh; background-color: #0f172a; color: #1e293b; }
@@ -25,10 +28,11 @@
     .login-tab.active { color: #0284c7; border-bottom-color: #0284c7; background: #ffffff; }
     
     .login-body { padding: 25px; }
-    .form-group { margin-bottom: 16px; position: relative; }
+    .form-group { margin-bottom: 15px; position: relative; }
     .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #334155; }
-    .form-group input { width: 100%; padding: 11px 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; transition: 0.2s; }
-    .form-group input:focus { outline: none; border-color: #0284c7; box-shadow: 0 0 0 3px rgba(2,132,199,0.15); }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 13px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; transition: 0.2s; background: #fff; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #0284c7; box-shadow: 0 0 0 3px rgba(2,132,199,0.15); }
+    .form-group input[readonly] { background: #f1f5f9; color: #475569; font-weight: 600; }
     
     .toggle-eye { position: absolute; right: 12px; top: 34px; cursor: pointer; font-size: 18px; user-select: none; color: #64748b; }
     .toggle-eye:hover { color: #0284c7; }
@@ -50,9 +54,13 @@
     .welcome-banner { background: linear-gradient(135deg, #0f172a, #1e293b); color: white; padding: 25px 30px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
     .token-box { background: rgba(255,255,255,0.1); padding: 12px 16px; border-radius: 8px; display: flex; gap: 8px; align-items: center; }
     .token-box input { width: 120px; padding: 7px 10px; border-radius: 6px; border: none; font-weight: bold; text-transform: uppercase; text-align: center; color: #0f172a; }
-    .btn-sm { padding: 7px 14px; border: none; border-radius: 6px; font-weight: 600; font-size: 13px; cursor: pointer; transition: 0.2s; }
+    .btn-sm { padding: 8px 14px; border: none; border-radius: 6px; font-weight: 600; font-size: 13px; cursor: pointer; transition: 0.2s; }
     .btn-sky { background: #38bdf8; color: #0f172a; }
     .btn-sky:hover { background: #7dd3fc; }
+    .btn-emerald { background: #10b981; color: white; }
+    .btn-emerald:hover { background: #059669; }
+    .btn-indigo { background: #4f46e5; color: white; }
+    .btn-indigo:hover { background: #4338ca; }
     .btn-danger { background: #ef4444; color: white; }
     .btn-archive { background: #e2e8f0; color: #475569; }
     .btn-archive:hover { background: #cbd5e1; }
@@ -100,15 +108,37 @@
     .sub-tab.active { background: #e0f2fe; color: #0284c7; border-color: #7dd3fc; }
     .doc-placeholder { background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 8px; padding: 30px; text-align: center; color: #64748b; }
 
+    /* MODUL PKL (GPS + KAMERA + STATISTIK ADMIN) */
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    .gps-box { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+    #pkl-map { height: 260px; width: 100%; border-radius: 8px; margin: 12px 0; z-index: 1; border: 1px solid #93c5fd; }
+    .status-banner { padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 10px; }
+    .banner-warn { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+    .banner-ok { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+    .banner-err { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 18px; }
+    .stat-card { background: #f8fafc; border: 1px solid #e2e8f0; padding: 14px; border-radius: 10px; }
+    .stat-card span { font-size: 11px; font-weight: bold; color: #64748b; text-transform: uppercase; }
+    .stat-card h3 { font-size: 24px; margin-top: 4px; color: #0f172a; }
+
     .code-wrapper { position: relative; margin-top: 12px; }
     pre { background: #0f172a; color: #38bdf8; padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 13px; line-height: 1.5; }
     .btn-copy { position: absolute; right: 10px; top: 10px; background: #1e293b; color: #e2e8f0; border: 1px solid #475569; padding: 5px 10px; border-radius: 5px; font-size: 12px; cursor: pointer; }
     .btn-copy:hover { background: #0284c7; color: white; border-color: #0284c7; }
 
-    table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 14px; }
-    th, td { padding: 11px 12px; text-align: left; border-bottom: 1px solid #e2e8f0; }
-    th { background: #f8fafc; color: #475569; }
-    .status-ok { background: #dcfce7; color: #166534; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13px; }
+    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
+    th { background: #f8fafc; color: #475569; font-weight: 700; }
+    .status-ok { background: #dcfce7; color: #166534; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; display: inline-block; }
+    .link-btn { display: inline-block; padding: 4px 9px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: 600; margin-right: 4px; }
+    .link-maps { background: #e0f2fe; color: #0369a1; }
+    .link-foto { background: #ccfbf1; color: #0f766e; }
+
+    @media (max-width: 768px) {
+      .workspace-layout { flex-direction: column; }
+      .sidebar { width: 100%; }
+    }
   </style>
 </head>
 <body>
@@ -120,7 +150,7 @@
     <div class="login-box">
       <div class="login-header">
         <h2>PORTAL AKADEMIK & KBM TKJ</h2>
-        <p>Pak Darojat Ariwibowo | Spektrum Kurikulum TKJ</p>
+        <p>SMK Negeri 1 Muntok | Pak Darojat Ariwibowo</p>
       </div>
       
       <div class="login-tabs">
@@ -203,7 +233,7 @@
           <ul class="menu">
             <li id="nav-akademik" class="active" onclick="bukaMenuWorkspace('panel-akademik', this)">📂 Menu Akademik</li>
             <li id="nav-kelas" onclick="bukaMenuWorkspace('panel-kelas', this)">👥 Menu Kelas & Siswa</li>
-            <li id="nav-kbm" onclick="bukaMenuWorkspace('panel-kbm', this)">💻 Menu KBM & Praktik</li>
+            <li id="nav-kbm" onclick="bukaMenuWorkspace('panel-kbm', this)">💻 Menu KBM / PKL</li>
             <li id="nav-nilai" onclick="bukaMenuWorkspace('panel-nilai', this)">📊 Menu Nilai & Rapor</li>
           </ul>
 
@@ -235,50 +265,158 @@
             </div>
           </div>
 
-          <!-- 3. PANEL KBM -->
+          <!-- 3. PANEL KBM / PKL -->
           <div id="panel-kbm" class="panel">
             <h2 id="judul-panel-kbm">💻 Kegiatan Belajar Mengajar (KBM)</h2>
-            <div class="sub-tabs">
-              <div class="sub-tab active" onclick="pilihSubKBM('kbm-absensi', this)">1. Monitoring Absensi Live</div>
-              <div class="sub-tab" onclick="pilihSubKBM('kbm-tujuan', this)">2. Tujuan Pembelajaran</div>
-              <div class="sub-tab" onclick="pilihSubKBM('kbm-jobsheet', this)">3. Tutorial & Jobsheet CLI</div>
-              <div class="sub-tab" onclick="pilihSubKBM('kbm-tugas', this)">4. Kumpul Tugas / Jurnal PKL</div>
-            </div>
-
-            <div id="kbm-absensi" class="kbm-sub">
-              <div style="display:flex; justify-content:space-between; align-items:center;">
-                <strong>Log Kehadiran Siswa Real-Time (Anti Blokir Multi-Akun Gmail)</strong>
-                <button class="btn-sm btn-sky" onclick="muatDataServer()">🔄 Refresh Data</button>
+            
+            <!-- MODE REGULER (KELAS X, XI, XII NON-PKL) -->
+            <div id="mode-kbm-reguler">
+              <div class="sub-tabs">
+                <div class="sub-tab active" onclick="pilihSubKBM('kbm-absensi', this)">1. Monitoring Absensi Live</div>
+                <div class="sub-tab" onclick="pilihSubKBM('kbm-tujuan', this)">2. Tujuan Pembelajaran</div>
+                <div class="sub-tab" onclick="pilihSubKBM('kbm-jobsheet', this)">3. Tutorial & Jobsheet CLI</div>
+                <div class="sub-tab" onclick="pilihSubKBM('kbm-tugas', this)">4. Kumpul Tugas Online</div>
               </div>
-              <table>
-                <thead><tr><th>No</th><th>Waktu</th><th>NISN</th><th>Nama Siswa</th><th>Kelas</th><th>Status</th></tr></thead>
-                <tbody id="tabel-monitoring"><tr><td colspan="6" style="text-align:center;">Memuat data...</td></tr></tbody>
-              </table>
-            </div>
 
-            <div id="kbm-tujuan" class="kbm-sub" style="display:none;">
-              <div class="doc-placeholder">
-                <h3>Tujuan Pembelajaran per Pertemuan</h3>
-                <p style="margin-top:6px;">Akan terhubung dengan file CP dan ATP Bapak.</p>
+              <div id="kbm-absensi" class="kbm-sub">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <strong>Log Kehadiran Siswa Real-Time</strong>
+                  <button class="btn-sm btn-sky" onclick="muatDataServer()">🔄 Refresh Data</button>
+                </div>
+                <table>
+                  <thead><tr><th>No</th><th>Waktu</th><th>NISN</th><th>Nama Siswa</th><th>Kelas</th><th>Status</th></tr></thead>
+                  <tbody id="tabel-monitoring"><tr><td colspan="6" style="text-align:center;">Memuat data...</td></tr></tbody>
+                </table>
               </div>
-            </div>
 
-            <div id="kbm-jobsheet" class="kbm-sub" style="display:none;">
-              <p style="font-size:14px;">Contoh Jobsheet Praktik MikroTik:</p>
-              <div class="code-wrapper">
-                <button class="btn-copy" onclick="salinKode(this)">📋 Salin Perintah</button>
-                <pre>/interface vlan add name=VLAN10-GURU vlan-id=10 interface=ether2
+              <div id="kbm-tujuan" class="kbm-sub" style="display:none;">
+                <div class="doc-placeholder">
+                  <h3>Tujuan Pembelajaran per Pertemuan</h3>
+                  <p style="margin-top:6px;">Akan terhubung dengan file CP dan ATP Bapak.</p>
+                </div>
+              </div>
+
+              <div id="kbm-jobsheet" class="kbm-sub" style="display:none;">
+                <p style="font-size:14px;">Contoh Jobsheet Praktik MikroTik:</p>
+                <div class="code-wrapper">
+                  <button class="btn-copy" onclick="salinKode(this)">📋 Salin Perintah</button>
+                  <pre>/interface vlan add name=VLAN10-GURU vlan-id=10 interface=ether2
 /interface vlan add name=VLAN20-SISWA vlan-id=20 interface=ether2
 /ip address add address=192.168.10.1/24 interface=VLAN10-GURU
 /ip address add address=192.168.20.1/24 interface=VLAN20-SISWA</pre>
+                </div>
+              </div>
+
+              <div id="kbm-tugas" class="kbm-sub" style="display:none;">
+                <div class="doc-placeholder">
+                  <h3>📤 Rak Kumpul Tugas Online</h3>
+                  <p style="margin-top:6px;">Siap dihubungkan dengan folder Google Drive Bapak di tahap berikutnya.</p>
+                </div>
               </div>
             </div>
 
-            <div id="kbm-tugas" class="kbm-sub" style="display:none;">
-              <div class="doc-placeholder">
-                <h3>📤 Rak Kumpul Tugas & Jurnal Kegiatan PKL</h3>
-                <p style="margin-top:6px;">Siap dihubungkan dengan folder Google Drive Bapak di tahap berikutnya.</p>
+            <!-- MODE KHUSUS PKL (GPS + FOTO + REKAP ADMIN) -->
+            <div id="mode-kbm-pkl" style="display:none;">
+              
+              <!-- TAMPILAN FORM PRESENSI UNTUK SISWA PKL -->
+              <div id="pkl-student-form">
+                <p style="font-size:13px; color:#475569; margin-bottom:16px;">
+                  Silakan lengkapi data instansi, kunci titik lokasi GPS Anda di tempat PKL, dan ambil foto bukti kehadiran.
+                </p>
+
+                <div class="grid-2">
+                  <div class="form-group">
+                    <label>Nama Lengkap Siswa</label>
+                    <input type="text" id="pkl-nama" readonly />
+                  </div>
+                  <div class="form-group">
+                    <label>NISN & Kelas TKJ</label>
+                    <input type="text" id="pkl-nisn-kelas" readonly />
+                  </div>
+                </div>
+
+                <div class="grid-2">
+                  <div class="form-group">
+                    <label>Nama Instansi / Tempat PKL *</label>
+                    <input type="text" id="pkl-instansi" placeholder="Contoh: PT Timah Tbk / Dinas Kominfo" />
+                  </div>
+                  <div class="form-group">
+                    <label>Kategori Kehadiran *</label>
+                    <select id="pkl-kategori">
+                      <option value="Masuk / Pagi">🌅 Masuk / Pagi</option>
+                      <option value="Istirahat / Siang">☀️ Istirahat / Siang</option>
+                      <option value="Pulang / Sore">🌇 Pulang / Sore</option>
+                      <option value="Izin / Sakit">🏥 Izin / Sakit</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>Keterangan / Jurnal Singkat Kegiatan PKL</label>
+                  <textarea id="pkl-keterangan" rows="2" placeholder="Tuliskan aktivitas PKL hari ini atau alasan jika Izin/Sakit..."></textarea>
+                </div>
+
+                <!-- Modul GPS -->
+                <div class="gps-box">
+                  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
+                    <strong style="font-size:13px; color:#1e3a8a;">📍 Rekam Posisi Kehadiran (GPS Real-Time)</strong>
+                    <button type="button" class="btn-sm btn-sky" onclick="deteksiGPSPKL()">🔄 Deteksi Ulang GPS</button>
+                  </div>
+                  <div id="pkl-gps-status" class="status-banner banner-warn">⏳ Mengunci sinyal satelit GPS HP Anda...</div>
+                  <div id="pkl-map"></div>
+                  <button type="button" class="btn-primary" onclick="kunciPosisiPKL()">✅ Posisi Sesuai (Kunci Koordinat GPS)</button>
+                  <div id="pkl-info-terkunci" class="status-banner banner-ok" style="display:none; margin-top:10px;"></div>
+                </div>
+
+                <!-- Modul Kamera / Galeri -->
+                <div class="form-group" style="background:#f8fafc; padding:16px; border-radius:10px; border:1px solid #cbd5e1;">
+                  <label>📸 Foto Bukti Kehadiran / Surat Izin *</label>
+                  <input type="file" id="pkl-kamera-input" accept="image/*" capture="user" style="display:none;" onchange="prosesFotoPKL(this.files[0], 'Kamera Selfie')" />
+                  <input type="file" id="pkl-galeri-input" accept="image/*" style="display:none;" onchange="prosesFotoPKL(this.files[0], 'Galeri / File HP')" />
+                  
+                  <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:8px;">
+                    <button type="button" class="btn-sm btn-indigo" style="flex:1;" onclick="document.getElementById('pkl-kamera-input').click()">📷 Take Kamera Selfie</button>
+                    <button type="button" class="btn-sm btn-emerald" style="flex:1;" onclick="document.getElementById('pkl-galeri-input').click()">📂 Upload dari Galeri HP</button>
+                  </div>
+                  <p id="pkl-nama-foto" style="font-size:12px; color:#64748b; margin-top:8px;">Belum ada foto dipilih</p>
+                  <img id="pkl-foto-preview" style="display:none; width:100%; max-height:260px; object-fit:cover; border-radius:8px; margin-top:10px; border:1px solid #cbd5e1;" />
+                </div>
+
+                <button type="button" id="btn-kirim-pkl" class="btn-primary" style="background:#059669;" onclick="kirimAbsensiPKL()">🚀 KIRIM ABSENSI PKL SEKARANG</button>
               </div>
+
+              <!-- TAMPILAN DASHBOARD MONITORING PKL UNTUK ADMIN GURU -->
+              <div id="pkl-admin-monitor" style="display:none;">
+                <div class="stat-grid">
+                  <div class="stat-card"><span>Total Log PKL</span><h3 id="stat-pkl-total" style="color:#0284c7;">0</h3></div>
+                  <div class="stat-card"><span>Masuk / Pagi</span><h3 id="stat-pkl-pagi" style="color:#059669;">0</h3></div>
+                  <div class="stat-card"><span>Pulang / Sore</span><h3 id="stat-pkl-pulang" style="color:#4f46e5;">0</h3></div>
+                  <div class="stat-card"><span>Izin / Sakit</span><h3 id="stat-pkl-izin" style="color:#dc2626;">0</h3></div>
+                </div>
+
+                <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px;">
+                  <input type="text" id="cari-pkl-admin" onkeyup="filterTabelPKL()" placeholder="Cari nama siswa, NISN, atau instansi PKL..." style="flex:1; padding:9px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:13px;" />
+                  <button class="btn-sm btn-sky" onclick="muatDataServer()">🔄 Refresh Log PKL</button>
+                </div>
+
+                <div style="overflow-x:auto;">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Waktu</th>
+                        <th>Siswa & Kelas</th>
+                        <th>Instansi PKL</th>
+                        <th>Kategori & Catatan</th>
+                        <th>Bukti GPS & Foto</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tabel-monitoring-pkl">
+                      <tr><td colspan="5" style="text-align:center;">Memuat data presensi PKL...</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
             </div>
           </div>
 
@@ -326,7 +464,14 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycby_6GeW4Fd1ewr5Per8KaODSQSKzEwXgw6DERD5lD_AgFQrukrkEUX26JXx0sBCLmYs/exec";
     let currentRole = "siswa";
-    let studentKelas = "";
+    let currentUser = {};
+    let semuaDataPKL = [];
+
+    // Variabel Peta & Kamera PKL (Default titik Muntok, Bangka Barat)
+    let pklMap = null, pklMarker = null;
+    let pklLat = -2.0673, pklLng = 105.1664;
+    let pklLokasiTerkunci = false;
+    let pklFotoBase64 = "";
 
     setInterval(() => {
       document.getElementById('live-clock').innerText = new Date().toLocaleTimeString('id-ID') + " WIB";
@@ -392,6 +537,7 @@
 
     function masukAplikasi(role, user) {
       currentRole = role;
+      currentUser = user;
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('app-screen').style.display = 'block';
 
@@ -399,10 +545,9 @@
         document.getElementById('role-badge').innerText = "● ADMIN GURU";
         document.getElementById('greeting-text').innerText = "Selamat Mengajar, " + user.nama;
       } else {
-        studentKelas = user.kelas.toUpperCase();
-        document.getElementById('role-badge').innerText = "● ABSENSI TERCATAT";
+        document.getElementById('role-badge').innerText = "● SISWA TERVERIFIKASI";
         document.getElementById('greeting-text').innerText = `Halo, ${user.nama} (${user.kelas})`;
-        document.getElementById('sub-greeting').innerText = "Menampilkan mata pelajaran aktif khusus tingkat kelas Anda.";
+        document.getElementById('sub-greeting').innerText = "Menampilkan mata pelajaran & menu PKL aktif khusus tingkat kelas Anda.";
         document.getElementById('judul-daftar-mapel').innerText = "📚 Mata Pelajaran Kelas Anda";
         document.getElementById('admin-token-control').style.display = 'none';
         document.getElementById('btn-buka-modal-mapel').style.display = 'none';
@@ -419,17 +564,19 @@
         document.getElementById('input-token-baru').value = data.token;
         renderKartuMapel(data.mapels);
         renderTabelAbsensi(data.logs);
+        semuaDataPKL = data.pklLogs || [];
+        renderMonitorPKL(semuaDataPKL);
       } catch (e) {
         showToast("Gagal sinkronisasi data server.");
       }
     }
 
-    // Deteksi kecocokan tingkat kelas siswa (X, XI, atau XII)
     function cekKecocokanKelas(kelasMapel, kelasSiswa) {
       const km = kelasMapel.toUpperCase();
-      if (kelasSiswa.includes("XII")) return km.includes("XII");
-      if (kelasSiswa.includes("XI")) return km.includes("XI") && !km.includes("XII");
-      if (kelasSiswa.includes("X")) return km.includes("X") && !km.includes("XI");
+      const ks = kelasSiswa.toUpperCase();
+      if (ks.includes("XII")) return km.includes("XII");
+      if (ks.includes("XI")) return km.includes("XI") && !km.includes("XII");
+      if (ks.includes("X")) return km.includes("X") && !km.includes("XI");
       return true;
     }
 
@@ -445,11 +592,9 @@
 
       mapels.forEach(m => {
         const statusMapel = (m[4] || "AKTIF").toString().toUpperCase();
-        
-        // Filter ketat untuk Siswa: hanya tampilkan yang AKTIF dan sesuai tingkat kelasnya
         if (currentRole === "siswa") {
           if (statusMapel !== "AKTIF") return;
-          if (!cekKecocokanKelas(m[1], studentKelas)) return;
+          if (!cekKecocokanKelas(m[1], currentUser.kelas)) return;
         }
 
         tampilCount++;
@@ -499,6 +644,218 @@
       });
     }
 
+    // ================= LOGIKA WORKSPACE & MODE PKL =================
+    function bukaWorkspace(kelas, namaMapel) {
+      document.getElementById('home-mapel-view').style.display = 'none';
+      document.getElementById('workspace-view').style.display = 'block';
+      document.getElementById('ws-kelas-badge').innerText = kelas;
+      document.getElementById('ws-mapel-title').innerText = namaMapel;
+
+      const isPKL = namaMapel.toUpperCase().includes("PKL") || namaMapel.toUpperCase().includes("PRAKTEK KERJA");
+
+      if (isPKL) {
+        document.getElementById('judul-panel-kbm').innerText = "🏢 Absensi & Monitoring Praktek Kerja Lapangan (PKL)";
+        document.getElementById('mode-kbm-reguler').style.display = 'none';
+        document.getElementById('mode-kbm-pkl').style.display = 'block';
+
+        if (currentRole === "siswa") {
+          document.getElementById('pkl-student-form').style.display = 'block';
+          document.getElementById('pkl-admin-monitor').style.display = 'none';
+          document.getElementById('pkl-nama').value = currentUser.nama;
+          document.getElementById('pkl-nisn-kelas').value = `${currentUser.nisn} - ${currentUser.kelas}`;
+          bukaMenuWorkspace('panel-kbm', document.getElementById('nav-kbm'));
+          setTimeout(() => { initMapPKL(); }, 250);
+        } else {
+          document.getElementById('pkl-student-form').style.display = 'none';
+          document.getElementById('pkl-admin-monitor').style.display = 'block';
+          bukaMenuWorkspace('panel-kbm', document.getElementById('nav-kbm'));
+          muatDataServer();
+        }
+      } else {
+        document.getElementById('judul-panel-kbm').innerText = "💻 Kegiatan Belajar Mengajar (KBM)";
+        document.getElementById('mode-kbm-reguler').style.display = 'block';
+        document.getElementById('mode-kbm-pkl').style.display = 'none';
+
+        if (currentRole === "siswa") {
+          bukaMenuWorkspace('panel-kbm', document.getElementById('nav-kbm'));
+          pilihSubKBM('kbm-jobsheet', document.querySelectorAll('#panel-kbm .sub-tab')[2]);
+        } else {
+          bukaMenuWorkspace('panel-akademik', document.getElementById('nav-akademik'));
+        }
+      }
+    }
+
+    function initMapPKL() {
+      if (!pklMap) {
+        pklMap = L.map('pkl-map').setView([pklLat, pklLng], 15);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' }).addTo(pklMap);
+        pklMarker = L.marker([pklLat, pklLng], { draggable: true }).addTo(pklMap);
+
+        pklMarker.on('dragend', () => {
+          const pos = pklMarker.getLatLng();
+          pklLat = pos.lat; pklLng = pos.lng;
+          pklLokasiTerkunci = false;
+          document.getElementById('pkl-info-terkunci').style.display = 'none';
+          document.getElementById('pkl-gps-status').innerHTML = `📌 Pin disesuaikan: <b>${pklLat.toFixed(6)}, ${pklLng.toFixed(6)}</b>. Klik tombol hijau untuk mengunci.`;
+        });
+      } else {
+        pklMap.invalidateSize();
+      }
+      deteksiGPSPKL();
+    }
+
+    function deteksiGPSPKL() {
+      const st = document.getElementById('pkl-gps-status');
+      st.className = "status-banner banner-warn";
+      st.innerHTML = "🛰️ Mengunci sinyal satelit GPS HP Anda...";
+
+      if (!navigator.geolocation) {
+        st.className = "status-banner banner-err";
+        st.innerHTML = "❌ Browser tidak mendukung GPS. Geser pin merah langsung pada peta.";
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          pklLat = pos.coords.latitude;
+          pklLng = pos.coords.longitude;
+          const akurasi = Math.round(pos.coords.accuracy);
+          pklMap.flyTo([pklLat, pklLng], 18);
+          pklMarker.setLatLng([pklLat, pklLng]);
+          st.className = "status-banner banner-ok";
+          st.innerHTML = `✅ <b>GPS Ditemukan!</b> Akurasi ±${akurasi}m (${pklLat.toFixed(6)}, ${pklLng.toFixed(6)}). Klik tombol di bawah untuk mengunci.`;
+        },
+        () => {
+          st.className = "status-banner banner-err";
+          st.innerHTML = "⚠️ Izin lokasi belum aktif. Pastikan GPS menyala atau geser pin merah pada peta.";
+        },
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+      );
+    }
+
+    function kunciPosisiPKL() {
+      pklLokasiTerkunci = true;
+      const info = document.getElementById('pkl-info-terkunci');
+      info.style.display = 'block';
+      info.innerHTML = `🔒 <b>Koordinat Terkunci:</b> ${pklLat.toFixed(6)}, ${pklLng.toFixed(6)}`;
+      showToast("Titik lokasi GPS berhasil dikunci!");
+    }
+
+    function prosesFotoPKL(file, sumber) {
+      if (!file) return;
+      document.getElementById('pkl-nama-foto').innerText = `✅ Sumber: ${sumber} (${file.name})`;
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const maxW = 800;
+          const scale = maxW / img.width;
+          canvas.width = maxW;
+          canvas.height = img.height * scale;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          pklFotoBase64 = canvas.toDataURL('image/jpeg', 0.7);
+          const prev = document.getElementById('pkl-foto-preview');
+          prev.src = pklFotoBase64;
+          prev.style.display = 'block';
+        };
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function kirimAbsensiPKL() {
+      const instansi = document.getElementById('pkl-instansi').value.trim();
+      const kategori = document.getElementById('pkl-kategori').value;
+      const keterangan = document.getElementById('pkl-keterangan').value.trim();
+
+      if (!instansi) { alert("Nama Instansi / Tempat PKL wajib diisi!"); return; }
+      if (!pklLokasiTerkunci) { alert("Silakan klik tombol 'Posisi Sesuai (Kunci Koordinat GPS)' terlebih dahulu!"); return; }
+      if (!pklFotoBase64) { alert("Silakan ambil foto selfie atau unggah foto bukti terlebih dahulu!"); return; }
+
+      const btn = document.getElementById('btn-kirim-pkl');
+      btn.disabled = true;
+      btn.innerText = "⏳ Mengunggah Foto & Data GPS...";
+
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          body: JSON.stringify({
+            action: "simpanAbsensiPKL",
+            name: currentUser.nama,
+            nisn: currentUser.nisn,
+            jurusan: currentUser.kelas,
+            instansi: instansi,
+            type: kategori,
+            location: `${pklLat.toFixed(6)}, ${pklLng.toFixed(6)}`,
+            photo: pklFotoBase64,
+            keterangan: keterangan || "-"
+          })
+        });
+        const hasil = await res.json();
+        if (hasil.status === "success") {
+          showToast("✅ Absensi PKL berhasil direkam ke server!");
+          document.getElementById('pkl-keterangan').value = "";
+          document.getElementById('pkl-foto-preview').style.display = 'none';
+          document.getElementById('pkl-nama-foto').innerText = "Belum ada foto dipilih";
+          document.getElementById('pkl-info-terkunci').style.display = 'none';
+          pklLokasiTerkunci = false;
+          pklFotoBase64 = "";
+        } else {
+          alert("Gagal mengirim: " + (hasil.message || "Kesalahan server"));
+        }
+      } catch (e) {
+        alert("Gagal terhubung ke server.");
+      }
+      btn.disabled = false;
+      btn.innerText = "🚀 KIRIM ABSENSI PKL SEKARANG";
+    }
+
+    function renderMonitorPKL(rows) {
+      document.getElementById('stat-pkl-total').innerText = rows.length;
+      document.getElementById('stat-pkl-pagi').innerText = rows.filter(r => (r[5] || "").includes("Masuk")).length;
+      document.getElementById('stat-pkl-pulang').innerText = rows.filter(r => (r[5] || "").includes("Pulang")).length;
+      document.getElementById('stat-pkl-izin').innerText = rows.filter(r => (r[5] || "").includes("Izin")).length;
+      tampilkanBarisPKL(rows);
+    }
+
+    function filterTabelPKL() {
+      const q = document.getElementById('cari-pkl-admin').value.toLowerCase();
+      const filtered = semuaDataPKL.filter(r => 
+        (r[1] || "").toString().toLowerCase().includes(q) ||
+        (r[2] || "").toString().toLowerCase().includes(q) ||
+        (r[4] || "").toString().toLowerCase().includes(q)
+      );
+      tampilkanBarisPKL(filtered);
+    }
+
+    function tampilkanBarisPKL(rows) {
+      const tbody = document.getElementById('tabel-monitoring-pkl');
+      if (!rows || rows.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Belum ada catatan presensi PKL.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = "";
+      rows.slice().reverse().forEach(r => {
+        const koord = (r[6] || "").toString().replace(/\s+/g, "");
+        const mapsUrl = koord ? `https://www.google.com/maps?q=${koord}` : "";
+        const fotoUrl = r[7] || "";
+
+        tbody.innerHTML += `<tr>
+          <td style="white-space:nowrap;">${r[0]}</td>
+          <td><strong>${r[1]}</strong><br><span style="color:#64748b; font-size:12px;">NISN: ${r[2]} • ${r[3]}</span></td>
+          <td><strong>${r[4]}</strong></td>
+          <td><span class="status-ok">${r[5]}</span><br><span style="font-size:12px; color:#475569; font-style:italic;">${r[8] || "-"}</span></td>
+          <td style="white-space:nowrap;">
+            ${mapsUrl ? `<a href="${mapsUrl}" target="_blank" class="link-btn link-maps">📍 Maps</a>` : ""}
+            ${fotoUrl ? `<a href="${fotoUrl}" target="_blank" class="link-btn link-foto">🖼️ Foto</a>` : ""}
+          </td>
+        </tr>`;
+      });
+    }
+
+    // ================= FUNGSI ADMIN & NAVIGASI LAINNYA =================
     async function simpanTokenBaru() {
       const tokenBaru = document.getElementById('input-token-baru').value.trim();
       if (!tokenBaru) return;
@@ -530,29 +887,6 @@
       tutupModalMapel();
       showToast("Mata pelajaran berhasil ditambahkan!");
       muatDataServer();
-    }
-
-    function bukaWorkspace(kelas, namaMapel) {
-      document.getElementById('home-mapel-view').style.display = 'none';
-      document.getElementById('workspace-view').style.display = 'block';
-      document.getElementById('ws-kelas-badge').innerText = kelas;
-      document.getElementById('ws-mapel-title').innerText = namaMapel;
-
-      const isPKL = namaMapel.toUpperCase().includes("PKL") || namaMapel.toUpperCase().includes("PRAKTEK KERJA");
-      document.getElementById('judul-panel-kbm').innerText = isPKL 
-        ? "🏢 Monitoring Kehadiran & Jurnal Praktek Kerja Lapangan (PKL)" 
-        : "💻 Kegiatan Belajar Mengajar (KBM)";
-
-      if (currentRole === "siswa") {
-        bukaMenuWorkspace('panel-kbm', document.getElementById('nav-kbm'));
-        if (isPKL) {
-          pilihSubKBM('kbm-tugas', document.querySelectorAll('#panel-kbm .sub-tab')[3]);
-        } else {
-          pilihSubKBM('kbm-jobsheet', document.querySelectorAll('#panel-kbm .sub-tab')[2]);
-        }
-      } else {
-        bukaMenuWorkspace('panel-akademik', document.getElementById('nav-akademik'));
-      }
     }
 
     function kembaliKePilihMapel() {
