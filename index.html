@@ -30,13 +30,12 @@
     .form-group input { width: 100%; padding: 11px 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; transition: 0.2s; }
     .form-group input:focus { outline: none; border-color: #0284c7; box-shadow: 0 0 0 3px rgba(2,132,199,0.15); }
     
-    /* Ikon Mata Show/Hide Password */
     .toggle-eye { position: absolute; right: 12px; top: 34px; cursor: pointer; font-size: 18px; user-select: none; color: #64748b; }
     .toggle-eye:hover { color: #0284c7; }
 
-    .btn-primary { width: 100%; padding: 12px; background: #0284c7; color: #ffffff; border: none; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer; transition: 0.2s; letter-spacing: 0.3px; }
-    .btn-primary:hover { background: #0369a1; transform: translateY(-1px); }
-    .btn-primary:disabled { background: #94a3b8; cursor: not-allowed; transform: none; }
+    .btn-primary { width: 100%; padding: 12px; background: #0284c7; color: #ffffff; border: none; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+    .btn-primary:hover { background: #0369a1; }
+    .btn-primary:disabled { background: #94a3b8; cursor: not-allowed; }
     .alert-msg { margin-top: 12px; font-size: 13px; text-align: center; font-weight: 600; color: #dc2626; }
 
     /* AREA APLIKASI UTAMA */
@@ -47,7 +46,7 @@
     .badge-status { background: #dcfce7; color: #166534; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
 
     /* BERANDA PILIH MAPEL */
-    #home-mapel-view { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
+    #home-mapel-view { max-width: 1140px; margin: 30px auto; padding: 0 20px; }
     .welcome-banner { background: linear-gradient(135deg, #0f172a, #1e293b); color: white; padding: 25px 30px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
     .token-box { background: rgba(255,255,255,0.1); padding: 12px 16px; border-radius: 8px; display: flex; gap: 8px; align-items: center; }
     .token-box input { width: 120px; padding: 7px 10px; border-radius: 6px; border: none; font-weight: bold; text-transform: uppercase; text-align: center; color: #0f172a; }
@@ -55,22 +54,28 @@
     .btn-sky { background: #38bdf8; color: #0f172a; }
     .btn-sky:hover { background: #7dd3fc; }
     .btn-danger { background: #ef4444; color: white; }
-    .btn-danger:hover { background: #dc2626; }
+    .btn-archive { background: #e2e8f0; color: #475569; }
+    .btn-archive:hover { background: #cbd5e1; }
 
     .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
-    .mapel-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+    .mapel-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 20px; }
     .mapel-card { background: #ffffff; border-radius: 12px; padding: 22px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); border-top: 5px solid #0284c7; transition: 0.25s; display: flex; flex-direction: column; justify-content: space-between; }
-    .mapel-card:hover { transform: translateY(-4px); box-shadow: 0 12px 20px rgba(0,0,0,0.1); }
-    .mapel-tag { display: inline-block; background: #e0f2fe; color: #0369a1; font-size: 12px; font-weight: bold; padding: 4px 10px; border-radius: 20px; margin-bottom: 10px; }
-    .mapel-card h3 { font-size: 18px; color: #0f172a; margin-bottom: 6px; }
+    .mapel-card.arsip { border-top-color: #94a3b8; opacity: 0.78; background: #f8fafc; }
+    .mapel-card:hover { transform: translateY(-3px); box-shadow: 0 10px 18px rgba(0,0,0,0.08); }
+    .card-top-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .mapel-tag { background: #e0f2fe; color: #0369a1; font-size: 12px; font-weight: bold; padding: 4px 10px; border-radius: 20px; }
+    .status-pill { font-size: 11px; font-weight: bold; padding: 3px 9px; border-radius: 12px; }
+    .pill-aktif { background: #dcfce7; color: #166534; }
+    .pill-arsip { background: #e2e8f0; color: #475569; }
+    .mapel-card h3 { font-size: 17px; color: #0f172a; margin-bottom: 6px; line-height: 1.4; }
     .mapel-card p { font-size: 13px; color: #64748b; margin-bottom: 18px; }
-    .mapel-actions { display: flex; gap: 10px; }
+    .mapel-actions { display: flex; gap: 8px; }
 
-    /* MODAL TAMBAH MAPEL */
+    /* MODAL */
     .modal { display: none; position: fixed; z-index: 200; left: 0; top: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.6); justify-content: center; align-items: center; }
     .modal-content { background: #fff; padding: 25px; border-radius: 12px; width: 90%; max-width: 420px; }
 
-    /* WORKSPACE MAPEL (SIDEBAR + KONTEN) */
+    /* WORKSPACE MAPEL */
     #workspace-view { display: none; min-height: calc(100vh - 57px); }
     .workspace-layout { display: flex; min-height: calc(100vh - 57px); }
     .sidebar { width: 270px; background: #0f172a; color: #f8fafc; display: flex; flex-direction: column; }
@@ -90,13 +95,11 @@
     .panel.active { display: block; }
     .panel h2 { font-size: 19px; color: #0f172a; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; margin-bottom: 16px; }
     
-    /* SUB-TABS UNTUK RAK DOKUMEN */
     .sub-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; }
     .sub-tab { padding: 7px 14px; background: #f1f5f9; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; color: #475569; border: 1px solid transparent; }
     .sub-tab.active { background: #e0f2fe; color: #0284c7; border-color: #7dd3fc; }
     .doc-placeholder { background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 8px; padding: 30px; text-align: center; color: #64748b; }
 
-    /* CLI CODE BOX */
     .code-wrapper { position: relative; margin-top: 12px; }
     pre { background: #0f172a; color: #38bdf8; padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 13px; line-height: 1.5; }
     .btn-copy { position: absolute; right: 10px; top: 10px; background: #1e293b; color: #e2e8f0; border: 1px solid #475569; padding: 5px 10px; border-radius: 5px; font-size: 12px; cursor: pointer; }
@@ -117,29 +120,27 @@
     <div class="login-box">
       <div class="login-header">
         <h2>PORTAL AKADEMIK & KBM TKJ</h2>
-        <p>Pak Darojat Ariwibowo | Sistem Terpadu</p>
+        <p>Pak Darojat Ariwibowo | Spektrum Kurikulum TKJ</p>
       </div>
       
       <div class="login-tabs">
-        <div class="login-tab active" id="tab-siswa" onclick="pilihPintu('siswa')">🎓 Pintu Siswa</div>
+        <div class="login-tab active" id="tab-siswa" onclick="pilihPintu('siswa')">🎓 Pintu Siswa / PKL</div>
         <div class="login-tab" id="tab-admin" onclick="pilihPintu('admin')">🔐 Pintu Guru / Admin</div>
       </div>
 
-      <!-- Form Pintu Siswa -->
       <div class="login-body" id="form-siswa">
         <div class="form-group">
           <label>Nomor Induk Siswa (NISN)</label>
           <input type="text" id="input-nisn" placeholder="Masukkan NISN terdaftar..." />
         </div>
         <div class="form-group">
-          <label>Token Harian Kelas</label>
+          <label>Token Harian Kelas / PKL</label>
           <input type="text" id="input-token" placeholder="Masukkan token dari guru..." />
         </div>
         <button class="btn-primary" id="btn-login-siswa" onclick="prosesLoginSiswa()">MASUK & CATAT KEHADIRAN</button>
         <div class="alert-msg" id="msg-siswa"></div>
       </div>
 
-      <!-- Form Pintu Admin -->
       <div class="login-body" id="form-admin" style="display:none;">
         <div class="form-group">
           <label>PIN / Password Admin Guru</label>
@@ -170,7 +171,7 @@
       <div class="welcome-banner">
         <div>
           <h2 id="greeting-text" style="font-size:20px; margin-bottom:4px;">Selamat Mengajar, Pak Darojat Ariwibowo</h2>
-          <p style="font-size:13px; color:#94a3b8;">Pilih mata pelajaran untuk mengelola perangkat ajar, KBM, dan penilaian.</p>
+          <p id="sub-greeting" style="font-size:13px; color:#94a3b8;">Fondasi Bank Mata Pelajaran TKJ (Aktifkan mapel yang sedang diampu semester ini).</p>
         </div>
         <div class="token-box" id="admin-token-control">
           <span style="font-size:12px; color:#cbd5e1;">TOKEN HARI INI:</span>
@@ -180,8 +181,8 @@
       </div>
 
       <div class="section-header">
-        <h3 style="color:#0f172a;">📚 Daftar Mata Pelajaran Diampu</h3>
-        <button class="btn-sm btn-sky" id="btn-buka-modal-mapel" onclick="bukaModalMapel()">+ Tambah Mapel Baru</button>
+        <h3 style="color:#0f172a;" id="judul-daftar-mapel">📚 Bank Mata Pelajaran TKJ (Permendikbudristek 13/2025)</h3>
+        <button class="btn-sm btn-sky" id="btn-buka-modal-mapel" onclick="bukaModalMapel()">+ Tambah Mapel Khusus</button>
       </div>
 
       <div class="mapel-grid" id="daftar-mapel-container">
@@ -189,7 +190,7 @@
       </div>
     </div>
 
-    <!-- VIEW 2: RUANG KERJA MAPEL (SIDEBAR 4 MENU UTAMA) -->
+    <!-- VIEW 2: RUANG KERJA MAPEL -->
     <div id="workspace-view">
       <div class="workspace-layout">
         <div class="sidebar">
@@ -206,7 +207,7 @@
             <li id="nav-nilai" onclick="bukaMenuWorkspace('panel-nilai', this)">📊 Menu Nilai & Rapor</li>
           </ul>
 
-          <button class="btn-back-mapel" onclick="kembaliKePilihMapel()">⬅ Ganti Mata Pelajaran</button>
+          <button class="btn-back-mapel" onclick="kembaliKePilihMapel()">⬅ Kembali ke Daftar Mapel</button>
         </div>
 
         <div class="workspace-main">
@@ -222,31 +223,31 @@
             </div>
             <div class="doc-placeholder">
               <h3 id="judul-sub-akademik" style="color:#0f172a; margin-bottom:8px;">Kalender Pendidikan</h3>
-              <p style="font-size:14px;">Rak dokumen siap digunakan. Pada fase berikutnya, file PDF/Google Drive Bapak akan tampil langsung (*preview*) di area ini.</p>
+              <p style="font-size:14px;">Rak dokumen siap menampung file CP, ATP, dan Kalender Pendidikan yang akan Bapak kirimkan.</p>
             </div>
           </div>
 
           <!-- 2. PANEL KELAS -->
           <div id="panel-kelas" class="panel">
             <h2>👥 Menu Kelas: Daftar Nama & Biodata Sederhana Siswa</h2>
-            <p style="font-size:14px; color:#64748b;">Data ditarik otomatis dari tab <code>Master_Siswa</code> di Google Sheets Bapak.</p>
             <div class="doc-placeholder" style="margin-top:15px;">
-              <p>Siap menampilkan tabel biodata siswa (NISN, Nama Lengkap, Kelas, Jenis Kelamin, Catatan Khusus) berdasarkan kelas yang dipilih.</p>
+              <p>Siap menampilkan tabel biodata siswa sesuai tingkat kelas yang dipilih.</p>
             </div>
           </div>
 
           <!-- 3. PANEL KBM -->
           <div id="panel-kbm" class="panel">
-            <h2>💻 Kegiatan Belajar Mengajar (KBM)</h2>
+            <h2 id="judul-panel-kbm">💻 Kegiatan Belajar Mengajar (KBM)</h2>
             <div class="sub-tabs">
               <div class="sub-tab active" onclick="pilihSubKBM('kbm-absensi', this)">1. Monitoring Absensi Live</div>
               <div class="sub-tab" onclick="pilihSubKBM('kbm-tujuan', this)">2. Tujuan Pembelajaran</div>
               <div class="sub-tab" onclick="pilihSubKBM('kbm-jobsheet', this)">3. Tutorial & Jobsheet CLI</div>
+              <div class="sub-tab" onclick="pilihSubKBM('kbm-tugas', this)">4. Kumpul Tugas / Jurnal PKL</div>
             </div>
 
             <div id="kbm-absensi" class="kbm-sub">
               <div style="display:flex; justify-content:space-between; align-items:center;">
-                <strong>Log Kehadiran Siswa Real-Time</strong>
+                <strong>Log Kehadiran Siswa Real-Time (Anti Blokir Multi-Akun Gmail)</strong>
                 <button class="btn-sm btn-sky" onclick="muatDataServer()">🔄 Refresh Data</button>
               </div>
               <table>
@@ -258,12 +259,12 @@
             <div id="kbm-tujuan" class="kbm-sub" style="display:none;">
               <div class="doc-placeholder">
                 <h3>Tujuan Pembelajaran per Pertemuan</h3>
-                <p style="margin-top:6px;">Akan terhubung dengan CP/ATP dan Modul Ajar yang Bapak kirimkan.</p>
+                <p style="margin-top:6px;">Akan terhubung dengan file CP dan ATP Bapak.</p>
               </div>
             </div>
 
             <div id="kbm-jobsheet" class="kbm-sub" style="display:none;">
-              <p style="font-size:14px;">Contoh Jobsheet Praktik MikroTik (Klik tombol salin di pojok kanan kotak kode):</p>
+              <p style="font-size:14px;">Contoh Jobsheet Praktik MikroTik:</p>
               <div class="code-wrapper">
                 <button class="btn-copy" onclick="salinKode(this)">📋 Salin Perintah</button>
                 <pre>/interface vlan add name=VLAN10-GURU vlan-id=10 interface=ether2
@@ -272,24 +273,27 @@
 /ip address add address=192.168.20.1/24 interface=VLAN20-SISWA</pre>
               </div>
             </div>
+
+            <div id="kbm-tugas" class="kbm-sub" style="display:none;">
+              <div class="doc-placeholder">
+                <h3>📤 Rak Kumpul Tugas & Jurnal Kegiatan PKL</h3>
+                <p style="margin-top:6px;">Siap dihubungkan dengan folder Google Drive Bapak di tahap berikutnya.</p>
+              </div>
+            </div>
           </div>
 
           <!-- 4. PANEL NILAI -->
           <div id="panel-nilai" class="panel">
             <h2>📊 Buku Nilai & Rekap Rapor</h2>
-            <p style="font-size:13px; color:#64748b; margin-bottom:12px;">Komponen penilaian: Kehadiran, Tugas Harian/Praktik, Catatan, Ulangan Harian, Ulangan Praktik, Ulangan Semester, dan Kalkulasi Nilai Rapor.</p>
-            <div style="overflow-x:auto;">
-              <table>
-                <thead>
-                  <tr>
-                    <th>NISN</th><th>Nama Siswa</th><th>Hadir</th><th>Tugas/Praktik</th><th>UH</th><th>U. Praktik</th><th>UTS/UAS</th><th>Nilai Rapor</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr><td colspan="8" style="text-align:center; color:#64748b;">Kerangka tabel nilai siap dihubungkan ke tab <code>Rekap_Nilai</code> di Fase 4.</td></tr>
-                </tbody>
-              </table>
-            </div>
+            <p style="font-size:13px; color:#64748b; margin-bottom:12px;">Format rumus nilai rapor siap disesuaikan dengan file Excel yang Bapak kirimkan.</p>
+            <table>
+              <thead>
+                <tr><th>NISN</th><th>Nama Siswa</th><th>Hadir</th><th>Tugas/Praktik</th><th>UH</th><th>U. Praktik</th><th>UTS/UAS</th><th>Nilai Rapor</th></tr>
+              </thead>
+              <tbody>
+                <tr><td colspan="8" style="text-align:center; color:#64748b;">Menunggu format rumus Excel Bapak.</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -309,11 +313,11 @@
         <input type="text" id="new-mapel-nama" placeholder="Contoh: Administrasi Infrastruktur Jaringan" />
       </div>
       <div class="form-group">
-        <label>Cakupan Semester</label>
-        <input type="text" id="new-mapel-sem" value="Semester 1 & 2" />
+        <label>Keterangan JP / Semester</label>
+        <input type="text" id="new-mapel-sem" value="4 JP/Minggu (Sem 1 & 2)" />
       </div>
       <div style="display:flex; gap:10px; justify-content:flex-end;">
-        <button class="btn-sm" onclick="tutupModalMapel()">Batal</button>
+        <button class="btn-sm btn-archive" onclick="tutupModalMapel()">Batal</button>
         <button class="btn-sm btn-sky" id="btn-simpan-mapel" onclick="simpanMapelBaru()">Simpan Mapel</button>
       </div>
     </div>
@@ -322,11 +326,10 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycby_6GeW4Fd1ewr5Per8KaODSQSKzEwXgw6DERD5lD_AgFQrukrkEUX26JXx0sBCLmYs/exec";
     let currentRole = "siswa";
+    let studentKelas = "";
 
-    // Jam Digital Real-Time
     setInterval(() => {
-      const now = new Date();
-      document.getElementById('live-clock').innerText = now.toLocaleTimeString('id-ID') + " WIB";
+      document.getElementById('live-clock').innerText = new Date().toLocaleTimeString('id-ID') + " WIB";
     }, 1000);
 
     function showToast(pesan) {
@@ -396,8 +399,11 @@
         document.getElementById('role-badge').innerText = "● ADMIN GURU";
         document.getElementById('greeting-text').innerText = "Selamat Mengajar, " + user.nama;
       } else {
-        document.getElementById('role-badge').innerText = "● SISWA HADIR";
+        studentKelas = user.kelas.toUpperCase();
+        document.getElementById('role-badge').innerText = "● ABSENSI TERCATAT";
         document.getElementById('greeting-text').innerText = `Halo, ${user.nama} (${user.kelas})`;
+        document.getElementById('sub-greeting').innerText = "Menampilkan mata pelajaran aktif khusus tingkat kelas Anda.";
+        document.getElementById('judul-daftar-mapel').innerText = "📚 Mata Pelajaran Kelas Anda";
         document.getElementById('admin-token-control').style.display = 'none';
         document.getElementById('btn-buka-modal-mapel').style.display = 'none';
         document.getElementById('nav-akademik').style.display = 'none';
@@ -418,30 +424,65 @@
       }
     }
 
+    // Deteksi kecocokan tingkat kelas siswa (X, XI, atau XII)
+    function cekKecocokanKelas(kelasMapel, kelasSiswa) {
+      const km = kelasMapel.toUpperCase();
+      if (kelasSiswa.includes("XII")) return km.includes("XII");
+      if (kelasSiswa.includes("XI")) return km.includes("XI") && !km.includes("XII");
+      if (kelasSiswa.includes("X")) return km.includes("X") && !km.includes("XI");
+      return true;
+    }
+
     function renderKartuMapel(mapels) {
       const container = document.getElementById('daftar-mapel-container');
       if (!mapels || mapels.length === 0) {
-        container.innerHTML = "<p>Belum ada mata pelajaran aktif.</p>";
+        container.innerHTML = "<p>Belum ada data mata pelajaran.</p>";
         return;
       }
+
       container.innerHTML = "";
+      let tampilCount = 0;
+
       mapels.forEach(m => {
-        const tombolHapus = currentRole === "admin" 
-          ? `<button class="btn-sm btn-danger" onclick="hapusMapel('${m[0]}', '${m[2]}')">Hapus</button>` 
+        const statusMapel = (m[4] || "AKTIF").toString().toUpperCase();
+        
+        // Filter ketat untuk Siswa: hanya tampilkan yang AKTIF dan sesuai tingkat kelasnya
+        if (currentRole === "siswa") {
+          if (statusMapel !== "AKTIF") return;
+          if (!cekKecocokanKelas(m[1], studentKelas)) return;
+        }
+
+        tampilCount++;
+        const isAktif = statusMapel === "AKTIF";
+        const cardClass = isAktif ? "mapel-card" : "mapel-card arsip";
+        const pillHtml = isAktif 
+          ? `<span class="status-pill pill-aktif">🟢 AKTIF</span>` 
+          : `<span class="status-pill pill-arsip">⚪ ARSIP</span>`;
+
+        const tombolSaklar = currentRole === "admin" 
+          ? `<button class="btn-sm btn-archive" onclick="toggleStatusMapel('${m[0]}')">${isAktif ? 'Arsipkan' : 'Aktifkan'}</button>` 
           : "";
+
         container.innerHTML += `
-          <div class="mapel-card">
+          <div class="${cardClass}">
             <div>
-              <span class="mapel-tag">${m[1]}</span>
+              <div class="card-top-meta">
+                <span class="mapel-tag">${m[1]}</span>
+                ${pillHtml}
+              </div>
               <h3>${m[2]}</h3>
-              <p>Cakupan: ${m[3]}</p>
+              <p>Alokasi: ${m[3]}</p>
             </div>
             <div class="mapel-actions">
               <button class="btn-sm btn-sky" style="flex:1;" onclick="bukaWorkspace('${m[1]}', '${m[2]}')">Masuk Ruang Mapel ➔</button>
-              ${tombolHapus}
+              ${tombolSaklar}
             </div>
           </div>`;
       });
+
+      if (tampilCount === 0) {
+        container.innerHTML = "<p>Belum ada mata pelajaran aktif untuk kelas Anda saat ini.</p>";
+      }
     }
 
     function renderTabelAbsensi(logs) {
@@ -466,6 +507,14 @@
       showToast("Token berhasil diubah ke: " + tokenBaru.toUpperCase());
     }
 
+    async function toggleStatusMapel(idMapel) {
+      showToast("Mengubah status mapel...");
+      const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "toggleStatusMapel", idMapel }) });
+      const data = await res.json();
+      showToast("Status mapel diubah menjadi: " + data.statusBaru);
+      muatDataServer();
+    }
+
     function bukaModalMapel() { document.getElementById('modal-mapel').style.display = 'flex'; }
     function tutupModalMapel() { document.getElementById('modal-mapel').style.display = 'none'; }
 
@@ -483,23 +532,24 @@
       muatDataServer();
     }
 
-    async function hapusMapel(idMapel, namaMapel) {
-      if (!confirm(`Yakin ingin menghapus mapel "${namaMapel}" dari daftar?`)) return;
-      showToast("Menghapus mapel...");
-      await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "hapusMapel", idMapel }) });
-      showToast("Mata pelajaran dihapus.");
-      muatDataServer();
-    }
-
     function bukaWorkspace(kelas, namaMapel) {
       document.getElementById('home-mapel-view').style.display = 'none';
       document.getElementById('workspace-view').style.display = 'block';
       document.getElementById('ws-kelas-badge').innerText = kelas;
       document.getElementById('ws-mapel-title').innerText = namaMapel;
 
+      const isPKL = namaMapel.toUpperCase().includes("PKL") || namaMapel.toUpperCase().includes("PRAKTEK KERJA");
+      document.getElementById('judul-panel-kbm').innerText = isPKL 
+        ? "🏢 Monitoring Kehadiran & Jurnal Praktek Kerja Lapangan (PKL)" 
+        : "💻 Kegiatan Belajar Mengajar (KBM)";
+
       if (currentRole === "siswa") {
         bukaMenuWorkspace('panel-kbm', document.getElementById('nav-kbm'));
-        pilihSubKBM('kbm-jobsheet', document.querySelectorAll('#panel-kbm .sub-tab')[2]);
+        if (isPKL) {
+          pilihSubKBM('kbm-tugas', document.querySelectorAll('#panel-kbm .sub-tab')[3]);
+        } else {
+          pilihSubKBM('kbm-jobsheet', document.querySelectorAll('#panel-kbm .sub-tab')[2]);
+        }
       } else {
         bukaMenuWorkspace('panel-akademik', document.getElementById('nav-akademik'));
       }
