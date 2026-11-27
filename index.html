@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Portal KBM & Akademik TKJ - Pak Darojat Ariwibowo</title>
-  <!-- Leaflet Map untuk GPS PKL -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <style>
@@ -131,6 +130,7 @@
     th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
     th { background: #f8fafc; color: #475569; font-weight: 700; }
     .status-ok { background: #dcfce7; color: #166534; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; display: inline-block; }
+    .status-no { background: #fee2e2; color: #991b1b; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; display: inline-block; }
     .link-btn { display: inline-block; padding: 4px 9px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: 600; margin-right: 4px; }
     .link-maps { background: #e0f2fe; color: #0369a1; }
     .link-foto { background: #ccfbf1; color: #0f766e; }
@@ -160,8 +160,8 @@
 
       <div class="login-body" id="form-siswa">
         <div class="form-group">
-          <label>Nomor Induk Siswa (NISN)</label>
-          <input type="text" id="input-nisn" placeholder="Masukkan NISN terdaftar..." />
+          <label>Nomor Induk Siswa (NISN / ID)</label>
+          <input type="text" id="input-nisn" placeholder="Masukkan NISN / ID terdaftar..." />
         </div>
         <div class="form-group">
           <label>Token Harian Kelas / PKL</label>
@@ -257,11 +257,21 @@
             </div>
           </div>
 
-          <!-- 2. PANEL KELAS -->
+          <!-- 2. PANEL KELAS (OTOMATIS TERFILTER PER ROMBEL / BIMBINGAN PKL) -->
           <div id="panel-kelas" class="panel">
-            <h2>👥 Menu Kelas: Daftar Nama & Biodata Sederhana Siswa</h2>
-            <div class="doc-placeholder" style="margin-top:15px;">
-              <p>Siap menampilkan tabel biodata siswa sesuai tingkat kelas yang dipilih.</p>
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; border-bottom:1px solid #e2e8f0; padding-bottom:12px; margin-bottom:14px;">
+              <h2 style="border:none; padding:0; margin:0;" id="judul-panel-kelas">👥 Daftar Siswa Terdaftar</h2>
+              <span class="status-ok" id="badge-jumlah-siswa">0 Siswa</span>
+            </div>
+            <div style="overflow-x:auto;">
+              <table>
+                <thead>
+                  <tr><th>No</th><th>NISN / ID</th><th>Nama Lengkap Siswa</th><th>Rombel / Kelas</th><th>Status KBM</th><th>Bimbingan PKL</th></tr>
+                </thead>
+                <tbody id="tabel-daftar-siswa">
+                  <tr><td colspan="6" style="text-align:center;">Memuat daftar siswa...</td></tr>
+                </tbody>
+              </table>
             </div>
           </div>
 
@@ -269,7 +279,7 @@
           <div id="panel-kbm" class="panel">
             <h2 id="judul-panel-kbm">💻 Kegiatan Belajar Mengajar (KBM)</h2>
             
-            <!-- MODE REGULER (KELAS X, XI, XII NON-PKL) -->
+            <!-- MODE REGULER -->
             <div id="mode-kbm-reguler">
               <div class="sub-tabs">
                 <div class="sub-tab active" onclick="pilihSubKBM('kbm-absensi', this)">1. Monitoring Absensi Live</div>
@@ -315,10 +325,10 @@
               </div>
             </div>
 
-            <!-- MODE KHUSUS PKL (GPS + FOTO + REKAP ADMIN) -->
+            <!-- MODE KHUSUS PKL (GPS + FOTO + REKAP ADMIN + BELUM ABSEN) -->
             <div id="mode-kbm-pkl" style="display:none;">
               
-              <!-- TAMPILAN FORM PRESENSI UNTUK SISWA PKL -->
+              <!-- FORM PRESENSI SISWA PKL -->
               <div id="pkl-student-form">
                 <p style="font-size:13px; color:#475569; margin-bottom:16px;">
                   Silakan lengkapi data instansi, kunci titik lokasi GPS Anda di tempat PKL, dan ambil foto bukti kehadiran.
@@ -356,7 +366,6 @@
                   <textarea id="pkl-keterangan" rows="2" placeholder="Tuliskan aktivitas PKL hari ini atau alasan jika Izin/Sakit..."></textarea>
                 </div>
 
-                <!-- Modul GPS -->
                 <div class="gps-box">
                   <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
                     <strong style="font-size:13px; color:#1e3a8a;">📍 Rekam Posisi Kehadiran (GPS Real-Time)</strong>
@@ -368,7 +377,6 @@
                   <div id="pkl-info-terkunci" class="status-banner banner-ok" style="display:none; margin-top:10px;"></div>
                 </div>
 
-                <!-- Modul Kamera / Galeri -->
                 <div class="form-group" style="background:#f8fafc; padding:16px; border-radius:10px; border:1px solid #cbd5e1;">
                   <label>📸 Foto Bukti Kehadiran / Surat Izin *</label>
                   <input type="file" id="pkl-kamera-input" accept="image/*" capture="user" style="display:none;" onchange="prosesFotoPKL(this.files[0], 'Kamera Selfie')" />
@@ -385,33 +393,54 @@
                 <button type="button" id="btn-kirim-pkl" class="btn-primary" style="background:#059669;" onclick="kirimAbsensiPKL()">🚀 KIRIM ABSENSI PKL SEKARANG</button>
               </div>
 
-              <!-- TAMPILAN DASHBOARD MONITORING PKL UNTUK ADMIN GURU -->
+              <!-- DASHBOARD MONITORING PKL UNTUK ADMIN GURU -->
               <div id="pkl-admin-monitor" style="display:none;">
                 <div class="stat-grid">
                   <div class="stat-card"><span>Total Log PKL</span><h3 id="stat-pkl-total" style="color:#0284c7;">0</h3></div>
                   <div class="stat-card"><span>Masuk / Pagi</span><h3 id="stat-pkl-pagi" style="color:#059669;">0</h3></div>
                   <div class="stat-card"><span>Pulang / Sore</span><h3 id="stat-pkl-pulang" style="color:#4f46e5;">0</h3></div>
-                  <div class="stat-card"><span>Izin / Sakit</span><h3 id="stat-pkl-izin" style="color:#dc2626;">0</h3></div>
+                  <div class="stat-card"><span>Belum Absen Hari Ini</span><h3 id="stat-pkl-belum" style="color:#dc2626;">0</h3></div>
                 </div>
 
-                <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px;">
-                  <input type="text" id="cari-pkl-admin" onkeyup="filterTabelPKL()" placeholder="Cari nama siswa, NISN, atau instansi PKL..." style="flex:1; padding:9px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:13px;" />
-                  <button class="btn-sm btn-sky" onclick="muatDataServer()">🔄 Refresh Log PKL</button>
+                <div class="sub-tabs">
+                  <div class="sub-tab active" onclick="pilihTabAdminPKL('tab-pkl-sudah', this)">✅ Log Presensi Masuk</div>
+                  <div class="sub-tab" onclick="pilihTabAdminPKL('tab-pkl-belum', this)">⚠️ Siswa Belum Absen Hari Ini</div>
                 </div>
 
-                <div style="overflow-x:auto;">
+                <div id="tab-pkl-sudah">
+                  <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px;">
+                    <input type="text" id="cari-pkl-admin" onkeyup="filterTabelPKL()" placeholder="Cari nama siswa, NISN, atau instansi PKL..." style="flex:1; padding:9px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:13px;" />
+                    <button class="btn-sm btn-sky" onclick="muatDataServer()">🔄 Refresh Data</button>
+                  </div>
+
+                  <div style="overflow-x:auto;">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Waktu</th>
+                          <th>Siswa & Kelas</th>
+                          <th>Instansi PKL</th>
+                          <th>Kategori & Catatan</th>
+                          <th>Bukti GPS & Foto</th>
+                        </tr>
+                      </thead>
+                      <tbody id="tabel-monitoring-pkl">
+                        <tr><td colspan="5" style="text-align:center;">Memuat data presensi PKL...</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div id="tab-pkl-belum" style="display:none;">
+                  <p style="font-size:13px; color:#475569; margin-bottom:10px;">
+                    Daftar siswa bimbingan PKL (kolom Bimbingan_PKL = YA) yang belum mengirim catatan presensi pada tanggal hari ini:
+                  </p>
                   <table>
                     <thead>
-                      <tr>
-                        <th>Waktu</th>
-                        <th>Siswa & Kelas</th>
-                        <th>Instansi PKL</th>
-                        <th>Kategori & Catatan</th>
-                        <th>Bukti GPS & Foto</th>
-                      </tr>
+                      <tr><th>No</th><th>NISN / ID</th><th>Nama Lengkap Siswa</th><th>Kelas</th><th>Status Hari Ini</th></tr>
                     </thead>
-                    <tbody id="tabel-monitoring-pkl">
-                      <tr><td colspan="5" style="text-align:center;">Memuat data presensi PKL...</td></tr>
+                    <tbody id="tabel-belum-absen-pkl">
+                      <tr><td colspan="5" style="text-align:center;">Memeriksa data...</td></tr>
                     </tbody>
                   </table>
                 </div>
@@ -466,8 +495,8 @@
     let currentRole = "siswa";
     let currentUser = {};
     let semuaDataPKL = [];
+    let semuaDataSiswa = [];
 
-    // Variabel Peta & Kamera PKL (Default titik Muntok, Bangka Barat)
     let pklMap = null, pklMarker = null;
     let pklLat = -2.0673, pklLng = 105.1664;
     let pklLokasiTerkunci = false;
@@ -547,7 +576,7 @@
       } else {
         document.getElementById('role-badge').innerText = "● SISWA TERVERIFIKASI";
         document.getElementById('greeting-text').innerText = `Halo, ${user.nama} (${user.kelas})`;
-        document.getElementById('sub-greeting').innerText = "Menampilkan mata pelajaran & menu PKL aktif khusus tingkat kelas Anda.";
+        document.getElementById('sub-greeting').innerText = "Menampilkan mata pelajaran aktif sesuai rombel & status bimbingan Anda.";
         document.getElementById('judul-daftar-mapel').innerText = "📚 Mata Pelajaran Kelas Anda";
         document.getElementById('admin-token-control').style.display = 'none';
         document.getElementById('btn-buka-modal-mapel').style.display = 'none';
@@ -562,9 +591,10 @@
         const res = await fetch(API_URL);
         const data = await res.json();
         document.getElementById('input-token-baru').value = data.token;
+        semuaDataSiswa = data.siswas || [];
+        semuaDataPKL = data.pklLogs || [];
         renderKartuMapel(data.mapels);
         renderTabelAbsensi(data.logs);
-        semuaDataPKL = data.pklLogs || [];
         renderMonitorPKL(semuaDataPKL);
       } catch (e) {
         showToast("Gagal sinkronisasi data server.");
@@ -592,9 +622,20 @@
 
       mapels.forEach(m => {
         const statusMapel = (m[4] || "AKTIF").toString().toUpperCase();
+        const namaMapelUpper = (m[2] || "").toString().toUpperCase();
+        const isMapelPKL = namaMapelUpper.includes("PKL") || namaMapelUpper.includes("PRAKTEK KERJA");
+
         if (currentRole === "siswa") {
           if (statusMapel !== "AKTIF") return;
-          if (!cekKecocokanKelas(m[1], currentUser.kelas)) return;
+          
+          if (isMapelPKL) {
+            // Khusus PKL: Hanya tampil jika Bimbingan_PKL === "YA"
+            if ((currentUser.bimbinganPKL || "TIDAK").toUpperCase() !== "YA") return;
+          } else {
+            // Mapel Reguler: Hanya tampil jika Status_KBM === "AKTIF" dan tingkat kelas cocok
+            if ((currentUser.statusKBM || "AKTIF").toUpperCase() !== "AKTIF") return;
+            if (!cekKecocokanKelas(m[1], currentUser.kelas)) return;
+          }
         }
 
         tampilCount++;
@@ -630,6 +671,41 @@
       }
     }
 
+    function renderDaftarSiswaPerMapel(kelasMapel, isPKL) {
+      const tbody = document.getElementById('tabel-daftar-siswa');
+      const judul = document.getElementById('judul-panel-kelas');
+      const badge = document.getElementById('badge-jumlah-siswa');
+
+      let daftarTerfilter = [];
+      if (isPKL) {
+        judul.innerText = "👥 Daftar Siswa Bimbingan PKL (Pak Darojat)";
+        daftarTerfilter = semuaDataSiswa.filter(s => (s[4] || "").toString().trim().toUpperCase() === "YA");
+      } else {
+        judul.innerText = `👥 Daftar Siswa (${kelasMapel})`;
+        daftarTerfilter = semuaDataSiswa.filter(s => {
+          const stKbm = (s[3] || "AKTIF").toString().trim().toUpperCase();
+          return stKbm === "AKTIF" && cekKecocokanKelas(kelasMapel, (s[2] || "").toString());
+        });
+      }
+
+      badge.innerText = `${daftarTerfilter.length} Siswa`;
+      if (daftarTerfilter.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Tidak ada data siswa yang cocok pada kelompok ini.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = daftarTerfilter.map((s, idx) => `
+        <tr>
+          <td>${idx + 1}</td>
+          <td>${s[0]}</td>
+          <td><strong>${s[1]}</strong></td>
+          <td>${s[2]}</td>
+          <td><span class="${(s[3]||'').toUpperCase()==='AKTIF' ? 'status-ok' : 'status-no'}">${s[3] || 'AKTIF'}</span></td>
+          <td><span class="${(s[4]||'').toUpperCase()==='YA' ? 'status-ok' : 'status-no'}">${s[4] || 'TIDAK'}</span></td>
+        </tr>
+      `).join('');
+    }
+
     function renderTabelAbsensi(logs) {
       const tbody = document.getElementById('tabel-monitoring');
       if (!logs || logs.length === 0) {
@@ -652,6 +728,7 @@
       document.getElementById('ws-mapel-title').innerText = namaMapel;
 
       const isPKL = namaMapel.toUpperCase().includes("PKL") || namaMapel.toUpperCase().includes("PRAKTEK KERJA");
+      renderDaftarSiswaPerMapel(kelas, isPKL);
 
       if (isPKL) {
         document.getElementById('judul-panel-kbm').innerText = "🏢 Absensi & Monitoring Praktek Kerja Lapangan (PKL)";
@@ -683,6 +760,13 @@
           bukaMenuWorkspace('panel-akademik', document.getElementById('nav-akademik'));
         }
       }
+    }
+
+    function pilihTabAdminPKL(idTab, el) {
+      document.querySelectorAll('#pkl-admin-monitor .sub-tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById('tab-pkl-sudah').style.display = idTab === 'tab-pkl-sudah' ? 'block' : 'none';
+      document.getElementById('tab-pkl-belum').style.display = idTab === 'tab-pkl-belum' ? 'block' : 'none';
     }
 
     function initMapPKL() {
@@ -816,8 +900,42 @@
       document.getElementById('stat-pkl-total').innerText = rows.length;
       document.getElementById('stat-pkl-pagi').innerText = rows.filter(r => (r[5] || "").includes("Masuk")).length;
       document.getElementById('stat-pkl-pulang').innerText = rows.filter(r => (r[5] || "").includes("Pulang")).length;
-      document.getElementById('stat-pkl-izin').innerText = rows.filter(r => (r[5] || "").includes("Izin")).length;
       tampilkanBarisPKL(rows);
+      hitungBelumAbsenPKL(rows);
+    }
+
+    function hitungBelumAbsenPKL(rows) {
+      const siswaPKLBimbingan = semuaDataSiswa.filter(s => (s[4] || "").toString().trim().toUpperCase() === "YA");
+      const now = new Date();
+      const dd = String(now.getDate()).padStart(2, '0');
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const yyyy = now.getFullYear();
+      const tglHariIni = `${dd}/${mm}/${yyyy}`;
+
+      const nisnSudahHariIni = new Set(
+        rows
+          .filter(r => (r[0] || "").toString().startsWith(tglHariIni))
+          .map(r => (r[2] || "").toString().trim())
+      );
+
+      const belumAbsen = siswaPKLBimbingan.filter(s => !nisnSudahHariIni.has((s[0] || "").toString().trim()));
+      document.getElementById('stat-pkl-belum').innerText = belumAbsen.length;
+
+      const tbodyBelum = document.getElementById('tabel-belum-absen-pkl');
+      if (belumAbsen.length === 0) {
+        tbodyBelum.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#166534; font-weight:bold;">🎉 Seluruh siswa bimbingan PKL sudah mengirim presensi hari ini!</td></tr>';
+        return;
+      }
+
+      tbodyBelum.innerHTML = belumAbsen.map((s, idx) => `
+        <tr>
+          <td>${idx + 1}</td>
+          <td>${s[0]}</td>
+          <td><strong>${s[1]}</strong></td>
+          <td>${s[2]}</td>
+          <td><span class="status-no">BELUM ABSEN (${tglHariIni})</span></td>
+        </tr>
+      `).join('');
     }
 
     function filterTabelPKL() {
