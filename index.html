@@ -1029,7 +1029,8 @@
           <div class="${cardClass}">
             <div>
               <div class="card-top-meta">
-                <span class="mapel-tag">${m[1]}</span>${pillHtml}
+                <span class="mapel-tag">${m[1]}</span>
+                ${pillHtml}
               </div>
               <h3>${m[2]}</h3>
               <p>Alokasi: ${m[3]}</p>
@@ -1062,7 +1063,8 @@
       const badge = document.getElementById('badge-jumlah-siswa');
 
       const daftarTerfilter = dapatkanSiswaMapelIni(kelasMapel, isPKL);
-      judul.innerText = isPKL ? "👥 Daftar Siswa Bimbingan PKL (Pak Darojat)" : `👥 Daftar Siswa (${kelasMapel})`; badge.innerText = `${daftarTerfilter.length} Siswa`;
+      judul.innerText = isPKL ? "👥 Daftar Siswa Bimbingan PKL (Pak Darojat)" : `👥 Daftar Siswa (${kelasMapel})`;
+      badge.innerText = `${daftarTerfilter.length} Siswa`;
 
       if (daftarTerfilter.length === 0) {
         tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Memuat atau belum ada siswa pada kelompok ini.</td></tr>';
@@ -1075,8 +1077,8 @@
           <td>${s[0]}</td>
           <td><strong>${s[1]}</strong></td>
           <td>${s[2]}</td>
-          <td><span class="${(s[3]\vert{}\vert{}'').toUpperCase()==='AKTIF' ? 'status-ok' : 'status-no'}">${s[3] || 'AKTIF'}</span></td>
-          <td><span class="${(s[4]\vert{}\vert{}'').toUpperCase()==='YA' ? 'status-ok' : 'status-no'}">${s[4] || 'TIDAK'}</span></td>
+          <td><span class="${(s[3]||'').toUpperCase()==='AKTIF' ? 'status-ok' : 'status-no'}">${s[3] || 'AKTIF'}</span></td>
+          <td><span class="${(s[4]||'').toUpperCase()==='YA' ? 'status-ok' : 'status-no'}">${s[4] || 'TIDAK'}</span></td>
         </tr>
       `).join('');
     }
@@ -1186,7 +1188,13 @@
       if (!url) return "";
       const regExp = /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
       const match = url.match(regExp);
-      return match ? `https://www.youtube.com/embed/${match[1]}` : ""; }  function renderSemuaKategoriDokumen(namaMapel) { const kategoriList = ["KALDIK", "CP", "ATP", "PROTA_PROSEM", "MODUL_AJAR", "MATERI", "VIDEO", "JOBSHEET", "LKPD"]; kategoriList.forEach(kat => { const container = document.getElementById(`list-dok-${kat}`);
+      return match ? `https://www.youtube.com/embed/${match[1]}` : "";
+    }
+
+    function renderSemuaKategoriDokumen(namaMapel) {
+      const kategoriList = ["KALDIK", "CP", "ATP", "PROTA_PROSEM", "MODUL_AJAR", "MATERI", "VIDEO", "JOBSHEET", "LKPD"];
+      kategoriList.forEach(kat => {
+        const container = document.getElementById(`list-dok-${kat}`);
         if (!container) return;
 
         // Kaldik, CP, ATP berlaku lintas semua mapel atau khusus mapel ini
@@ -1344,7 +1352,7 @@
       tbody.innerHTML = rows.slice().reverse().map(r => `
         <tr>
           <td style="white-space:nowrap;">${r[0]}</td>
-          <td><strong>${r[5]}</strong><br><span style="font-size:11.5px; color:#64748b;">NISN: ${r[4]} •${r[6]}</span></td>
+          <td><strong>${r[5]}</strong><br><span style="font-size:11.5px; color:#64748b;">NISN: ${r[4]} • ${r[6]}</span></td>
           <td><strong>${r[3]}</strong></td>
           <td style="font-size:12px;">${r[10] || "-"}</td>
           <td style="white-space:nowrap;">
@@ -1453,10 +1461,15 @@
       else nilaiStateSiswa[nisn][field][idx] = cleanVal;
 
       const h = hitungNilaiBaris(nilaiStateSiswa[nisn]);
-      document.getElementById(`nk-${nisn}`).innerText = h.nk.toFixed(0); document.getElementById(`nh40-${nisn}`).innerText = h.nHadir40.toFixed(1);
-      document.getElementById(`ntct-${nisn}`).innerText = h.ntCT.toFixed(1); document.getElementById(`nt30-${nisn}`).innerText = h.nTugas30.toFixed(1);
-      document.getElementById(`ntu-${nisn}`).innerText = h.ntu.toFixed(1); document.getElementById(`nuh20-${nisn}`).innerText = h.nUH20.toFixed(1);
-      document.getElementById(`nun10-${nisn}`).innerText = h.nUjian10.toFixed(1);  const elRapor = document.getElementById(`rapor-${nisn}`);
+      document.getElementById(`nk-${nisn}`).innerText = h.nk.toFixed(0);
+      document.getElementById(`nh40-${nisn}`).innerText = h.nHadir40.toFixed(1);
+      document.getElementById(`ntct-${nisn}`).innerText = h.ntCT.toFixed(1);
+      document.getElementById(`nt30-${nisn}`).innerText = h.nTugas30.toFixed(1);
+      document.getElementById(`ntu-${nisn}`).innerText = h.ntu.toFixed(1);
+      document.getElementById(`nuh20-${nisn}`).innerText = h.nUH20.toFixed(1);
+      document.getElementById(`nun10-${nisn}`).innerText = h.nUjian10.toFixed(1);
+
+      const elRapor = document.getElementById(`rapor-${nisn}`);
       elRapor.innerText = h.nRapor.toFixed(1);
       elRapor.className = h.nRapor >= 75 ? "nilai-final" : "nilai-remedi";
     }
@@ -1483,4 +1496,504 @@
         <th rowspan="2" style="min-width:170px;">Nama Siswa</th>
         <th colspan="3" class="grp-hadir">Kehadiran (40%)</th>
         <th colspan="${colSpanTugas}" class="grp-tugas">Tugas & Catatan (30%)</th>
-        <th colspan="${
+        <th colspan="${colSpanUH}" class="grp-uh">Ulangan Harian (20%: Teori 30% + Praktek 70%)</th>
+        <th colspan="2" class="grp-un">Ujian (10%)</th>
+        <th rowspan="2" class="grp-rapor">Nilai<br>Rapor</th>
+      </tr>`;
+
+      let hRow2 = `<tr>
+        <th class="grp-hadir">Alpa</th><th class="grp-hadir">NK</th><th class="grp-hadir">40%</th>`;
+
+      for (let i = 1; i <= nilaiConfig.tugas; i++) {
+        const delBtn = (isAdmin && i === nilaiConfig.tugas && i > 1) ? `<button class="btn-del-col" onclick="hapusKolomNilai('tugas')" title="Hapus kolom">×</button>` : "";
+        hRow2 += `<th class="grp-tugas">T${i}${delBtn}</th>`;
+      }
+      for (let i = 1; i <= nilaiConfig.catatan; i++) {
+        const delBtn = (isAdmin && i === nilaiConfig.catatan && i > 1) ? `<button class="btn-del-col" onclick="hapusKolomNilai('catatan')" title="Hapus kolom">×</button>` : "";
+        hRow2 += `<th class="grp-tugas">C${i}${delBtn}</th>`;
+      }
+      hRow2 += `<th class="grp-tugas">Rata</th><th class="grp-tugas">30%</th>`;
+
+      for (let i = 1; i <= nilaiConfig.ut; i++) {
+        const delBtn = (isAdmin && i === nilaiConfig.ut && i > 1) ? `<button class="btn-del-col" onclick="hapusKolomNilai('ut')" title="Hapus kolom">×</button>` : "";
+        hRow2 += `<th class="grp-uh">UT${i}${delBtn}</th>`;
+      }
+      for (let i = 1; i <= nilaiConfig.up; i++) {
+        const delBtn = (isAdmin && i === nilaiConfig.up && i > 1) ? `<button class="btn-del-col" onclick="hapusKolomNilai('up')" title="Hapus kolom">×</button>` : "";
+        hRow2 += `<th class="grp-uh">UP${i}${delBtn}</th>`;
+      }
+      hRow2 += `<th class="grp-uh">NTU</th><th class="grp-uh">20%</th>`;
+      hRow2 += `<th class="grp-un">Nilai</th><th class="grp-un">10%</th></tr>`;
+
+      thead.innerHTML = hRow1 + hRow2;
+
+      if (daftarSiswa.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="25" style="text-align:center; padding:16px;">Belum ada data siswa pada kelas ini.</td></tr>`;
+        return;
+      }
+
+      const disAttr = isAdmin ? "" : "disabled";
+      tbody.innerHTML = daftarSiswa.map((s, idx) => {
+        const nisn = (s[0] || "").toString().trim();
+        const nama = (s[1] || "").toString().trim();
+        if (!nilaiStateSiswa[nisn]) {
+          nilaiStateSiswa[nisn] = { alpa: 0, tugas: [], catatan: [], ut: [], up: [], ujian: "" };
+        }
+        const st = nilaiStateSiswa[nisn];
+        const h = hitungNilaiBaris(st);
+
+        let rowHtml = `<tr>
+          <td>${idx + 1}</td>
+          <td class="nama-col">${nama}</td>
+          <td><input type="number" min="0" max="33" class="nilai-input" ${disAttr} value="${st.alpa}" oninput="updateSelNilai('${nisn}','alpa',0,this.value)" /></td>
+          <td class="nilai-calc" id="nk-${nisn}">${h.nk.toFixed(0)}</td>
+          <td class="nilai-calc" id="nh40-${nisn}">${h.nHadir40.toFixed(1)}</td>`;
+
+        for (let i = 0; i < nilaiConfig.tugas; i++) {
+          const v = st.tugas[i] !== undefined ? st.tugas[i] : "";
+          rowHtml += `<td><input type="number" min="0" max="100" class="nilai-input" ${disAttr} value="${v}" oninput="updateSelNilai('${nisn}','tugas',${i},this.value)" /></td>`;
+        }
+        for (let i = 0; i < nilaiConfig.catatan; i++) {
+          const v = st.catatan[i] !== undefined ? st.catatan[i] : "";
+          rowHtml += `<td><input type="number" min="0" max="100" class="nilai-input" ${disAttr} value="${v}" oninput="updateSelNilai('${nisn}','catatan',${i},this.value)" /></td>`;
+        }
+        rowHtml += `<td class="nilai-calc" id="ntct-${nisn}">${h.ntCT.toFixed(1)}</td>
+                    <td class="nilai-calc" id="nt30-${nisn}">${h.nTugas30.toFixed(1)}</td>`;
+
+        for (let i = 0; i < nilaiConfig.ut; i++) {
+          const v = st.ut[i] !== undefined ? st.ut[i] : "";
+          rowHtml += `<td><input type="number" min="0" max="100" class="nilai-input" ${disAttr} value="${v}" oninput="updateSelNilai('${nisn}','ut',${i},this.value)" /></td>`;
+        }
+        for (let i = 0; i < nilaiConfig.up; i++) {
+          const v = st.up[i] !== undefined ? st.up[i] : "";
+          rowHtml += `<td><input type="number" min="0" max="100" class="nilai-input" ${disAttr} value="${v}" oninput="updateSelNilai('${nisn}','up',${i},this.value)" /></td>`;
+        }
+        rowHtml += `<td class="nilai-calc" id="ntu-${nisn}">${h.ntu.toFixed(1)}</td>
+                    <td class="nilai-calc" id="nuh20-${nisn}">${h.nUH20.toFixed(1)}</td>`;
+
+        const uVal = st.ujian !== undefined ? st.ujian : "";
+        const raporCls = h.nRapor >= 75 ? "nilai-final" : "nilai-remedi";
+        rowHtml += `<td><input type="number" min="0" max="100" class="nilai-input" ${disAttr} value="${uVal}" oninput="updateSelNilai('${nisn}','ujian',0,this.value)" /></td>
+                    <td class="nilai-calc" id="nun10-${nisn}">${h.nUjian10.toFixed(1)}</td>
+                    <td class="${raporCls}" id="rapor-${nisn}">${h.nRapor.toFixed(1)}</td></tr>`;
+
+        return rowHtml;
+      }).join('');
+    }
+
+    async function simpanNilaiKeServer() {
+      const kelasMapel = document.getElementById('ws-kelas-badge').innerText;
+      const namaMapel = document.getElementById('ws-mapel-title').innerText;
+      const isPKL = namaMapel.toUpperCase().includes("PKL") || namaMapel.toUpperCase().includes("PRAKTEK KERJA");
+      const daftarSiswa = dapatkanSiswaMapelIni(kelasMapel, isPKL);
+
+      const rowsPayload = daftarSiswa.map(s => {
+        const nisn = (s[0] || "").toString().trim();
+        const nama = (s[1] || "").toString().trim();
+        const kls = (s[2] || "").toString().trim();
+        const st = nilaiStateSiswa[nisn] || { alpa: 0, tugas: [], catatan: [], ut: [], up: [], ujian: "" };
+        const h = hitungNilaiBaris(st);
+
+        return {
+          nisn, nama, kelas: kls,
+          alpa: st.alpa || 0,
+          nHadir: Number(h.nHadir40.toFixed(2)),
+          nTugas: Number(h.nTugas30.toFixed(2)),
+          nUH: Number(h.nUH20.toFixed(2)),
+          nUjian: Number(h.nUjian10.toFixed(2)),
+          nRapor: Number(h.nRapor.toFixed(2)),
+          detail: st
+        };
+      });
+
+      const btn = document.getElementById('btn-simpan-nilai');
+      btn.disabled = true;
+      btn.innerText = "⏳ Menyimpan ke Sheets...";
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          body: JSON.stringify({ action: "simpanNilaiMapel", mapel: namaMapel, rows: rowsPayload })
+        });
+        const hasil = await res.json();
+        if (hasil.status === "success") {
+          showToast("✅ Rekap nilai berhasil disimpan ke Google Sheets!");
+          muatDataServer();
+        } else {
+          alert("Gagal menyimpan nilai: " + hasil.message);
+        }
+      } catch (e) {
+        alert("Gagal terhubung ke server.");
+      }
+      btn.disabled = false;
+      btn.innerText = "💾 Simpan ke Google Sheets";
+    }
+
+    function exportNilaiCSV() {
+      const kelasMapel = document.getElementById('ws-kelas-badge').innerText;
+      const namaMapel = document.getElementById('ws-mapel-title').innerText;
+      const isPKL = namaMapel.toUpperCase().includes("PKL") || namaMapel.toUpperCase().includes("PRAKTEK KERJA");
+      let daftarSiswa = dapatkanSiswaMapelIni(kelasMapel, isPKL);
+      if (currentRole === "siswa") {
+        daftarSiswa = daftarSiswa.filter(s => (s[0] || "").toString().trim() === currentUser.nisn);
+      }
+
+      let csv = "No,NISN,Nama Siswa,Kelas,Alpa,Nilai Hadir (40%),Nilai Tugas & Catatan (30%),Nilai UH (20%),Nilai Ujian (10%),Nilai Rapor Akhir\n";
+      daftarSiswa.forEach((s, idx) => {
+        const nisn = (s[0] || "").toString().trim();
+        const nama = (s[1] || "").toString().trim();
+        const kls = (s[2] || "").toString().trim();
+        const st = nilaiStateSiswa[nisn] || { alpa: 0, tugas: [], catatan: [], ut: [], up: [], ujian: "" };
+        const h = hitungNilaiBaris(st);
+        csv += `${idx + 1},"${nisn}","${nama}","${kls}",${st.alpa || 0},${h.nHadir40.toFixed(2)},${h.nTugas30.toFixed(2)},${h.nUH20.toFixed(2)},${h.nUjian10.toFixed(2)},${h.nRapor.toFixed(2)}\n`;
+      });
+
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `Rekap_Nilai_${namaMapel.replace(/[^a-zA-Z0-9]/g, "_")}.csv`;
+      link.click();
+    }
+
+    // ================= LOGIKA WORKSPACE & MODE PKL =================
+    function bukaWorkspace(kelas, namaMapel, isRestore = false) {
+      document.getElementById('home-mapel-view').style.display = 'none';
+      document.getElementById('workspace-view').style.display = 'block';
+      document.getElementById('ws-kelas-badge').innerText = kelas;
+      document.getElementById('ws-mapel-title').innerText = namaMapel;
+
+      if (!isRestore) {
+        simpanSesi({ activeKelas: kelas, activeMapel: namaMapel });
+      }
+
+      const isPKL = namaMapel.toUpperCase().includes("PKL") || namaMapel.toUpperCase().includes("PRAKTEK KERJA");
+      renderDaftarSiswaPerMapel(kelas, isPKL);
+      muatStateNilaiMapel(kelas, namaMapel, isPKL);
+      renderSemuaKategoriDokumen(namaMapel);
+      renderTabelTugasMasuk(namaMapel);
+
+      if (isPKL) {
+        document.getElementById('judul-panel-kbm').innerText = "🏢 Absensi & Monitoring Praktek Kerja Lapangan (PKL)";
+        document.getElementById('mode-kbm-reguler').style.display = 'none';
+        document.getElementById('mode-kbm-pkl').style.display = 'block';
+
+        if (currentRole === "siswa") {
+          document.getElementById('pkl-student-form').style.display = 'block';
+          document.getElementById('pkl-admin-monitor').style.display = 'none';
+          document.getElementById('pkl-nama').value = currentUser.nama;
+          document.getElementById('pkl-nisn-kelas').value = `${currentUser.nisn} - ${currentUser.kelas}`;
+          bukaMenuWorkspace('panel-kbm', document.getElementById('nav-kbm'), isRestore);
+          setTimeout(() => { initMapPKL(); }, 250);
+        } else {
+          document.getElementById('pkl-student-form').style.display = 'none';
+          document.getElementById('pkl-admin-monitor').style.display = 'block';
+          if (!isRestore) {
+            bukaMenuWorkspace('panel-kbm', document.getElementById('nav-kbm'));
+            muatDataServer();
+          }
+        }
+      } else {
+        document.getElementById('judul-panel-kbm').innerText = "💻 Kegiatan Belajar Mengajar (KBM)";
+        document.getElementById('mode-kbm-reguler').style.display = 'block';
+        document.getElementById('mode-kbm-pkl').style.display = 'none';
+
+        if (!isRestore) {
+          if (currentRole === "siswa") {
+            bukaMenuWorkspace('panel-kbm', document.getElementById('nav-kbm'));
+            pilihSubKBM('kbm-materi', document.querySelectorAll('#panel-kbm .sub-tab')[0]);
+          } else {
+            bukaMenuWorkspace('panel-akademik', document.getElementById('nav-akademik'));
+          }
+        }
+      }
+    }
+
+    function pilihTabAdminPKL(idTab, el) {
+      document.querySelectorAll('#pkl-admin-monitor .sub-tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById('tab-pkl-sudah').style.display = idTab === 'tab-pkl-sudah' ? 'block' : 'none';
+      document.getElementById('tab-pkl-belum').style.display = idTab === 'tab-pkl-belum' ? 'block' : 'none';
+    }
+
+    function initMapPKL() {
+      if (!pklMap) {
+        pklMap = L.map('pkl-map').setView([pklLat, pklLng], 15);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' }).addTo(pklMap);
+        pklMarker = L.marker([pklLat, pklLng], { draggable: true }).addTo(pklMap);
+
+        pklMarker.on('dragend', () => {
+          const pos = pklMarker.getLatLng();
+          pklLat = pos.lat; pklLng = pos.lng;
+          pklLokasiTerkunci = false;
+          document.getElementById('pkl-info-terkunci').style.display = 'none';
+          document.getElementById('pkl-gps-status').innerHTML = `📌 Pin disesuaikan: <b>${pklLat.toFixed(6)}, ${pklLng.toFixed(6)}</b>. Klik tombol hijau untuk mengunci.`;
+        });
+      } else {
+        pklMap.invalidateSize();
+      }
+      deteksiGPSPKL();
+    }
+
+    function deteksiGPSPKL() {
+      const st = document.getElementById('pkl-gps-status');
+      st.className = "status-banner banner-warn";
+      st.innerHTML = "🛰️ Mengunci sinyal satelit GPS HP Anda...";
+
+      if (!navigator.geolocation) {
+        st.className = "status-banner banner-err";
+        st.innerHTML = "❌ Browser tidak mendukung GPS. Geser pin merah langsung pada peta.";
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          pklLat = pos.coords.latitude;
+          pklLng = pos.coords.longitude;
+          const akurasi = Math.round(pos.coords.accuracy);
+          pklMap.flyTo([pklLat, pklLng], 18);
+          pklMarker.setLatLng([pklLat, pklLng]);
+          st.className = "status-banner banner-ok";
+          st.innerHTML = `✅ <b>GPS Ditemukan!</b> Akurasi ±${akurasi}m (${pklLat.toFixed(6)}, ${pklLng.toFixed(6)}). Klik tombol di bawah untuk mengunci.`;
+        },
+        () => {
+          st.className = "status-banner banner-err";
+          st.innerHTML = "⚠️ Izin lokasi belum aktif. Pastikan GPS menyala atau geser pin merah pada peta.";
+        },
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+      );
+    }
+
+    function kunciPosisiPKL() {
+      pklLokasiTerkunci = true;
+      const info = document.getElementById('pkl-info-terkunci');
+      info.style.display = 'block';
+      info.innerHTML = `🔒 <b>Koordinat Terkunci:</b> ${pklLat.toFixed(6)}, ${pklLng.toFixed(6)}`;
+      showToast("Titik lokasi GPS berhasil dikunci!");
+    }
+
+    function prosesFotoPKL(file, sumber) {
+      if (!file) return;
+      document.getElementById('pkl-nama-foto').innerText = `✅ Sumber: ${sumber} (${file.name})`;
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const maxW = 800;
+          const scale = maxW / img.width;
+          canvas.width = maxW;
+          canvas.height = img.height * scale;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          pklFotoBase64 = canvas.toDataURL('image/jpeg', 0.7);
+          const prev = document.getElementById('pkl-foto-preview');
+          prev.src = pklFotoBase64;
+          prev.style.display = 'block';
+        };
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function kirimAbsensiPKL() {
+      const instansi = document.getElementById('pkl-instansi').value.trim();
+      const kategori = document.getElementById('pkl-kategori').value;
+      const keterangan = document.getElementById('pkl-keterangan').value.trim();
+
+      if (!instansi) { alert("Nama Instansi / Tempat PKL wajib diisi!"); return; }
+      if (!pklLokasiTerkunci) { alert("Silakan klik tombol 'Posisi Sesuai (Kunci Koordinat GPS)' terlebih dahulu!"); return; }
+      if (!pklFotoBase64) { alert("Silakan ambil foto selfie atau unggah foto bukti terlebih dahulu!"); return; }
+
+      const btn = document.getElementById('btn-kirim-pkl');
+      btn.disabled = true;
+      btn.innerText = "⏳ Mengunggah Foto & Data GPS...";
+
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          body: JSON.stringify({
+            action: "simpanAbsensiPKL",
+            name: currentUser.nama,
+            nisn: currentUser.nisn,
+            jurusan: currentUser.kelas,
+            instansi: instansi,
+            type: kategori,
+            location: `${pklLat.toFixed(6)}, ${pklLng.toFixed(6)}`,
+            photo: pklFotoBase64,
+            keterangan: keterangan || "-"
+          })
+        });
+        const hasil = await res.json();
+        if (hasil.status === "success") {
+          showToast("✅ Absensi PKL berhasil direkam ke server!");
+          document.getElementById('pkl-keterangan').value = "";
+          document.getElementById('pkl-foto-preview').style.display = 'none';
+          document.getElementById('pkl-nama-foto').innerText = "Belum ada foto dipilih";
+          document.getElementById('pkl-info-terkunci').style.display = 'none';
+          pklLokasiTerkunci = false;
+          pklFotoBase64 = "";
+        } else {
+          alert("Gagal mengirim: " + (hasil.message || "Kesalahan server"));
+        }
+      } catch (e) {
+        alert("Gagal terhubung ke server.");
+      }
+      btn.disabled = false;
+      btn.innerText = "🚀 KIRIM ABSENSI PKL SEKARANG";
+    }
+
+    function renderMonitorPKL(rows) {
+      document.getElementById('stat-pkl-total').innerText = rows.length;
+      document.getElementById('stat-pkl-pagi').innerText = rows.filter(r => (r[5] || "").includes("Masuk")).length;
+      document.getElementById('stat-pkl-pulang').innerText = rows.filter(r => (r[5] || "").includes("Pulang")).length;
+      tampilkanBarisPKL(rows);
+      hitungBelumAbsenPKL(rows);
+    }
+
+    function hitungBelumAbsenPKL(rows) {
+      const siswaPKLBimbingan = semuaDataSiswa.filter(s => (s[4] || "").toString().trim().toUpperCase() === "YA");
+      const now = new Date();
+      const dd = String(now.getDate()).padStart(2, '0');
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const yyyy = now.getFullYear();
+      const tglHariIni = `${dd}/${mm}/${yyyy}`;
+
+      const nisnSudahHariIni = new Set(
+        rows
+          .filter(r => (r[0] || "").toString().startsWith(tglHariIni))
+          .map(r => (r[2] || "").toString().trim())
+      );
+
+      const belumAbsen = siswaPKLBimbingan.filter(s => !nisnSudahHariIni.has((s[0] || "").toString().trim()));
+      document.getElementById('stat-pkl-belum').innerText = belumAbsen.length;
+
+      const tbodyBelum = document.getElementById('tabel-belum-absen-pkl');
+      if (belumAbsen.length === 0) {
+        tbodyBelum.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#166534; font-weight:bold;">🎉 Seluruh siswa bimbingan PKL sudah mengirim presensi hari ini!</td></tr>';
+        return;
+      }
+
+      tbodyBelum.innerHTML = belumAbsen.map((s, idx) => `
+        <tr>
+          <td>${idx + 1}</td>
+          <td>${s[0]}</td>
+          <td><strong>${s[1]}</strong></td>
+          <td>${s[2]}</td>
+          <td><span class="status-no">BELUM ABSEN (${tglHariIni})</span></td>
+        </tr>
+      `).join('');
+    }
+
+    function filterTabelPKL() {
+      const q = document.getElementById('cari-pkl-admin').value.toLowerCase();
+      const filtered = semuaDataPKL.filter(r => 
+        (r[1] || "").toString().toLowerCase().includes(q) ||
+        (r[2] || "").toString().toLowerCase().includes(q) ||
+        (r[4] || "").toString().toLowerCase().includes(q)
+      );
+      tampilkanBarisPKL(filtered);
+    }
+
+    function tampilkanBarisPKL(rows) {
+      const tbody = document.getElementById('tabel-monitoring-pkl');
+      if (!rows || rows.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Belum ada catatan presensi PKL.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = "";
+      rows.slice().reverse().forEach(r => {
+        const koord = (r[6] || "").toString().replace(/\s+/g, "");
+        const mapsUrl = koord ? `https://www.google.com/maps?q=${koord}` : "";
+        const fotoUrl = r[7] || "";
+
+        tbody.innerHTML += `<tr>
+          <td style="white-space:nowrap;">${r[0]}</td>
+          <td><strong>${r[1]}</strong><br><span style="color:#64748b; font-size:12px;">NISN: ${r[2]} • ${r[3]}</span></td>
+          <td><strong>${r[4]}</strong></td>
+          <td><span class="status-ok">${r[5]}</span><br><span style="font-size:12px; color:#475569; font-style:italic;">${r[8] || "-"}</span></td>
+          <td style="white-space:nowrap;">
+            ${mapsUrl ? `<a href="${mapsUrl}" target="_blank" class="link-btn link-maps">📍 Maps</a>` : ""}
+            ${fotoUrl ? `<a href="${fotoUrl}" target="_blank" class="link-btn link-foto">🖼️ Foto</a>` : ""}
+          </td>
+        </tr>`;
+      });
+    }
+
+    // ================= FUNGSI ADMIN & NAVIGASI LAINNYA =================
+    async function simpanTokenBaru() {
+      const tokenBaru = document.getElementById('input-token-baru').value.trim();
+      if (!tokenBaru) return;
+      showToast("Menyimpan token baru...");
+      await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "updateToken", tokenBaru: tokenBaru }) });
+      showToast("Token berhasil diubah ke: " + tokenBaru.toUpperCase());
+    }
+
+    async function toggleStatusMapel(idMapel) {
+      showToast("Mengubah status mapel...");
+      const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "toggleStatusMapel", idMapel }) });
+      const data = await res.json();
+      showToast("Status mapel diubah menjadi: " + data.statusBaru);
+      muatDataServer();
+    }
+
+    function bukaModalMapel() { document.getElementById('modal-mapel').style.display = 'flex'; }
+    function tutupModalMapel() { document.getElementById('modal-mapel').style.display = 'none'; }
+
+    async function simpanMapelBaru() {
+      const kelas = document.getElementById('new-mapel-kelas').value.trim();
+      const namaMapel = document.getElementById('new-mapel-nama').value.trim();
+      const semester = document.getElementById('new-mapel-sem').value.trim();
+      if (!kelas || !namaMapel) { alert("Kelas dan Nama Mapel wajib diisi!"); return; }
+
+      document.getElementById('btn-simpan-mapel').innerText = "Menyimpan...";
+      await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "tambahMapel", kelas, namaMapel, semester }) });
+      document.getElementById('btn-simpan-mapel').innerText = "Simpan Mapel";
+      tutupModalMapel();
+      showToast("Mata pelajaran berhasil ditambahkan!");
+      muatDataServer();
+    }
+
+    function kembaliKePilihMapel() {
+      document.getElementById('workspace-view').style.display = 'none';
+      document.getElementById('home-mapel-view').style.display = 'block';
+      simpanSesi({ activeKelas: "", activeMapel: "", activePanel: "", activeNavId: "" });
+    }
+
+    function bukaMenuWorkspace(idPanel, el, isRestore = false) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.menu li').forEach(m => m.classList.remove('active'));
+      document.getElementById(idPanel).classList.add('active');
+      if (el) el.classList.add('active');
+      if (!isRestore && el) {
+        simpanSesi({ activePanel: idPanel, activeNavId: el.id });
+      }
+    }
+
+    function pilihSubAkademik(idSub, el) {
+      document.querySelectorAll('#panel-akademik .sub-tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      document.querySelectorAll('.akad-sub').forEach(s => s.style.display = 'none');
+      document.getElementById(idSub).style.display = 'block';
+    }
+
+    function pilihSubKBM(idSub, el) {
+      document.querySelectorAll('#panel-kbm .sub-tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      document.querySelectorAll('.kbm-sub').forEach(s => s.style.display = 'none');
+      document.getElementById(idSub).style.display = 'block';
+    }
+
+    function salinKode(btn) {
+      const kode = btn.nextElementSibling.innerText;
+      navigator.clipboard.writeText(kode);
+      btn.innerText = "✓ Tersalin!";
+      showToast("Perintah CLI disalin ke clipboard!");
+      setTimeout(() => { btn.innerText = "📋 Salin Perintah"; }, 2000);
+    }
+
+    function logout() {
+      localStorage.removeItem(SESSION_KEY);
+      location.reload();
+    }
+  </script>
+</body>
+</html>
